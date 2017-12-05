@@ -1,0 +1,47 @@
+# MAGIC SEQUENCE: win32 encoding problems
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
+# END OF MAGIC SEQUENCE
+import os.path as path
+from sys import platform
+
+windows_boost_prefix = "C:\\Program Files\\boost\\boost_1_65_1"
+linux_boost_prefix = "~/boost_1_65_1"
+
+
+# boost prefix depending on OS
+boost_prefix = ""
+if platform == "win32":
+    boost_prefix = windows_boost_prefix
+else:
+    boost_prefix = linux_boost_prefix
+    
+# boost's libs dir
+boost_libs = path.join(boost_prefix, "libs")
+
+# environment prep
+env = Environment()
+env.Prepend(CPPPATH = [boost_prefix, ".."], LIBPATH=[boost_libs, "."])
+env.Repository(path.join("..", "include"))
+
+# multithread compilation - problems on windows
+if platform != "win32":
+    import multiprocessing
+    num_cpu = multiprocessing.cpu_count()
+    env.SetOption('num_jobs', num_cpu)
+
+# monitor's lib prep
+monitor_lib_src = env.Glob(path.join("src", "library_src", "*.cpp"))
+env.StaticLibrary("monitorLib", monitor_lib_src)
+
+# main executing program prep
+monitor_src = env.Glob(path.join("src", "*.cpp"))
+monitor = env.Program(path.join("..", "monitor"), monitor_src, LIBS='monitorLib')
+
+# tests preparation
+tests_files = [env.Glob(path.join("tests_src", "*", "*.cpp")), path.join("tests_src", "main.cpp")]
+tests = env.Program(path.join("..", "tests"), tests_files, LIBS=['monitorLib'])
+
+# "$ scons" default build
+env.Default(monitor, tests)
