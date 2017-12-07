@@ -68,6 +68,11 @@ Thumbs.db
 *.vcxproj
 *vcxproj.*
 
+# Eclipse generated files
+*.cproject
+*.project
+*.settings/
+
 # MinGW generated files
 *.Debug
 *.Release
