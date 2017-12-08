@@ -5,15 +5,15 @@
  *      Author: piotr
  */
 
-#include "CpuMonitor.h"
+#include "ResUsageProvider.hpp"
 
-CpuMonitor::CpuMonitor()
+ResUsageProvider::ResUsageProvider()
 {
 	// TODO Auto-generated constructor stub
 
 }
 
-CpuMonitor::~CpuMonitor()
+ResUsageProvider::~ResUsageProvider()
 {
 	// TODO Auto-generated destructor stub
 }
