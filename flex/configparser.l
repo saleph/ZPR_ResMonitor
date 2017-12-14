@@ -47,7 +47,7 @@ resolution	"resolution"
 
 	/* ======================================================== */
 	/* starting condition setup and stack enable */
-%s logEnv triggerEnv setEnv singleNoEnv
+%s logEnv triggerEnv setEnv singleNoEnv noyywrap
 %option stack c++
 %%
 
@@ -98,4 +98,14 @@ resolution	"resolution"
 					
 
 %%
+
+
+int main( int /* argc */, char** /* argv */ )
+{
+    FlexLexer* lexer = new yyFlexLexer;
+    while(lexer->yylex() != 0)
+        ;
+    return 0;
+}
+
 
