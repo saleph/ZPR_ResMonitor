@@ -41,6 +41,19 @@
 			std::cout << i << " ";
 		std::cout << std::endl;
 	}
+
+	void produceTriggersCrossproduct() {
+		for (auto &&res : triggerResourceValues) {
+			for (auto &&duration : triggerDurationTimes) {
+				currentTriggerType.value = res;
+				currentTriggerType.duration = duration;
+				triggerTypes.push_back(currentTriggerType);
+			}
+		}
+		triggerResourceValues.clear();
+		triggerDurationTimes.clear();
+	}
+	
 }
 	
 
@@ -111,9 +124,9 @@ day			(?i:"d")
 	
 		/* plain value */
 	<resourceSingleNoEnv>{
-		{ws}*"%"{ws}+		currentResourceValue.unitType = ResourceValue::ResourceUnit::PERCENT; yy_pop_state();
-		{ws}*{MB}{ws}+		currentResourceValue.unitType = ResourceValue::ResourceUnit::MB; yy_pop_state(); 
-		{ws}*{GB}{ws}+		currentResourceValue.unitType = ResourceValue::ResourceUnit::GB; yy_pop_state();
+		{ws}*"%"{ws}+		currentResourceValue.unitType = ResourceValue::ResourceUnit::PERCENT; triggerResourceValues.push_back(currentResourceValue); yy_pop_state();
+		{ws}*{MB}{ws}+		currentResourceValue.unitType = ResourceValue::ResourceUnit::MB; triggerResourceValues.push_back(currentResourceValue); yy_pop_state(); 
+		{ws}*{GB}{ws}+		currentResourceValue.unitType = ResourceValue::ResourceUnit::GB; triggerResourceValues.push_back(currentResourceValue); yy_pop_state();
 	}
 	
 		/*======= fluctuation duration */
@@ -131,7 +144,12 @@ day			(?i:"d")
 		{ws}*","{ws}*	triggerDurationTimes.push_back(currentDurationTime); currentDurationTime = 0;
 		
 			/* END OF LINE PROCCESSING: pop from stack durationSetEnv and triggerEnv */
-		{ws}*"}"{ws}*\n*		triggerDurationTimes.push_back(currentDurationTime); currentDurationTime = 0; yy_pop_state(); yy_pop_state();
+		{ws}*"}"{ws}*\n*	{
+			triggerDurationTimes.push_back(currentDurationTime); 
+			currentDurationTime = 0; 
+			yy_pop_state(); yy_pop_state(); /* back to INITIAL */
+			produceTriggersCrossproduct();
+		}
 	}
 	
 	/* plain value */
@@ -143,7 +161,12 @@ day			(?i:"d")
 		{ws}*"d"		currentDurationTime += lastReadDurationElement * SEC_IN_DAY;	/* no of seconds in day */
 		
 			/* END OF LINE PROCCESSING: pop from stack durationSetEnv and triggerEnv */
-		{ws}*|\n*		triggerDurationTimes.push_back(currentDurationTime); currentDurationTime = 0; yy_pop_state(); yy_pop_state();
+		{ws}*|\n*		{
+			triggerDurationTimes.push_back(currentDurationTime); 
+			currentDurationTime = 0; 
+			yy_pop_state(); yy_pop_state(); /* back to INITIAL */
+			produceTriggersCrossproduct();
+		}
 	}
 	
 }
@@ -175,13 +198,13 @@ int main( int /* argc */, char** /* argv */ )
     FlexLexer* lexer = new yyFlexLexer;
     int i = 0;
     while(lexer->yylex() != 0) {
-    	if (!(i%1)) {
-    		std::cout << "curr dur time: " << currentDurationTime << std::endl;
-    		logTypesValue();
-    	}
+    	
     }
-    logTypesValue();
-    //std::cout << "trig no: " << triggerTypes.size() << std::endl;
+    //logTypesValue();
+    std::cout << "trig no: " << triggerTypes.size() << std::endl;
+    for (auto &&trig : triggerTypes) {
+    	std::cout << trig.value.value << " ";
+    }
     //std::cout << "trig no: " << logTypes.size() << std::endl;
     
     return 0;

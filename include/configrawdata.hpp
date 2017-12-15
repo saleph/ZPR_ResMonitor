@@ -31,8 +31,6 @@ struct TriggerType {
 	ResourceValue value;
 	/// Log duration in seconds
 	long duration;
-	/// Log resolution in seconds
-	long resolution;
 };
 
 
