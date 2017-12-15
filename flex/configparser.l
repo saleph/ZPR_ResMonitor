@@ -4,6 +4,7 @@
 	#include <vector>
 	#include <cmath>
 #include <iostream>
+#include <fstream>
 	
 	// duration helpers
 	const long SEC_IN_MIN = 60;
@@ -271,7 +272,8 @@ for			(?i:"for")
 
 int main( int /* argc */, char** /* argv */ )
 {
-    FlexLexer* lexer = new yyFlexLexer;
+	std::ifstream ifs = std::ifstream("exfile", std::ifstream::in);
+    FlexLexer* lexer = new yyFlexLexer(ifs, std::cout);
     int i = 0;
     while(lexer->yylex() != 0) {
     	
