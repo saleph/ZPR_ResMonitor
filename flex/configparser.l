@@ -26,13 +26,13 @@
 	LogType currentLogType;
 	std::vector<LogType> logTypes;
 	std::vector<long> logDurations;
-	std::vector<long> logResolutin;
+	std::vector<long> logResolutions;
 	
 	void clearHelperVectors() {
 		triggerResourceValues.clear();
 		triggerDurationTimes.clear();
 		logDurations.clear();
-		logResolutin.clear();
+		logResolutions.clear();
 	}
 	
 	void logTypesValue() {
@@ -53,6 +53,19 @@
 		triggerResourceValues.clear();
 		triggerDurationTimes.clear();
 	}
+	
+	void produceLogsCrossproduct() {
+		for (auto &&duration : logDurations) {
+			for (auto &&res : logResolutions) {
+				currentLogType.resolution = res;
+				currentLogType.duration = duration;
+				logTypes.push_back(currentLogType);
+			}
+		}
+		logDurations.clear();
+		logResolutions.clear();
+	}
+	
 	
 }
 	
@@ -84,7 +97,7 @@ for			(?i:"for")
 
 	/* ======================================================== */
 	/* starting condition setup and stack enable */
-%s logEnv triggerEnv resourceSetEnv resourceSingleNoEnv triggerDurationSetEnv triggerDurationSingleNoEnv logDurationSetEnv logDurationSingleNoEnv
+%s logEnv triggerEnv resourceSetEnv resourceSingleNoEnv triggerDurationSetEnv triggerDurationSingleNoEnv logDurationSetEnv logDurationSingleNoEnv logResolutionSetEnv logResolutionSingleNoEnv
 %option stack noyywrap c++ debug
 %%
 
@@ -96,18 +109,18 @@ for			(?i:"for")
 	/* trigger cpu over {70%, 80%, 90%} last for {20s, 1m} */
 	/* trigger memory under 200MB last for 2h30m */
 <triggerEnv>{
-		/*======= resource type */
+	/*======= resource type */
 	{cpu}{ws}+		currentTriggerType.resource = TriggerType::Resource::CPU;
 	{memory}{ws}+	currentTriggerType.resource = TriggerType::Resource::MEMORY;
 	{disk}{ws}+		currentTriggerType.resource = TriggerType::Resource::DISK;
 	
-		/*======= over/under */
+	/*======= over/under */
 	{under}{ws}+"{"{ws}*	currentTriggerType.fluctuationType = TriggerType::FluctuationType::UNDER; yy_push_state(resourceSetEnv);
 	{under}{ws}+			currentTriggerType.fluctuationType = TriggerType::FluctuationType::UNDER; yy_push_state(resourceSingleNoEnv);
 	{over}{ws}+"{"{ws}*		currentTriggerType.fluctuationType = TriggerType::FluctuationType::OVER; yy_push_state(resourceSetEnv);
 	{over}{ws}+				currentTriggerType.fluctuationType = TriggerType::FluctuationType::OVER; yy_push_state(resourceSingleNoEnv);
 	
-		/* bracket with set of values */
+	/* bracket with set of values */
 	<resourceSetEnv>{
 		{number}		currentResourceValue.value = atol(yytext);
 		{ws}*"%"		currentResourceValue.unitType = ResourceValue::ResourceUnit::PERCENT;
@@ -118,7 +131,7 @@ for			(?i:"for")
 		{ws}*"}"{ws}*	triggerResourceValues.push_back(currentResourceValue); yy_pop_state();
 	}
 	
-		/* plain value */
+	/* plain value */
 	<resourceSingleNoEnv>{
 		{number}			currentResourceValue.value = atol(yytext);
 		{ws}*"%"{ws}+		currentResourceValue.unitType = ResourceValue::ResourceUnit::PERCENT; triggerResourceValues.push_back(currentResourceValue); yy_pop_state();
@@ -126,10 +139,10 @@ for			(?i:"for")
 		{ws}*{GB}{ws}+		currentResourceValue.unitType = ResourceValue::ResourceUnit::GB; triggerResourceValues.push_back(currentResourceValue); yy_pop_state();
 	}
 	
-		/*======= fluctuation duration */
-		/* durations set */
+	/*======= fluctuation duration */
+	/* durations set */
 	{ws}*{last}{ws}+"{"{ws}*		yy_push_state(triggerDurationSetEnv);
-		/* single duration */
+	/* single duration */
 	{ws}*{last}{ws}+				yy_push_state(triggerDurationSingleNoEnv);
 	
 	<triggerDurationSetEnv>{
@@ -171,14 +184,77 @@ for			(?i:"for")
 	/* ======================================================== */
 	/* log parsing */
 <logEnv>{
+	/*======= resource type */
 	{cpu}{ws}+		currentLogType.resource = LogType::Resource::CPU;
 	{memory}{ws}+	currentLogType.resource = LogType::Resource::MEMORY;
 	{disk}{ws}+		currentLogType.resource = LogType::Resource::DISK;
-	
+
+	/*======= log duration time */
 	{for}{ws}+"{"{ws}*	yy_push_state(logDurationSetEnv);
 	{for}{ws}+			yy_push_state(logDurationSingleNoEnv);
 
-	\n				yy_pop_state();
+	/* durations set */
+	<logDurationSetEnv>{
+			{number}		lastReadDurationElement = atol(yytext);
+			{ws}*"s"		currentDurationTime += lastReadDurationElement; 				/* no of seconds in seconds */
+			{ws}*"m"		currentDurationTime += lastReadDurationElement * SEC_IN_MIN;	/* no of seconds in minute */
+			{ws}*"h"		currentDurationTime += lastReadDurationElement * SEC_IN_HOUR;	/* no of seconds in hour */
+			{ws}*"d"		currentDurationTime += lastReadDurationElement * SEC_IN_DAY;	/* no of seconds in day */
+			{ws}*","{ws}*	logDurations.push_back(currentDurationTime); currentDurationTime = 0;
+			
+			{ws}*"}"{ws}+	logDurations.push_back(currentDurationTime); currentDurationTime = 0; yy_pop_state(); 
+		}
+		
+	/* plain value */
+	<logDurationSingleNoEnv>{
+		{number}		lastReadDurationElement = atol(yytext);
+		{ws}*"s"		currentDurationTime += lastReadDurationElement; 				/* no of seconds in seconds */
+		{ws}*"m"		currentDurationTime += lastReadDurationElement * SEC_IN_MIN;	/* no of seconds in minute */
+		{ws}*"h"		currentDurationTime += lastReadDurationElement * SEC_IN_HOUR;	/* no of seconds in hour */
+		{ws}*"d"		currentDurationTime += lastReadDurationElement * SEC_IN_DAY;	/* no of seconds in day */
+		
+		{ws}+			logDurations.push_back(currentDurationTime); currentDurationTime = 0; yy_pop_state();
+	}
+	
+	/*======= log resolution */
+	{resolution}{ws}+"{"{ws}*	yy_push_state(logResolutionSetEnv);
+	{resolution}{ws}+			yy_push_state(logResolutionSingleNoEnv);
+	
+	/* resolution set */
+	<logResolutionSetEnv>{
+			{number}		lastReadDurationElement = atol(yytext);
+			{ws}*"s"		currentDurationTime += lastReadDurationElement; 				/* no of seconds in seconds */
+			{ws}*"m"		currentDurationTime += lastReadDurationElement * SEC_IN_MIN;	/* no of seconds in minute */
+			{ws}*"h"		currentDurationTime += lastReadDurationElement * SEC_IN_HOUR;	/* no of seconds in hour */
+			{ws}*"d"		currentDurationTime += lastReadDurationElement * SEC_IN_DAY;	/* no of seconds in day */
+			{ws}*","{ws}*	logResolutions.push_back(currentDurationTime); currentDurationTime = 0;
+
+			/* END OF LINE PROCCESSING: pop from stack logResolutionSetEnv and logEnv */
+			{ws}*"}"{ws}*\n*	{
+				logResolutions.push_back(currentDurationTime); 
+				currentDurationTime = 0; 
+				yy_pop_state(); yy_pop_state(); /* back to INITIAL */
+				produceLogsCrossproduct();
+			}
+		}
+		
+	/* plain resolution value */
+	<logResolutionSingleNoEnv>{
+		{number}		lastReadDurationElement = atol(yytext);
+		{ws}*"s"		currentDurationTime += lastReadDurationElement; 				/* no of seconds in seconds */
+		{ws}*"m"		currentDurationTime += lastReadDurationElement * SEC_IN_MIN;	/* no of seconds in minute */
+		{ws}*"h"		currentDurationTime += lastReadDurationElement * SEC_IN_HOUR;	/* no of seconds in hour */
+		{ws}*"d"		currentDurationTime += lastReadDurationElement * SEC_IN_DAY;	/* no of seconds in day */
+
+		/* END OF LINE PROCCESSING: pop from stack logResolutionSingleNoEnv and logEnv */
+		{ws}*|\n*		{
+			logResolutions.push_back(currentDurationTime); 
+			currentDurationTime = 0; 
+			yy_pop_state(); yy_pop_state(); /* back to INITIAL */
+			produceLogsCrossproduct();
+		}
+	}
+	
 }
 
 	/* ======================================================== */
@@ -202,11 +278,15 @@ int main( int /* argc */, char** /* argv */ )
     }
     //logTypesValue();
     std::cout << "trig no: " << triggerTypes.size() << std::endl;
-    for (auto &&trig : triggerTypes) {
-    	std::cout << trig.value.value << " ";
-    }
-    std::cout << std::endl;
-    //std::cout << "trig no: " << logTypes.size() << std::endl;
+//    for (auto &&trig : triggerTypes) {
+//    	std::cout << trig.value.value << " ";
+//    }
+//    std::cout << std::endl;
+    std::cout << "log no: " << logTypes.size() << std::endl;
+//    for (auto &&log : logTypes) {
+//		std::cout << log.resolution << " ";
+//	}
+//    std::cout << std::endl;
     
     return 0;
 }
