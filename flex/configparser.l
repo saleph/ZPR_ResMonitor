@@ -4,6 +4,16 @@
 	#include <vector>
 	#include <cmath>
 #include <iostream>
+	
+	// duration helpers
+	const long SEC_IN_MIN = 60;
+	const long SEC_IN_HOUR = SEC_IN_MIN * 60;
+	const long SEC_IN_DAY = SEC_IN_HOUR * 24;
+	// sumaric duration time in seconds for current element
+	long currentDurationTime;
+	// last read value - eg. number of hours. Will be multiplied by
+	// specifc multipler (for hour - 3600) and added to currentDurationTime
+	long lastReadDurationElement;
 		
 	// triggerTypes	
 	TriggerType currentTriggerType;
@@ -26,8 +36,10 @@
 	}
 	
 	void logTypesValue() {
-		for (auto i : triggerResourceValues)
-			std::cout << "trigger: " << i.value << std::endl;
+		std::cout << "trigger times: ";
+		for (auto i : triggerDurationTimes)
+			std::cout << i << " ";
+		std::cout << std::endl;
 	}
 }
 	
@@ -48,13 +60,17 @@ over		(?i:"over")
 under		(?i:"under")
 last		(?i:"last for"|"last")
 resolution	(?i:"resolution")
-MB			(?i:"mb"|"mb/s"|"mbps")
+MB			(?i:"mb"|"MB/s"|"mbps")
 GB			(?i:"gb"|"gb/s"|"gbps")
+sec			(?i:"s")
+min			(?i:"m")
+hour		(?i:"h")
+day			(?i:"d")
 
 
 	/* ======================================================== */
 	/* starting condition setup and stack enable */
-%s logEnv triggerEnv setEnv singleNoEnv
+%s logEnv triggerEnv resourceSetEnv resourceSingleNoEnv durationSetEnv durationSingleNoEnv
 %option stack noyywrap c++ debug
 %%
 
@@ -66,43 +82,70 @@ GB			(?i:"gb"|"gb/s"|"gbps")
 	/* trigger cpu over {70%, 80%, 90%} last for {20s, 1m} */
 	/* trigger memory under 200MB last for 2h30m */
 <triggerEnv>{
-		/* resource type */
+		/*======= resource type */
 	{cpu}{ws}+		currentTriggerType.resource = TriggerType::Resource::CPU;
 	{memory}{ws}+	currentTriggerType.resource = TriggerType::Resource::MEMORY;
 	{disk}{ws}+		currentTriggerType.resource = TriggerType::Resource::DISK;
 	
-		/* over/under */
+		/*======= over/under */
 	{under}{ws}+	currentTriggerType.fluctuationType = TriggerType::FluctuationType::UNDER;
 	{over}{ws}+		currentTriggerType.fluctuationType = TriggerType::FluctuationType::OVER;
 	
 	
 		/* bracket with set of values */
-	"{"{ws}*		yy_push_state(setEnv);
+	"{"{ws}*		yy_push_state(resourceSetEnv);
 	
 		/* plain value */
-	{number}		currentResourceValue.value = atol(yytext); yy_push_state(singleNoEnv); logTypesValue();
+	{number}		currentResourceValue.value = atol(yytext); yy_push_state(resourceSingleNoEnv);
 	
 		/* bracket with set of values */
-	<setEnv>{
-		{number}		currentResourceValue.value = atol(yytext); logTypesValue();
+	<resourceSetEnv>{
+		{number}		currentResourceValue.value = atol(yytext);
 		{ws}*"%"		currentResourceValue.unitType = ResourceValue::ResourceUnit::PERCENT;
 		{ws}*{MB}		currentResourceValue.unitType = ResourceValue::ResourceUnit::MB;
 		{ws}*{GB}		currentResourceValue.unitType = ResourceValue::ResourceUnit::GB;
-		{ws}*","		triggerResourceValues.push_back(currentResourceValue);
+		{ws}*","{ws}*	triggerResourceValues.push_back(currentResourceValue);
 		
 		{ws}*"}"{ws}*	triggerResourceValues.push_back(currentResourceValue); yy_pop_state();
 	}
 	
 		/* plain value */
-	<singleNoEnv>{
+	<resourceSingleNoEnv>{
 		{ws}*"%"{ws}+		currentResourceValue.unitType = ResourceValue::ResourceUnit::PERCENT; yy_pop_state();
 		{ws}*{MB}{ws}+		currentResourceValue.unitType = ResourceValue::ResourceUnit::MB; yy_pop_state(); 
 		{ws}*{GB}{ws}+		currentResourceValue.unitType = ResourceValue::ResourceUnit::GB; yy_pop_state();
 	}
 	
-	[^\n]	
+		/*======= fluctuation duration */
+		/* durations set */
+	{ws}*{last}{ws}+"{"{ws}*		yy_push_state(durationSetEnv);
+		/* single duration */
+	{ws}*{last}{ws}+				yy_push_state(durationSingleNoEnv);
 	
-	\n				yy_pop_state();
+	<durationSetEnv>{
+		{number}		lastReadDurationElement = atol(yytext);
+		{ws}*"s"		currentDurationTime += lastReadDurationElement; 				/* no of seconds in seconds */
+		{ws}*"m"		currentDurationTime += lastReadDurationElement * SEC_IN_MIN;	/* no of seconds in minute */
+		{ws}*"h"		currentDurationTime += lastReadDurationElement * SEC_IN_HOUR;	/* no of seconds in hour */
+		{ws}*"d"		currentDurationTime += lastReadDurationElement * SEC_IN_DAY;	/* no of seconds in day */
+		{ws}*","{ws}*	triggerDurationTimes.push_back(currentDurationTime); currentDurationTime = 0;
+		
+			/* END OF LINE PROCCESSING: pop from stack durationSetEnv and triggerEnv */
+		{ws}*"}"{ws}*\n*		triggerDurationTimes.push_back(currentDurationTime); currentDurationTime = 0; yy_pop_state(); yy_pop_state();
+	}
+	
+	/* plain value */
+	<durationSingleNoEnv>{
+		{number}		lastReadDurationElement = atol(yytext);
+		{ws}*"s"		currentDurationTime += lastReadDurationElement; 				/* no of seconds in seconds */
+		{ws}*"m"		currentDurationTime += lastReadDurationElement * SEC_IN_MIN;	/* no of seconds in minute */
+		{ws}*"h"		currentDurationTime += lastReadDurationElement * SEC_IN_HOUR;	/* no of seconds in hour */
+		{ws}*"d"		currentDurationTime += lastReadDurationElement * SEC_IN_DAY;	/* no of seconds in day */
+		
+			/* END OF LINE PROCCESSING: pop from stack durationSetEnv and triggerEnv */
+		{ws}*|\n*		triggerDurationTimes.push_back(currentDurationTime); currentDurationTime = 0; yy_pop_state(); yy_pop_state();
+	}
+	
 }
 
 	/* ======================================================== */
@@ -116,12 +159,12 @@ GB			(?i:"gb"|"gb/s"|"gbps")
 }
 
 	/* ======================================================== */
-	/* environment distinction */
+	/* start environment distinction */
 {ws}+				/* consume whitespaces at the beggining */
 \n+					/* consume whitespaces at the beggining */
 {log}{ws}+			yy_push_state(logEnv);
 {trigger}{ws}+		yy_push_state(triggerEnv);
-<<EOF>>				clearHelperVectors(); yyterminate();
+<<EOF>>				yyterminate();
 					
 
 %%
@@ -130,10 +173,16 @@ GB			(?i:"gb"|"gb/s"|"gbps")
 int main( int /* argc */, char** /* argv */ )
 {
     FlexLexer* lexer = new yyFlexLexer;
-    while(lexer->yylex() != 0)
-        ;
-    std::cout << "trig no: " << triggerTypes.size() << std::endl;
-    std::cout << "trig no: " << logTypes.size() << std::endl;
+    int i = 0;
+    while(lexer->yylex() != 0) {
+    	if (!(i%1)) {
+    		std::cout << "curr dur time: " << currentDurationTime << std::endl;
+    		logTypesValue();
+    	}
+    }
+    logTypesValue();
+    //std::cout << "trig no: " << triggerTypes.size() << std::endl;
+    //std::cout << "trig no: " << logTypes.size() << std::endl;
     
     return 0;
 }
