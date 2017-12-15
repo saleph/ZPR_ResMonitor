@@ -79,11 +79,12 @@ sec			(?i:"s")
 min			(?i:"m")
 hour		(?i:"h")
 day			(?i:"d")
+for			(?i:"for")
 
 
 	/* ======================================================== */
 	/* starting condition setup and stack enable */
-%s logEnv triggerEnv resourceSetEnv resourceSingleNoEnv durationSetEnv durationSingleNoEnv
+%s logEnv triggerEnv resourceSetEnv resourceSingleNoEnv triggerDurationSetEnv triggerDurationSingleNoEnv logDurationSetEnv logDurationSingleNoEnv
 %option stack noyywrap c++ debug
 %%
 
@@ -101,15 +102,10 @@ day			(?i:"d")
 	{disk}{ws}+		currentTriggerType.resource = TriggerType::Resource::DISK;
 	
 		/*======= over/under */
-	{under}{ws}+	currentTriggerType.fluctuationType = TriggerType::FluctuationType::UNDER;
-	{over}{ws}+		currentTriggerType.fluctuationType = TriggerType::FluctuationType::OVER;
-	
-	
-		/* bracket with set of values */
-	"{"{ws}*		yy_push_state(resourceSetEnv);
-	
-		/* plain value */
-	{number}		currentResourceValue.value = atol(yytext); yy_push_state(resourceSingleNoEnv);
+	{under}{ws}+"{"{ws}*	currentTriggerType.fluctuationType = TriggerType::FluctuationType::UNDER; yy_push_state(resourceSetEnv);
+	{under}{ws}+			currentTriggerType.fluctuationType = TriggerType::FluctuationType::UNDER; yy_push_state(resourceSingleNoEnv);
+	{over}{ws}+"{"{ws}*		currentTriggerType.fluctuationType = TriggerType::FluctuationType::OVER; yy_push_state(resourceSetEnv);
+	{over}{ws}+				currentTriggerType.fluctuationType = TriggerType::FluctuationType::OVER; yy_push_state(resourceSingleNoEnv);
 	
 		/* bracket with set of values */
 	<resourceSetEnv>{
@@ -124,6 +120,7 @@ day			(?i:"d")
 	
 		/* plain value */
 	<resourceSingleNoEnv>{
+		{number}			currentResourceValue.value = atol(yytext);
 		{ws}*"%"{ws}+		currentResourceValue.unitType = ResourceValue::ResourceUnit::PERCENT; triggerResourceValues.push_back(currentResourceValue); yy_pop_state();
 		{ws}*{MB}{ws}+		currentResourceValue.unitType = ResourceValue::ResourceUnit::MB; triggerResourceValues.push_back(currentResourceValue); yy_pop_state(); 
 		{ws}*{GB}{ws}+		currentResourceValue.unitType = ResourceValue::ResourceUnit::GB; triggerResourceValues.push_back(currentResourceValue); yy_pop_state();
@@ -131,11 +128,11 @@ day			(?i:"d")
 	
 		/*======= fluctuation duration */
 		/* durations set */
-	{ws}*{last}{ws}+"{"{ws}*		yy_push_state(durationSetEnv);
+	{ws}*{last}{ws}+"{"{ws}*		yy_push_state(triggerDurationSetEnv);
 		/* single duration */
-	{ws}*{last}{ws}+				yy_push_state(durationSingleNoEnv);
+	{ws}*{last}{ws}+				yy_push_state(triggerDurationSingleNoEnv);
 	
-	<durationSetEnv>{
+	<triggerDurationSetEnv>{
 		{number}		lastReadDurationElement = atol(yytext);
 		{ws}*"s"		currentDurationTime += lastReadDurationElement; 				/* no of seconds in seconds */
 		{ws}*"m"		currentDurationTime += lastReadDurationElement * SEC_IN_MIN;	/* no of seconds in minute */
@@ -143,7 +140,7 @@ day			(?i:"d")
 		{ws}*"d"		currentDurationTime += lastReadDurationElement * SEC_IN_DAY;	/* no of seconds in day */
 		{ws}*","{ws}*	triggerDurationTimes.push_back(currentDurationTime); currentDurationTime = 0;
 		
-			/* END OF LINE PROCCESSING: pop from stack durationSetEnv and triggerEnv */
+			/* END OF LINE PROCCESSING: pop from stack triggerDurationSetEnv and triggerEnv */
 		{ws}*"}"{ws}*\n*	{
 			triggerDurationTimes.push_back(currentDurationTime); 
 			currentDurationTime = 0; 
@@ -153,14 +150,14 @@ day			(?i:"d")
 	}
 	
 	/* plain value */
-	<durationSingleNoEnv>{
+	<triggerDurationSingleNoEnv>{
 		{number}		lastReadDurationElement = atol(yytext);
 		{ws}*"s"		currentDurationTime += lastReadDurationElement; 				/* no of seconds in seconds */
 		{ws}*"m"		currentDurationTime += lastReadDurationElement * SEC_IN_MIN;	/* no of seconds in minute */
 		{ws}*"h"		currentDurationTime += lastReadDurationElement * SEC_IN_HOUR;	/* no of seconds in hour */
 		{ws}*"d"		currentDurationTime += lastReadDurationElement * SEC_IN_DAY;	/* no of seconds in day */
 		
-			/* END OF LINE PROCCESSING: pop from stack durationSetEnv and triggerEnv */
+			/* END OF LINE PROCCESSING: pop from stack triggerDurationSetEnv and triggerEnv */
 		{ws}*|\n*		{
 			triggerDurationTimes.push_back(currentDurationTime); 
 			currentDurationTime = 0; 
@@ -177,6 +174,9 @@ day			(?i:"d")
 	{cpu}{ws}+		currentLogType.resource = LogType::Resource::CPU;
 	{memory}{ws}+	currentLogType.resource = LogType::Resource::MEMORY;
 	{disk}{ws}+		currentLogType.resource = LogType::Resource::DISK;
+	
+	{for}{ws}+"{"{ws}*	yy_push_state(logDurationSetEnv);
+	{for}{ws}+			yy_push_state(logDurationSingleNoEnv);
 
 	\n				yy_pop_state();
 }
@@ -205,6 +205,7 @@ int main( int /* argc */, char** /* argv */ )
     for (auto &&trig : triggerTypes) {
     	std::cout << trig.value.value << " ";
     }
+    std::cout << std::endl;
     //std::cout << "trig no: " << logTypes.size() << std::endl;
     
     return 0;
