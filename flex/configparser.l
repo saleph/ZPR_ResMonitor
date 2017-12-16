@@ -3,47 +3,47 @@
 	#include "configrawdata.hpp"
 	#include <vector>
 	#include <cmath>
-#include <iostream>
-#include <fstream>
+	#include <iostream>
+	#include <fstream>
 	
 	// duration helpers
-	const long SEC_IN_MIN = 60;
-	const long SEC_IN_HOUR = SEC_IN_MIN * 60;
-	const long SEC_IN_DAY = SEC_IN_HOUR * 24;
+	static const long SEC_IN_MIN = 60;
+	static const long SEC_IN_HOUR = SEC_IN_MIN * 60;
+	static const long SEC_IN_DAY = SEC_IN_HOUR * 24;
 	// sumaric duration time in seconds for current element
-	long currentDurationTime;
+	static long currentDurationTime;
 	// last read value - eg. number of hours. Will be multiplied by
 	// specifc multipler (for hour - 3600) and added to currentDurationTime
-	long lastReadDurationElement;
+	static long lastReadDurationElement;
 		
 	// triggerTypes	
-	TriggerType currentTriggerType;
-	std::vector<TriggerType> triggerTypes;
-	ResourceValue currentResourceValue;
-	std::vector<ResourceValue> triggerResourceValues;
-	std::vector<long> triggerDurationTimes;
+	static TriggerType currentTriggerType;
+	static std::vector<TriggerType> triggerTypes;
+	static ResourceValue currentResourceValue;
+	static std::vector<ResourceValue> triggerResourceValues;
+	static std::vector<long> triggerDurationTimes;
 	
 	// logTypes
-	LogType currentLogType;
-	std::vector<LogType> logTypes;
-	std::vector<long> logDurations;
-	std::vector<long> logResolutions;
+	static LogType currentLogType;
+	static std::vector<LogType> logTypes;
+	static std::vector<long> logDurations;
+	static std::vector<long> logResolutions;
 	
-	void clearHelperVectors() {
+	static void clearHelperVectors() {
 		triggerResourceValues.clear();
 		triggerDurationTimes.clear();
 		logDurations.clear();
 		logResolutions.clear();
 	}
 	
-	void logTypesValue() {
+	static void logTypesValue() {
 		std::cout << "trigger times: ";
 		for (auto i : triggerDurationTimes)
 			std::cout << i << " ";
 		std::cout << std::endl;
 	}
 
-	void produceTriggersCrossproduct() {
+	static void produceTriggersCrossproduct() {
 		for (auto &&res : triggerResourceValues) {
 			for (auto &&duration : triggerDurationTimes) {
 				currentTriggerType.value = res;
@@ -55,7 +55,7 @@
 		triggerDurationTimes.clear();
 	}
 	
-	void produceLogsCrossproduct() {
+	static void produceLogsCrossproduct() {
 		for (auto &&duration : logDurations) {
 			for (auto &&res : logResolutions) {
 				currentLogType.resolution = res;
@@ -270,27 +270,25 @@ for			(?i:"for")
 %%
 
 
-int main( int /* argc */, char** /* argv */ )
-{
-	std::ifstream ifs = std::ifstream("exfile", std::ifstream::in);
-    FlexLexer* lexer = new yyFlexLexer(ifs, std::cout);
-    int i = 0;
-    while(lexer->yylex() != 0) {
-    	
-    }
-    //logTypesValue();
-    std::cout << "trig no: " << triggerTypes.size() << std::endl;
-//    for (auto &&trig : triggerTypes) {
-//    	std::cout << trig.value.value << " ";
-//    }
-//    std::cout << std::endl;
-    std::cout << "log no: " << logTypes.size() << std::endl;
-//    for (auto &&log : logTypes) {
-//		std::cout << log.resolution << " ";
-//	}
-//    std::cout << std::endl;
-    
-    return 0;
-}
+//int main( int /* argc */, char** /* argv */ )
+//{
+//	std::ifstream ifs = std::ifstream("exfile", std::ifstream::in);
+//    FlexLexer* lexer = new yyFlexLexer(ifs, std::cout);
+//    int i = 0;
+//    while(lexer->yylex() != 0) { }
+//    //logTypesValue();
+//    std::cout << "trig no: " << triggerTypes.size() << std::endl;
+////    for (auto &&trig : triggerTypes) {
+////    	std::cout << trig.value.value << " ";
+////    }
+////    std::cout << std::endl;
+//    std::cout << "log no: " << logTypes.size() << std::endl;
+////    for (auto &&log : logTypes) {
+////		std::cout << log.resolution << " ";
+////	}
+////    std::cout << std::endl;
+//    
+//    return 0;
+//}
 
 

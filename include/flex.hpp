@@ -48,6 +48,12 @@
 // Never included before - need to define base class.
 #define __FLEX_LEXER_H
 
+#include "configrawdata.hpp"
+#include <vector>
+
+extern std::vector<TriggerType> triggerTypes;
+extern std::vector<LogType> logTypes;
+
 #include <iostream>
 #  ifndef FLEX_STD
 #    define FLEX_STD std::
@@ -147,6 +153,10 @@ public:
 	virtual void switch_streams( FLEX_STD istream& new_in, FLEX_STD ostream& new_out );
 	virtual void switch_streams( FLEX_STD istream* new_in = 0, FLEX_STD ostream* new_out = 0 );
 	virtual int yywrap();
+
+
+	std::vector<TriggerType>& getTriggerTypes() { return triggerTypes; }
+	std::vector<LogType> &getLogTypes() { return logTypes; }
 
 protected:
 	virtual int LexerInput( char* buf, int max_size );
