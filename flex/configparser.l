@@ -268,27 +268,3 @@ for			(?i:"for")
 					
 
 %%
-
-
-//int main( int /* argc */, char** /* argv */ )
-//{
-//	std::ifstream ifs = std::ifstream("exfile", std::ifstream::in);
-//    FlexLexer* lexer = new yyFlexLexer(ifs, std::cout);
-//    int i = 0;
-//    while(lexer->yylex() != 0) { }
-//    //logTypesValue();
-//    std::cout << "trig no: " << triggerTypes.size() << std::endl;
-////    for (auto &&trig : triggerTypes) {
-////    	std::cout << trig.value.value << " ";
-////    }
-////    std::cout << std::endl;
-//    std::cout << "log no: " << logTypes.size() << std::endl;
-////    for (auto &&log : logTypes) {
-////		std::cout << log.resolution << " ";
-////	}
-////    std::cout << std::endl;
-//    
-//    return 0;
-//}
-
-
