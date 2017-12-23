@@ -961,7 +961,11 @@ static yyconst flex_int16_t yy_rule_linenum[70] =
 /* %if-c-only */
 /* %endif */
 /* %if-c++-only */
+#ifdef _WIN32
+#include <io.h>
+#else
 #include <unistd.h>
+#endif
 /* %endif */
 #endif
 
