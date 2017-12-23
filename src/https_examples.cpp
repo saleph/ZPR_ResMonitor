@@ -1,5 +1,6 @@
 #include "client_https.hpp"
 #include "server_https.hpp"
+#include "smtp_client.hpp"
 
 // Added for the json-example
 #define BOOST_SPIRIT_THREADSAFE
@@ -240,5 +241,7 @@ void exampleHttpsServerExecution() {
 
 
 int main() {
-  exampleHttpsServerExecution();
+	SMTPClient mailc("smtp.wp.pl", 25,"zpr_resmonitor@wp.pl", "zprresmonitor!1");
+	mailc.Send("zpr_resmonitor@wp.pl","zpr_resmonitor@wp.pl","tescikkk","Hello from C++ SMTP Client!");
+  //exampleHttpsServerExecution();
 }
