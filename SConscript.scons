@@ -21,7 +21,7 @@ else:
 boost_libs = path.join(boost_prefix, "libs")
 
 # environment prep
-env = Environment()
+env = Environment(LIBS=["pthread", "ssl", "crypto", "boost_system", "boost_filesystem"])
 env.Prepend(CXXFLAGS=["-std=c++11"], CPPPATH = [boost_prefix, ".."], LIBPATH=[boost_libs, "."])
 env.Repository(path.join("..", "include"))
 
@@ -37,11 +37,11 @@ env.StaticLibrary("monitorLib", monitor_lib_src)
 
 # main executing program prep
 monitor_src = env.Glob(path.join("src", "*.cpp"))
-monitor = env.Program(path.join("..", "monitor"), monitor_src, LIBS='monitorLib')
+monitor = env.Program(path.join("..", "monitor"), monitor_src, LIBS=env['LIBS']+['monitorLib'])
 
 # tests preparation
 tests_files = [env.Glob(path.join("tests_src", "*", "*.cpp")), path.join("tests_src", "main.cpp")]
-tests = env.Program(path.join("..", "tests"), tests_files, LIBS=['monitorLib'])
+tests = env.Program(path.join("..", "tests"), tests_files, LIBS=env['LIBS']+['monitorLib'])
 
 # "$ scons" default build
 env.Default(monitor, tests)
