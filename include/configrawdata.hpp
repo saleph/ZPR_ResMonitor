@@ -4,7 +4,9 @@
 /// Structure describing resource value of particular trigger.
 /// Eg. memory over {70%, 200MB}
 struct ResourceValue {
-	enum class ResourceUnit		{PERCENT, MB, GB};
+	enum class ResourceUnit {
+		PERCENT, MB, GB
+	};
 
 	/// Resource unit - percent, MB or GB
 	ResourceUnit unitType;
@@ -15,13 +17,16 @@ struct ResourceValue {
 	long value;
 };
 
-
 /// Raw structure describing trigger.
 /// Used during parsing config file and
 /// loading configuration into monitor.
 struct TriggerType {
-	enum class Resource 		{CPU, MEMORY, DISK};
-	enum class FluctuationType 	{UNDER, OVER};
+	enum class Resource {
+		CPU, MEMORY, DISK
+	};
+	enum class FluctuationType {
+		UNDER, OVER
+	};
 
 	/// Resource type
 	Resource resource;
@@ -33,12 +38,13 @@ struct TriggerType {
 	long duration;
 };
 
-
 /// Raw structure describing logging type.
 /// Used during parsing config file and
 /// loading configuration into monitor.
 struct LogType {
-	enum class Resource	{CPU, MEMORY, DISK};
+	enum class Resource {
+		CPU, MEMORY, DISK
+	};
 
 	/// Resource type
 	Resource resource;
