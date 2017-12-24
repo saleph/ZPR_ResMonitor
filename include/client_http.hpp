@@ -100,7 +100,7 @@ protected:
 	class Connection : public std::enable_shared_from_this<Connection> {
 	public:
 		template <typename... Args>
-		Connection(std::shared_ptr<ScopeRunner> handler_runner, long timeout, Args &&... args) noexcept
+		Connection(std::shared_ptr<ScopeRunner> handler_runner, long timeout, Args &&... args)
 		: handler_runner(std::move(handler_runner)), timeout(timeout), socket(new socket_type(std::forward<Args>(args)...)) {}
 
 		std::shared_ptr<ScopeRunner> handler_runner;
@@ -140,7 +140,7 @@ protected:
 
 	class Session {
 	public:
-		Session(std::size_t max_response_streambuf_size, std::shared_ptr<Connection> connection, std::unique_ptr<asio::streambuf> request_streambuf) noexcept
+		Session(std::size_t max_response_streambuf_size, std::shared_ptr<Connection> connection, std::unique_ptr<asio::streambuf> request_streambuf)
 		: connection(std::move(connection)), request_streambuf(std::move(request_streambuf)), response(new Response(max_response_streambuf_size)) {}
 
 		std::shared_ptr<Connection> connection;
