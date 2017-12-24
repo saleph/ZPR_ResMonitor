@@ -88,11 +88,7 @@ private:
    writeLine( "DATA");
    writeLine( "SUBJECT: "+mSubject);
    writeLine( "From: <"+mFrom+">");
-    std::string addresses;
-    for (auto &&address : mTo) {
-        addresses += "<"+address+">; ";
-    }
-   writeLine( "Bcc: "+addresses);
+    // no BCC or TO <== anonymity of users
    writeLine( "");
    writeLine( mMessage );
    writeLine( ".");
