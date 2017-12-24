@@ -6,6 +6,7 @@
 #include <istream>
 #include <ostream>
 #include <string>
+#include <vector>
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
 #include <boost/lexical_cast.hpp>
@@ -20,14 +21,14 @@ typedef base64_from_binary<transform_width<const char *,6,8> > base64_text;
 class SMTPClient
 {
 public:
- SMTPClient(std::string pServer,unsigned int pPort,std::string pUser,std::string pPassword):
+ SMTPClient(const std::string &pServer, unsigned int pPort, const std::string &pUser, const std::string &pPassword):
    mServer(pServer),mPort(pPort),mUserName(pUser),mPassword(pPassword),mSocket(mIOService),mResolver(mIOService)
    {
     tcp::resolver::query qry(mServer,boost::lexical_cast<std::string>( mPort ));
     mResolver.async_resolve(qry,boost::bind(&SMTPClient::handleResolve,this,boost::asio::placeholders::error,
      boost::asio::placeholders::iterator));
    }
-   bool Send(std::string pFrom,std::string pTo,std::string pSubject,std::string pMessage)
+   bool Send(const std::string &pFrom, const std::vector<std::string> &pTo, const std::string &pSubject, const std::string &pMessage)
    {
     mFrom=pFrom;
     mTo=pTo;
@@ -37,7 +38,7 @@ public:
     return mHasError;
    }
 private:
- std::string encodeBase64(std::string pData)
+ std::string encodeBase64(const std::string &pData)
  {
   std::stringstream os;
   size_t sz=pData.size();
@@ -62,7 +63,7 @@ private:
  {
   std::ostream req_strm(&mRequest);
   req_strm << pData << "\r\n";
-  //std::cout << pData << std::endl;
+  std::cout << pData << std::endl;
   boost::asio::write(mSocket,mRequest);
   req_strm.clear();
  }
@@ -70,13 +71,9 @@ private:
  {
   if (!err)
   {
-   // THIS LINE CAUSES SEGFAULT!!!
-   //std::cerr.rdbuf(&mResponse);
    boost::asio::async_read_until(mSocket, mResponse, '\r',
                             [this](const boost::system::error_code& error, std::size_t bytes_transferred) { 
-    //std::cerr << ">>> " << &mResponse; 
-    mResponse.commit(bytes_transferred);
-std::cout << bytes_transferred << " ";
+    std::cerr << ">>> " << &mResponse; 
 });
    // The connection was successful. Send the request.
    std::ostream req_strm(&mRequest);
@@ -85,11 +82,17 @@ std::cout << bytes_transferred << " ";
    writeLine(encodeBase64(mUserName));
    writeLine(encodeBase64(mPassword));
    writeLine( "MAIL FROM: <"+mFrom+">");
-   writeLine( "RCPT TO: <"+mTo+">");
+   for (auto &&address : mTo) {
+        writeLine( "RCPT TO: <"+address+">");
+    }
    writeLine( "DATA");
    writeLine( "SUBJECT: "+mSubject);
-   writeLine( "From: "+mFrom);
-   writeLine( "To: "+mTo);
+   writeLine( "From: <"+mFrom+">");
+    std::string addresses;
+    for (auto &&address : mTo) {
+        addresses += "<"+address+">; ";
+    }
+   writeLine( "Bcc: "+addresses);
    writeLine( "");
    writeLine( mMessage );
    writeLine( ".");
@@ -106,7 +109,7 @@ std::this_thread::sleep_for(std::chrono::seconds(2));
  std::string mUserName;
  std::string mPassword;
  std::string mFrom;
- std::string mTo;
+ std::vector<std::string> mTo;
  std::string mSubject;
  std::string mMessage;
  unsigned int mPort;

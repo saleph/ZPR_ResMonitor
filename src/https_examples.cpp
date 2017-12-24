@@ -242,6 +242,6 @@ void exampleHttpsServerExecution() {
 
 int main() {
 	SMTPClient mailc("smtp.wp.pl", 25,"zpr_resmonitor@wp.pl", "zprresmonitor!1");
-	mailc.Send("zpr_resmonitor@wp.pl","zpr_resmonitor@wp.pl","tescikkk","Hello from C++ SMTP Client!");
+	mailc.Send("zpr_resmonitor@wp.pl", {"zpr_resmonitor@wp.pl", "tomasz-galecki0@wp.pl", "tomasz.galecki@hotmail.com"},"tescikkk","Hello from C++ SMTP Client!");
   //exampleHttpsServerExecution();
 }
