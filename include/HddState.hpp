@@ -1,10 +1,3 @@
-/*
- * HddState.h
- *
- *  Created on: Dec 8, 2017
- *      Author: piotr
- */
-
 #ifndef SRC_LIBRARY_SRC_HDDSTATE_H_
 #define SRC_LIBRARY_SRC_HDDSTATE_H_
 
@@ -12,10 +5,10 @@ class HddState
 {
 public:
 	HddState();
-	HddState(double _hddInUseMBs, double _monitorHddInUseMBs);
+	HddState(double _totalHddMBs, double _hddInUseMBs, double _monitorHddInUseMBs);
 	virtual ~HddState();
 
-	static void init(double _totalHddMBs);
+	void init(double _totalHddMBs);
 	double currMBsUsed(void);
 	double currPercentageUsed(void);
 	double currMonitorMBsUsed(void);
@@ -24,7 +17,7 @@ public:
 	void setMonitorMBsUsed(double _monitorRamInUseMB);
 
 private:
-	static double totalHddMBs;
+	double totalHddMBs;
 	double hddInUseMBs;
 	double monitorHddInUseMBs;
 };

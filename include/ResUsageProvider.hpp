@@ -1,10 +1,3 @@
-/*
- * CpuMonitor.h
- *
- *  Created on: Dec 7, 2017
- *      Author: piotr
- */
-
 #ifndef SRC_LIBRARY_SRC_RESUSAGEPROVIDER_H_
 #define SRC_LIBRARY_SRC_RESUSAGEPROVIDER_H_
 

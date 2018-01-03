@@ -1,10 +1,3 @@
-/*
- * RamState.h
- *
- *  Created on: Dec 8, 2017
- *      Author: piotr
- */
-
 #ifndef SRC_LIBRARY_SRC_RAMSTATE_H_
 #define SRC_LIBRARY_SRC_RAMSTATE_H_
 
@@ -12,10 +5,10 @@ class RamState
 {
 public:
 	RamState();
-	RamState(double _ramInUseMB, double _monitorRamInUseMB);
+	RamState(double _totalRamMB, double _ramInUseMB, double _monitorRamInUseMB);
 	virtual ~RamState();
 
-	static void init(double _totalRamMB);
+	void init(double _totalRamMB);
 	double currMBUsed(void);
 	double currPercentageUsed(void);
 	double currMonitorMBUsed(void);
@@ -24,7 +17,7 @@ public:
 	void setMonitorMBUsed(double _monitorRamInUseMB);
 
 private:
-	static double totalRamMB;
+	double totalRamMB;
 	double ramInUseMB;
 	double monitorRamInUseMB;
 };

@@ -7,16 +7,16 @@
 
 #include "RamState.hpp"
 
-double RamState::totalRamMB = 0.0;
-
 RamState::RamState()
 {
+	totalRamMB = 0.0;
 	ramInUseMB = 0.0;
 	monitorRamInUseMB = 0.0;
 }
 
-RamState::RamState(double _ramInUseMB, double _monitorRamInUseMB)
+RamState::RamState(double _totalRamMB, double _ramInUseMB, double _monitorRamInUseMB)
 {
+	totalRamMB = _totalRamMB;
 	ramInUseMB = _ramInUseMB;
 	monitorRamInUseMB = _monitorRamInUseMB;
 }

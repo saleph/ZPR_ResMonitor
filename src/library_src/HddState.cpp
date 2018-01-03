@@ -7,16 +7,16 @@
 
 #include "HddState.hpp"
 
-double HddState::totalHddMBs = 0.0;
-
 HddState::HddState()
 {
+	totalHddMBs = 0.0;
 	hddInUseMBs = 0.0;
 	monitorHddInUseMBs = 0.0;
 }
 
-HddState::HddState(double _hddInUseMBs, double _monitorHddInUseMBs)
+HddState::HddState(double _totalHddMBs, double _hddInUseMBs, double _monitorHddInUseMBs)
 {
+	totalHddMBs = _totalHddMBs;
 	hddInUseMBs = _hddInUseMBs;
 	monitorHddInUseMBs = _monitorHddInUseMBs;
 }

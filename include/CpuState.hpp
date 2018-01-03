@@ -1,10 +1,3 @@
-/*
- * CpuState.h
- *
- *  Created on: Dec 8, 2017
- *      Author: piotr
- */
-
 #ifndef SRC_LIBRARY_SRC_CPUSTATE_H_
 #define SRC_LIBRARY_SRC_CPUSTATE_H_
 
