@@ -1,10 +1,3 @@
-/*
- * HddState.cpp
- *
- *  Created on: Dec 8, 2017
- *      Author: piotr
- */
-
 #include "HddState.hpp"
 
 HddState::HddState()
@@ -23,12 +16,6 @@ HddState::HddState(double _totalHddMBs, double _hddInUseMBs, double _monitorHddI
 
 HddState::~HddState(){}
 
-
-void HddState::init(double _totalHddMBs)
-{
-	totalHddMBs = _totalHddMBs;
-}
-
 double HddState::currMBsUsed(void)
 {
 	return hddInUseMBs;
@@ -37,7 +24,7 @@ double HddState::currMBsUsed(void)
 double HddState::currPercentageUsed(void)
 {
 	if(totalHddMBs != 0.0)
-		return hddInUseMBs/totalHddMBs;
+		return hddInUseMBs/totalHddMBs*100.0;
 	return -1.0;
 }
 
@@ -49,8 +36,13 @@ double HddState::currMonitorMBsUsed(void)
 double HddState::currMonitorPercentageUsed(void)
 {
 	if(totalHddMBs != 0.0)
-		return monitorHddInUseMBs/totalHddMBs;
+		return monitorHddInUseMBs/totalHddMBs*100.0;
 	return -1.0;
+}
+
+double HddState::totalMBs(void)
+{
+	return totalHddMBs;
 }
 
 void HddState::setMBsUsed(double _hddInUseMBs)
@@ -61,4 +53,9 @@ void HddState::setMBsUsed(double _hddInUseMBs)
 void HddState::setMonitorMBsUsed(double _monitorHddInUseMBs)
 {
 	monitorHddInUseMBs = _monitorHddInUseMBs;
+}
+
+void HddState::setTotalMBs(double _totalHddMBs)
+{
+	totalHddMBs = _totalHddMBs;
 }

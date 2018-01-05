@@ -1,10 +1,3 @@
-/*
- * RamState.cpp
- *
- *  Created on: Dec 8, 2017
- *      Author: piotr
- */
-
 #include "RamState.hpp"
 
 RamState::RamState()
@@ -23,12 +16,6 @@ RamState::RamState(double _totalRamMB, double _ramInUseMB, double _monitorRamInU
 
 RamState::~RamState(){}
 
-
-void RamState::init(double _totalRamMB)
-{
-	totalRamMB = _totalRamMB;
-}
-
 double RamState::currMBUsed(void)
 {
 	return ramInUseMB;
@@ -37,7 +24,7 @@ double RamState::currMBUsed(void)
 double RamState::currPercentageUsed(void)
 {
 	if(totalRamMB != 0.0)
-		return ramInUseMB/totalRamMB;
+		return ramInUseMB/totalRamMB * 100.0;
 	return -1.0;
 }
 
@@ -49,8 +36,13 @@ double RamState::currMonitorMBUsed(void)
 double RamState::currMonitorPercentageUsed(void)
 {
 	if(totalRamMB != 0.0)
-		return monitorRamInUseMB/totalRamMB;
+		return monitorRamInUseMB/totalRamMB*100.0;
 	return -1.0;
+}
+
+double RamState::totalMB(void)
+{
+	return totalRamMB;
 }
 
 void RamState::setMBUsed(double _ramInUseMB)
@@ -61,4 +53,9 @@ void RamState::setMBUsed(double _ramInUseMB)
 void RamState::setMonitorMBUsed(double _monitorRamInUseMB)
 {
 	monitorRamInUseMB = _monitorRamInUseMB;
+}
+
+void RamState::setTotalMB(double _totalRamMB)
+{
+	totalRamMB = _totalRamMB;
 }
