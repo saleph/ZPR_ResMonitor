@@ -13,6 +13,7 @@
 #include <boost/filesystem.hpp>
 #include <fstream>
 #include <vector>
+#include <memory>
 
 using namespace std;
 // Added for the json-example:
@@ -143,26 +144,6 @@ void exampleHttpsServerExecution() {
 					// Uncomment the following line to enable Cache-Control
 					// header.emplace("Cache-Control", "max-age=86400");
 
-#ifdef HAVE_OPENSSL
-//    Uncomment the following lines to enable ETag
-//    {
-//      ifstream ifs(path.string(), ifstream::in | ios::binary);
-//      if(ifs) {
-//        auto hash = SimpleWeb::Crypto::to_hex_string(SimpleWeb::Crypto::md5(ifs));
-//        header.emplace("ETag", "\"" + hash + "\"");
-//        auto it = request->header.find("If-None-Match");
-//        if(it != request->header.end()) {
-//          if(!it->second.empty() && it->second.compare(1, hash.size(), hash) == 0) {
-//            response->write(SimpleWeb::StatusCode::redirection_not_modified, header);
-//            return;
-//          }
-//        }
-//      }
-//      else
-//        throw invalid_argument("could not read file");
-//    }
-#endif
-
 			auto ifs = make_shared<ifstream>();
 			ifs->open(path.string(), ifstream::in | ios::binary | ios::ate);
 
@@ -246,9 +227,9 @@ void exampleHttpsServerExecution() {
 }
 
 int main() {
-	SMTPClient mailc("smtp.wp.pl", 25, "zpr_resmonitor@wp.pl",
-			"zprresmonitor!1");
-	mailc.sendEmail("zpr_resmonitor@wp.pl", { "zpr_resmonitor@wp.pl"}, "tescikkk",
-			"Hello from C++ SMTP Client!");
-	//exampleHttpsServerExecution();
+//	SMTPClient mailc("smtp.wp.pl", 25, "zpr_resmonitor@wp.pl",
+//			"zprresmonitor!1");
+//	mailc.sendEmail("zpr_resmonitor@wp.pl", { "zpr_resmonitor@wp.pl"}, "tescikkk",
+//			"Hello from C++ SMTP Client!");
+	exampleHttpsServerExecution();
 }
