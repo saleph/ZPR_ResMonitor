@@ -26,7 +26,7 @@ public:
 	CpuState getCpuState(void);
 	RamState getRamState(void);
 	HddState getHddState(void);
-	std::pair<int, int> getHddSelfUsage(void);
+	std::pair<double, double> getHddSelfUsage(void);
 	std::pair<double, double> getHddSystemUsage(void);
 
 

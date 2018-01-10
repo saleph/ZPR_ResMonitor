@@ -44,7 +44,8 @@ std::pair<double, double> LinuxResProvider::getHddSystemUsage(void)
 	while (fgets(line, 128, ioStats) != NULL){
 		if ((pch = strstr(line, "sda ")) != NULL){
 			pch = strtok(pch, " \t");
-			for(int i = 0; i < 11; ++i)
+			int i = 0;
+			do
 			{
 				if(i == 3)
 				{
@@ -58,7 +59,7 @@ std::pair<double, double> LinuxResProvider::getHddSystemUsage(void)
 					break;
 				}
 				pch = strtok (NULL, " \t");
-			}
+			}while(++i < 8);
 			break;
 		}
 	}
@@ -84,7 +85,7 @@ std::pair<double, double> LinuxResProvider::getHddSystemUsage(void)
  * 	current disk read bandwidth usage [KB/s], 2nd is current disk write
  * 	bandwidth usage [KB/s]
  */
-std::pair<int, int> LinuxResProvider::getHddSelfUsage(void)
+std::pair<double, double> LinuxResProvider::getHddSelfUsage(void)
 {
 	FILE * ioStats = fopen("/proc/self/io", "r");
 
