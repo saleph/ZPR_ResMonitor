@@ -9,6 +9,7 @@
 //}
 
 #include <iostream>
+#include <fstream>
 #include "LinuxResProvider.hpp"
 #include <unistd.h>
 
@@ -16,8 +17,6 @@ int main()
 {
 	LinuxResProvider linuxRes;
 	RamState ramState = linuxRes.getRamState();
-
-	sleep(1);
 
 	std::cout<<"Zasoby RAM: "<< std::endl;
 	std::cout << "Total RAM: "<<ramState.totalMB()<<std::endl;
@@ -36,5 +35,12 @@ int main()
 		sleep(1);
 	}
 
+	std::pair<int, int> p1 = linuxRes.getHddSelfUsage();
+	std::cout<<"Self - Read bytes number: "<<p1.first<<std::endl;
+	std::cout<<"Self - Write bytes number: "<<p1.second<<std::endl;
+	sleep(1);
+	std::pair<double, double> p2 = linuxRes.getHddSystemUsage();
+	std::cout<<"System - Read bytes number: "<<p2.first<<std::endl;
+	std::cout<<"System - Write bytes number: "<<p2.second<<std::endl;
 	return 0;
 }

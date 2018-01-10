@@ -2,60 +2,60 @@
 
 HddState::HddState()
 {
-	totalHddMBs = 0.0;
-	hddInUseMBs = 0.0;
-	monitorHddInUseMBs = 0.0;
+	hddInUseKBsRead = 0.0;
+	hddInUseKBsWrite = 0.0;
+	monitorHddInUseKBsRead = 0.0;
+	monitorHddInUseKBsWrite = 0.0;
 }
 
-HddState::HddState(double _totalHddMBs, double _hddInUseMBs, double _monitorHddInUseMBs)
+HddState::HddState(double _hddInUseKBsRead, double _hddInUseKBsWrite,
+		double _monitorHddInUseKBsRead, double _monitorHddInUseKBsWrite)
 {
-	totalHddMBs = _totalHddMBs;
-	hddInUseMBs = _hddInUseMBs;
-	monitorHddInUseMBs = _monitorHddInUseMBs;
+	hddInUseKBsRead = _hddInUseKBsRead;
+	hddInUseKBsWrite = _hddInUseKBsWrite;
+	monitorHddInUseKBsRead = _monitorHddInUseKBsRead;
+	monitorHddInUseKBsWrite = _monitorHddInUseKBsWrite;
 }
 
 HddState::~HddState(){}
 
-double HddState::currMBsUsed(void)
+double HddState::currKBsUsedRead(void)
 {
-	return hddInUseMBs;
+	return hddInUseKBsRead;
 }
 
-double HddState::currPercentageUsed(void)
+double HddState::currKBsUsedWrite(void)
 {
-	if(totalHddMBs != 0.0)
-		return hddInUseMBs/totalHddMBs*100.0;
-	return -1.0;
+	return hddInUseKBsWrite;
 }
 
-double HddState::currMonitorMBsUsed(void)
+double HddState::currMonitorKBsUsedRead(void)
 {
-	return monitorHddInUseMBs;
+	return monitorHddInUseKBsRead;
 }
 
-double HddState::currMonitorPercentageUsed(void)
+double HddState::currMonitorKBsUsedWrite(void)
 {
-	if(totalHddMBs != 0.0)
-		return monitorHddInUseMBs/totalHddMBs*100.0;
-	return -1.0;
+	return monitorHddInUseKBsWrite;
 }
 
-double HddState::totalMBs(void)
+void HddState::setKBsUsedRead(double _hddInUseKBsRead)
 {
-	return totalHddMBs;
+	hddInUseKBsRead = _hddInUseKBsRead;
 }
 
-void HddState::setMBsUsed(double _hddInUseMBs)
+void HddState::setKBsUsedWrite(double _hddInUseKBsWrite)
 {
-	hddInUseMBs = _hddInUseMBs;
+	hddInUseKBsWrite = _hddInUseKBsWrite;
 }
 
-void HddState::setMonitorMBsUsed(double _monitorHddInUseMBs)
+void HddState::setMonitorKBsUsedRead(double _monitorHddInUseKBsRead)
 {
-	monitorHddInUseMBs = _monitorHddInUseMBs;
+	monitorHddInUseKBsRead = _monitorHddInUseKBsRead;
 }
 
-void HddState::setTotalMBs(double _totalHddMBs)
+void HddState::setMonitorKBsUsedWrite(double _monitorHddInUseKBsWrite)
 {
-	totalHddMBs = _totalHddMBs;
+	monitorHddInUseKBsWrite = _monitorHddInUseKBsWrite;
 }
+

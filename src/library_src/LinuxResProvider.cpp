@@ -8,7 +8,111 @@ LinuxResProvider::LinuxResProvider()
 {
 	initSystemCpuUsage();
 	initSelfCpuUsage();
+	initHddUsage();
 }
+
+/**
+ * 	@brief	This method initializes resource provider members used
+ * 	to store resource usage information between resource getter calls.
+ */
+void LinuxResProvider::initHddUsage(void)
+{
+	FILE * sectorSizeFile = fopen("/sys/block/sda/queue/hw_sector_size", "r");
+	fscanf(sectorSizeFile, "%d", &hddSectorSize);
+	fclose(sectorSizeFile);
+	getHddSystemUsage();
+	getHddSelfUsage();
+}
+
+/**
+ * 	@brief	Method which reads current disk bandwidth usage in the
+ * 	system for read and write operations in KB/s.
+ *
+ * 	@return	std::pair<double, double> objects in which 1st value is
+ * 	current disk read bandwidth usage [KB/s], 2nd is current disk write
+ * 	bandwidth usage [KB/s]
+ */
+std::pair<double, double> LinuxResProvider::getHddSystemUsage(void)
+{
+	FILE * ioStats = fopen("/proc/diskstats", "r");
+
+	unsigned long long writeBytes, readBytes;
+	double readKBs, writeKBs;
+	char line[128];
+	char * pch;
+
+	while (fgets(line, 128, ioStats) != NULL){
+		if ((pch = strstr(line, "sda ")) != NULL){
+			pch = strtok(pch, " \t");
+			for(int i = 0; i < 11; ++i)
+			{
+				if(i == 3)
+				{
+					readBytes = std::stoll(pch, nullptr, 10);
+					readBytes *= hddSectorSize;
+				}
+				else if(i == 7)
+				{
+					writeBytes = std::stoll(pch, nullptr, 10);
+					writeBytes *= hddSectorSize;
+					break;
+				}
+				pch = strtok (NULL, " \t");
+			}
+			break;
+		}
+	}
+	milliseconds currMs = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	readKBs = (readBytes - lastHddSystemRead)/
+			(double)((currMs - hddSystemLastMeasureTime).count());
+	writeKBs = (writeBytes - lastHddSystemWrite)/
+			(double)((currMs - hddSystemLastMeasureTime).count());
+
+	hddSystemLastMeasureTime = currMs;
+	lastHddSystemRead = readBytes;
+	lastHddSystemWrite = writeBytes;
+
+	fclose(ioStats);
+	return std::pair<double, double>(readKBs, writeKBs);
+}
+
+/**
+ * 	@brief	Method which reads current disk bandwidth usage for
+ * 	this process for read and write operations in KB/s.
+ *
+ * 	@return	std::pair<double, double> objects in which 1st value is
+ * 	current disk read bandwidth usage [KB/s], 2nd is current disk write
+ * 	bandwidth usage [KB/s]
+ */
+std::pair<int, int> LinuxResProvider::getHddSelfUsage(void)
+{
+	FILE * ioStats = fopen("/proc/self/io", "r");
+
+	long long writeBytes, readBytes;
+	double readKBs, writeKBs;
+	char line[64];
+	while (fgets(line, 64, ioStats) != NULL){
+		if (strncmp(line, "rchar:", 6) == 0){
+			readBytes = std::stoll(&line[6], nullptr, 10);
+		}
+		else if(strncmp(line, "wchar:", 6) == 0){
+			writeBytes = std::stoll(&line[6], nullptr, 10);
+			break;
+		}
+	}
+	milliseconds currMs = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	readKBs = (readBytes - lastHddSelfRead)/
+			(double)((currMs - hddSelfLastMeasureTime).count());
+	writeKBs = (writeBytes - lastHddSelfWrite)/
+			(double)((currMs - hddSelfLastMeasureTime).count());
+	hddSelfLastMeasureTime = currMs;
+	lastHddSelfRead = readBytes;
+	lastHddSelfWrite = writeBytes;
+
+	fclose(ioStats);
+	return std::pair<double, double>(readKBs, writeKBs);
+}
+
 
 /**
  * 	@brief	Method that search for number value
@@ -20,7 +124,7 @@ LinuxResProvider::LinuxResProvider()
  * Code based on
  * https://stackoverflow.com/questions/63166/how-to-determine-cpu-and-memory-consumption-from-inside-a-process
  */
-int LinuxResProvider::parseLine(char* line)
+int LinuxResProvider::parseLineRam(char* line)
 {
     int i = strlen(line);
     const char* p = line;
@@ -46,7 +150,7 @@ int LinuxResProvider::getRamSelfUsage(void)
 
     while (fgets(line, 128, file) != NULL){
         if (strncmp(line, "VmRSS:", 6) == 0){
-            result = parseLine(line);
+            result = parseLineRam(line);
             break;
         }
     }
@@ -57,6 +161,9 @@ int LinuxResProvider::getRamSelfUsage(void)
 /**
  *	@brief	Method that saves initial values of total cpu time from
  *	the system boot for all kind of processes.
+ *
+ *	Code based on
+ * 	https://stackoverflow.com/questions/63166/how-to-determine-cpu-and-memory-consumption-from-inside-a-process
  */
 void LinuxResProvider::initSystemCpuUsage()
 {
@@ -71,6 +178,9 @@ void LinuxResProvider::initSystemCpuUsage()
  *
  *	@return	percent is double, it is percent of the current
  *	cpu usage by the Linux system with all applications
+ *
+ *	Code based on
+ * 	https://stackoverflow.com/questions/63166/how-to-determine-cpu-and-memory-consumption-from-inside-a-process
  */
 double LinuxResProvider::getSystemCpuUsage()
 {
@@ -110,6 +220,9 @@ double LinuxResProvider::getSystemCpuUsage()
 /**
  *	@brief	Method that saves initial values of total cpu time fromLinuxResProvider
  *	the current process.
+ *
+ *	Code based on
+ * 	https://stackoverflow.com/questions/63166/how-to-determine-cpu-and-memory-consumption-from-inside-a-process
  */
 void LinuxResProvider::initSelfCpuUsage(){
     FILE* file;
@@ -133,6 +246,9 @@ void LinuxResProvider::initSelfCpuUsage(){
  *
  *	@return	percent is double, it is percent of the current
  *	cpu usage by this process.
+ *
+ *	Code based on
+ * 	https://stackoverflow.com/questions/63166/how-to-determine-cpu-and-memory-consumption-from-inside-a-process
  */
 double LinuxResProvider::getSelfCpuUsage(){
     struct tms timeSample;
@@ -208,5 +324,12 @@ RamState LinuxResProvider::getRamState(void)
 HddState LinuxResProvider::getHddState(void)
 {
 	HddState hddState;
+	std::pair<double, double> systemHddUsage = getHddSystemUsage();
+	std::pair<double, double> selfHddUsage = getHddSelfUsage();
+	hddState.setKBsUsedRead(systemHddUsage.first);
+	hddState.setKBsUsedWrite(systemHddUsage.second);
+	hddState.setMonitorKBsUsedRead(selfHddUsage.first);
+	hddState.setMonitorKBsUsedWrite(selfHddUsage.second);
+
 	return hddState;
 }

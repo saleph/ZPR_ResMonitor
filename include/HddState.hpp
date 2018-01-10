@@ -10,22 +10,24 @@ class HddState
 {
 public:
 	HddState();
-	HddState(double _totalHddMBs, double _hddInUseMBs, double _monitorHddInUseMBs);
+	HddState(double _hddInUseKBsRead, double _hddInUseKBsWrite,
+			double _monitorHddInUseKBsRead, double _monitorHddInUseKBsWrite);
 	virtual ~HddState();
 
-	double currMBsUsed(void);
-	double currPercentageUsed(void);
-	double currMonitorMBsUsed(void);
-	double currMonitorPercentageUsed(void);
-	double totalMBs(void);
-	void setMBsUsed(double _ramInUseMB);
-	void setMonitorMBsUsed(double _monitorRamInUseMB);
-	void setTotalMBs(double _totalHddMBs);
+	double currKBsUsedRead(void);
+	double currKBsUsedWrite(void);
+	double currMonitorKBsUsedRead(void);
+	double currMonitorKBsUsedWrite(void);
+	void setKBsUsedRead(double _hddInUseKBsRead);
+	void setKBsUsedWrite(double _hddInUseKBsWrite);
+	void setMonitorKBsUsedRead(double _monitorHddInUseKBsRead);
+	void setMonitorKBsUsedWrite(double _monitorHddInUseKBsWrite);
 
 private:
-	double totalHddMBs;
-	double hddInUseMBs;
-	double monitorHddInUseMBs;
+	double hddInUseKBsRead;
+	double hddInUseKBsWrite;
+	double monitorHddInUseKBsRead;
+	double monitorHddInUseKBsWrite;
 };
 
 #endif /* SRC_LIBRARY_SRC_HDDSTATE_H_ */

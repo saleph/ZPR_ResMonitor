@@ -9,6 +9,11 @@
 #include "stdlib.h"
 #include "stdio.h"
 #include "string.h"
+#include <string>
+#include <utility>
+#include <chrono>
+
+using namespace std::chrono;
 
 /**
  * 	Class that provides states of resources in Linux system
@@ -21,9 +26,14 @@ public:
 	CpuState getCpuState(void);
 	RamState getRamState(void);
 	HddState getHddState(void);
+	std::pair<int, int> getHddSelfUsage(void);
+	std::pair<double, double> getHddSystemUsage(void);
+
 
 private:
-	int parseLine(char* line);
+	void initHddUsage(void);
+
+	int parseLineRam(char* line);
 	int getRamSelfUsage(void);	// Value in KB!
 
 	void initSystemCpuUsage(void);
@@ -32,8 +42,12 @@ private:
 	double getSelfCpuUsage(void);
 
 	unsigned long long lastTotalUser, lastTotalNiced, lastTotalSys, lastTotalIdle;
+	unsigned long long lastHddSelfRead, lastHddSelfWrite, lastHddSystemRead, lastHddSystemWrite;
 	clock_t lastCPU, lastSysCPU, lastUserCPU;
 	int numProcessors;
+	unsigned hddSectorSize;
+
+	milliseconds hddSelfLastMeasureTime, hddSystemLastMeasureTime;
 
 };
 
