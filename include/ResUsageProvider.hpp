@@ -22,7 +22,7 @@ public:
 	 *
 	 * 	@return	CpuState object with current CPU state.
 	 */
-	virtual CpuState getCpuState(void) = 0;
+	virtual CpuState getCpuState() {};
 
 	/**
 	 * 	@brief	Interface method that provides RamState object
@@ -30,7 +30,7 @@ public:
 	 *
 	 * 	@return	RamState object with current RAM memory state.
 	 */
-	virtual RamState getRamState(void) = 0;
+	virtual RamState getRamState() {};
 
 	/**
 	 * 	@brief	Interface method that provides HddState object
@@ -38,7 +38,7 @@ public:
 	 *
 	 * 	@return	HddState object with current hard drive state.
 	 */
-	virtual HddState getHddState(void) = 0;
+	virtual HddState getHddState() {};
 
 	virtual ~ResUsageProvider();
 };

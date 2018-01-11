@@ -1,6 +1,10 @@
 #ifndef INCLUDE_CONFIGRAWDATA_HPP_
 #define INCLUDE_CONFIGRAWDATA_HPP_
 
+#include <boost/functional/hash.hpp>
+#include <functional>
+
+
 /// Structure describing resource value of particular trigger.
 /// Eg. memory over {70%, 200MB}
 struct ResourceValue {
@@ -46,6 +50,27 @@ struct LogType {
 	long duration;
 	/// Log resolution in seconds
 	long resolution;
+
+	/// Operator equals used in hash maps
+	bool operator==(const LogType &other) const {
+		return resource == other.resource && resolution == other.resolution;
+	}
 };
+
+namespace std {
+    template <>
+    struct hash<LogType>
+    {
+        std::size_t operator()(const LogType& logType) const {
+            int resourceId = static_cast<typename std::underlying_type<LogType::Resource>::type>(logType.resource);
+            long resolutionValue = logType.resolution;
+            std::size_t hashValue = 0;
+            boost::hash_combine(hashValue, resourceId);
+            boost::hash_combine(hashValue, resolutionValue);
+            return hashValue;
+        }
+    };
+
+}
 
 #endif /* INCLUDE_CONFIGRAWDATA_HPP_ */
