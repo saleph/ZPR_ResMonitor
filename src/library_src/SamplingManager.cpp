@@ -41,15 +41,15 @@ void SamplingManager::pollingFunction() {
                 resUsageProvider.getHddState()
         ));
 
-        auto end = std::chrono::steady_clock::now();
-        std::chrono::duration<double, std::milli> duration = end - start;
-        BOOST_LOG_TRIVIAL(debug) << duration.count();
-        double sleepTime = SAMPLING_TIME_MS - duration.count();
+
 
         if (!isSampling)
             break;
-
-        std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<size_t>(sleepTime)));
+        auto end = std::chrono::steady_clock::now();
+        std::chrono::duration<double, std::milli> duration = end - start;
+        BOOST_LOG_TRIVIAL(debug) << "Poll time: " << duration.count() << " ms";
+        size_t sleepTime = static_cast<size_t>(SAMPLING_TIME_MS - duration.count());
+        std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
     }
 }
 

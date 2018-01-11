@@ -12,6 +12,9 @@
 #include "CpuState.hpp"
 #include "RamState.hpp"
 #include "HddState.hpp"
+#include <thread>
+#include <chrono>
+#include "ResUsageProvider.hpp"
 
 
 /**
@@ -61,6 +64,8 @@ private:
     std::unordered_map<LogType, CpuLog> cpuLog;
     std::unordered_map<LogType, RamLog> ramLog;
     std::unordered_map<LogType, HddLog> hddLog;
+
+    std::unordered_map<TriggerType, long> triggersState;
 
     void initializeLoggingBuffers(const std::vector<LogType> &logTypes);
 
