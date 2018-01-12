@@ -1,22 +1,23 @@
-//#define BOOST_TEST_MODULE My Test
-//#include <boost/test/included/unit_test.hpp>
-//
-//BOOST_AUTO_TEST_CASE(first_test)
-//{
-//  int i = 1;
-//  BOOST_TEST(i);
-//  BOOST_TEST(i == 2);
-//}
-
 #include <iostream>
 #include <fstream>
+#include "ResUsageProvider.hpp"
+
+#ifdef __linux__
 #include "LinuxResProvider.hpp"
-#include <unistd.h>
+#elif _WIN32
+#include "WindowsResProvider.hpp"
+#else
+#endif
 
 int main()
 {
-	LinuxResProvider linuxRes;
-	RamState ramState = linuxRes.getRamState();
+	#ifdef __linux__
+	ResUsageProvider * resProvider = new LinuxResProvider();
+	#elif _WIN32
+	ResUsageProvider * resProvider = new WindowsResProvider();
+	#endif
+
+	RamState ramState = resProvider->getRamState();
 
 	std::cout<<"Zasoby RAM: "<< std::endl;
 	std::cout << "Total RAM: "<<ramState.totalMB()<<std::endl;
@@ -28,19 +29,16 @@ int main()
 
 	for(int i = 0; i < 5; ++i)
 	{
-		CpuState cpuState = linuxRes.getCpuState();
+		CpuState cpuState = resProvider->getCpuState();
 		std::cout<<"Zasoby CPU: "<<std::endl;
 		std::cout<<"CPU used [%]: "<<cpuState.currPercentageUsed()<<std::endl;
 		std::cout<<"CPU used by app [%]: "<<cpuState.currMonitorPercentageUsed()<<std::endl;
-		sleep(1);
 	}
 
-	std::pair<double, double> p1 = linuxRes.getHddSelfUsage();
-	std::cout<<"Self - Read KB/s: "<<p1.first<<std::endl;
-	std::cout<<"Self - Write KB/s: "<<p1.second<<std::endl;
-	sleep(1);
-	std::pair<double, double> p2 = linuxRes.getHddSystemUsage();
-	std::cout<<"System - Read KB/s: "<<p2.first<<std::endl;
-	std::cout<<"System - Write KB/s: "<<p2.second<<std::endl;
+	HddState hddState = resProvider->getHddState();
+	std::cout<<"Self - Read KB/s: "<<hddState.currKBsUsedRead()<<std::endl;
+	std::cout<<"Self - Write KB/s: "<<hddState.currKBsUsedWrite()<<std::endl;
+	std::cout<<"System - Read KB/s: "<<hddState.currMonitorKBsUsedRead()<<std::endl;
+	std::cout<<"System - Write KB/s: "<<hddState.currMonitorKBsUsedWrite()<<std::endl;
 	return 0;
 }
