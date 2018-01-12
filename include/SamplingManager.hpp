@@ -23,10 +23,9 @@
  * 	1. Constantly log state of the OS into desired buffers specified by 'LogType's.
  */
 class SamplingManager {
-    const size_t SAMPLING_TIME_MS = 1000;
 public:
 
-    SamplingManager(ResUsageProvider &&resUsageProvider,
+    SamplingManager(std::shared_ptr<ResUsageProvider> &resUsageProvider,
                     const std::vector<LogType> &logTypes,
                     const std::vector<TriggerType> &triggerTypes,
                     std::function<void(const TriggerType &)> triggerCallback = [](const TriggerType &) { });
@@ -42,6 +41,10 @@ public:
     const std::shared_ptr<const boost::circular_buffer<HddState>>
     getHddLog(const LogType &logType) const;
 
+    void startSampling();
+
+    void stopSampling();
+
 private:
     using ChronoTime = std::chrono::time_point<std::chrono::system_clock>;
     template<class T>
@@ -53,9 +56,7 @@ private:
     using RamLog = std::shared_ptr<boost::circular_buffer<RamState>>;
     using HddLog = std::shared_ptr<boost::circular_buffer<HddState>>;
 
-    ResUsageProvider resUsageProvider;
-    std::thread pollerThread;
-    std::atomic_bool isSampling;
+    std::shared_ptr<ResUsageProvider> resUsageProvider;
     std::function<void(const TriggerType &)> triggerCallback;
 
     // most discrete samples - used for logs
@@ -73,6 +74,14 @@ private:
     // describes exceed time of each trigger - how many read polls exceeded a trigger
     std::unordered_map<TriggerType, long> triggerStates;
 
+protected:
+    size_t SAMPLING_TIME_INTERVAL_MS = 1000;
+    std::thread pollerThread;
+    // mostly debug callback, takes samples got
+    std::function<void(long)> afterPollCallback = [](long){};
+    std::atomic_bool isSampling;
+
+private:
 
     void initializeSamplesBuffers(const std::vector<LogType> &logTypes);
 
@@ -80,10 +89,8 @@ private:
 
     void initializeTriggers(const std::vector<TriggerType> &triggerTypes);
 
-public:
     void pollingFunction();
 
-private:
     void processTriggers();
 
     void processLogs();

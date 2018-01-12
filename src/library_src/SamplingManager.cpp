@@ -1,23 +1,37 @@
 #include "SamplingManager.hpp"
 
+#include <utility>
+
 
 SamplingManager::~SamplingManager() {
-    isSampling = false;
-    pollerThread.join();
+    stopSampling();
     BOOST_LOG_TRIVIAL(debug) << "joined";
 }
 
-SamplingManager::SamplingManager(ResUsageProvider &&resUsageProvider,
+SamplingManager::SamplingManager(std::shared_ptr<ResUsageProvider> &resUsageProvider,
                                  const std::vector<LogType> &logTypes,
                                  const std::vector<TriggerType> &triggerTypes,
                                  std::function<void(const TriggerType &)> triggerCallback)
-        : isSampling(true),
+        : isSampling(false),
           resUsageProvider(resUsageProvider),
-          triggerCallback(triggerCallback) {
+          triggerCallback(std::move(triggerCallback)) {
     initializeSamplesBuffers(logTypes);
     initializeLoggingBuffers(logTypes);
     initializeTriggers(triggerTypes);
-    //pollerThread = std::thread(&SamplingManager::pollingFunction, this);
+}
+
+void SamplingManager::stopSampling() {
+    if (!isSampling)
+        return;
+    isSampling = false;
+    pollerThread.join();
+}
+
+void SamplingManager::startSampling() {
+    if (isSampling)
+        return;
+    isSampling = true;
+    pollerThread = std::thread(&SamplingManager::pollingFunction, this);
 }
 
 void SamplingManager::initializeSamplesBuffers(const std::vector<LogType> &logTypes) {
@@ -73,36 +87,40 @@ void SamplingManager::initializeTriggers(const std::vector<TriggerType> &trigger
 }
 
 void SamplingManager::pollingFunction() {
+    long sampleNumber = 0;
     // function working in the separate thread
     while (isSampling) {
         auto start = std::chrono::steady_clock::now();
         cpuSamples->push_back(std::make_pair<ChronoTime, CpuState>(
                 std::chrono::system_clock::now(),
-                resUsageProvider.getCpuState()
+                resUsageProvider->getCpuState()
         ));
 
         ramSamples->push_back(std::make_pair<ChronoTime, RamState>(
                 std::chrono::system_clock::now(),
-                resUsageProvider.getRamState()
+                resUsageProvider->getRamState()
         ));
 
         hddSamples->push_back(std::make_pair<ChronoTime, HddState>(
                 std::chrono::system_clock::now(),
-                resUsageProvider.getHddState()
+                resUsageProvider->getHddState()
         ));
 
         processTriggers();
         processLogs();
         printDebugInfo();
 
+        afterPollCallback(++sampleNumber);
+
         if (!isSampling)
             break;
         auto end = std::chrono::steady_clock::now();
         std::chrono::duration<double, std::milli> duration = end - start;
         BOOST_LOG_TRIVIAL(debug) << "Poll time: " << duration.count() << " ms";
-        auto sleepTime = static_cast<size_t>(SAMPLING_TIME_MS - duration.count());
+        auto sleepTime = static_cast<size_t>(SAMPLING_TIME_INTERVAL_MS - duration.count());
         std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
     }
+    isSampling = false;
 }
 
 void SamplingManager::processTriggers() {
@@ -132,7 +150,7 @@ void SamplingManager::processTriggers() {
         }
 
         // if trigger duration exceedes, fire it
-        if (triggerState.second > triggerState.first.duration) {
+        if (triggerState.second >= triggerState.first.duration) {
             fireTrigger(trigger);
             triggerState.second = 0;
         }
