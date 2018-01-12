@@ -25,6 +25,17 @@ public:
 	void setTotalMB(double _totalRamMB);
 
     bool operator>(const TriggerType &triggerType) const;
+
+    /// Addition operator. Used in mean computing.
+    RamState &operator+=(const RamState &other) {
+        ramInUseMB += other.ramInUseMB;
+        monitorRamInUseMB += other.monitorRamInUseMB;
+    }
+    /// Divide operator. Used in mean computing.
+    RamState &operator/=(double val) {
+        ramInUseMB /= val;
+        monitorRamInUseMB /= val;
+    }
 private:
 	double totalRamMB;
 	double ramInUseMB;

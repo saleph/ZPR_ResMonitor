@@ -26,6 +26,22 @@ public:
 	void setMonitorKBsUsedWrite(double _monitorHddInUseKBsWrite);
 
 	bool operator>(const TriggerType &triggerType) const;
+
+    /// Addition operator. Used in mean computing.
+    HddState &operator+=(const HddState &other) {
+        hddInUseKBsRead += other.hddInUseKBsRead;
+        hddInUseKBsWrite += other.hddInUseKBsWrite;
+        monitorHddInUseKBsRead += other.monitorHddInUseKBsRead;
+        monitorHddInUseKBsWrite += other.monitorHddInUseKBsWrite;
+    }
+
+    /// Divide operator. Used in mean computing.
+    HddState &operator/=(double val) {
+        hddInUseKBsRead /= val;
+        hddInUseKBsWrite /= val;
+        monitorHddInUseKBsRead /= val;
+        monitorHddInUseKBsWrite /= val;
+    }
 private:
 	double hddInUseKBsRead;
 	double hddInUseKBsWrite;

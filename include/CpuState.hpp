@@ -21,6 +21,17 @@ public:
 	void setMonitorPercentageUsed(double _monitorCpuInUsePercentage);
 
 	bool operator>(const TriggerType &triggerType) const;
+
+    /// Addition operator. Used in mean computing.
+    CpuState &operator+=(const CpuState &other) {
+        cpuInUsePercentage += other.cpuInUsePercentage;
+        monitorCpuInUsePercentage += other.monitorCpuInUsePercentage;
+    }
+    /// Divide operator. Used in mean computing.
+    CpuState &operator/=(double val) {
+        cpuInUsePercentage /= val;
+        monitorCpuInUsePercentage /= val;
+    }
 private:
 	double cpuInUsePercentage;
 	double monitorCpuInUsePercentage;
