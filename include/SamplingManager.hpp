@@ -19,7 +19,8 @@
 
 /**
  * 	@brief	Sampler management class.
- * 	Stores information about state samples.
+ * 	Collects, stores and analize data from ResUsageProvider.
+ * 	1. Constantly log state of the OS into desired buffers specified by 'LogType's.
  */
 class SamplingManager {
     const size_t SAMPLES_BUFFER_SIZE = 3600;
@@ -59,10 +60,10 @@ private:
     std::atomic_bool isSampling;
     std::function<void(const TriggerType&)> triggerCallback;
 
-    // most discrete samples - used for triggers and logs
-    CpuSamples cpuSamples;
-    RamSamples ramSamples;
-    HddSamples hddSamples;
+    // most discrete samples - used for logs
+    std::unique_ptr<CpuSamples> cpuSamples;
+    std::unique_ptr<RamSamples> ramSamples;
+    std::unique_ptr<HddSamples> hddSamples;
 
     // logging circular buffers
     // LogType: describes each log
@@ -93,6 +94,8 @@ public:
     void printDebugInfo();
 
     void initializeTriggers(const std::vector<TriggerType> &triggerTypes);
+
+    void initializeSamplesBuffers(const std::vector<LogType> &logTypes);
 };
 
 

@@ -12,13 +12,11 @@ SamplingManager::SamplingManager(ResUsageProvider &&resUsageProvider,
                                  const std::vector<LogType> &logTypes,
                                  const std::vector<TriggerType> &triggerTypes,
                                  std::function<void(const TriggerType&)> triggerCallback)
-        : cpuSamples(SAMPLES_BUFFER_SIZE),
-          ramSamples(SAMPLES_BUFFER_SIZE),
-          hddSamples(SAMPLES_BUFFER_SIZE),
-          isSampling(true),
+        : isSampling(true),
           resUsageProvider(resUsageProvider),
           triggerCallback(triggerCallback)
 {
+    initializeSamplesBuffers(logTypes);
     initializeLoggingBuffers(logTypes);
     initializeTriggers(triggerTypes);
     //pollerThread = std::thread(&SamplingManager::pollingFunction, this);
@@ -55,17 +53,17 @@ void SamplingManager::pollingFunction() {
     // function working in the separate thread
     while (isSampling) {
         auto start = std::chrono::steady_clock::now();
-        cpuSamples.push_back(std::make_pair<ChronoTime, CpuState>(
+        cpuSamples->push_back(std::make_pair<ChronoTime, CpuState>(
                 std::chrono::system_clock::now(),
                 resUsageProvider.getCpuState()
         ));
 
-        ramSamples.push_back(std::make_pair<ChronoTime, RamState>(
+        ramSamples->push_back(std::make_pair<ChronoTime, RamState>(
                 std::chrono::system_clock::now(),
                 resUsageProvider.getRamState()
         ));
 
-        hddSamples.push_back(std::make_pair<ChronoTime, HddState>(
+        hddSamples->push_back(std::make_pair<ChronoTime, HddState>(
                 std::chrono::system_clock::now(),
                 resUsageProvider.getHddState()
         ));
@@ -86,9 +84,9 @@ void SamplingManager::pollingFunction() {
 
 void SamplingManager::processTriggers() {
     // get last read values
-    CpuState lastCpuState = cpuSamples.back().second;
-    RamState lastRamState = ramSamples.back().second;
-    HddState lastHddState = hddSamples.back().second;
+    CpuState lastCpuState = cpuSamples->back().second;
+    RamState lastRamState = ramSamples->back().second;
+    HddState lastHddState = hddSamples->back().second;
 
     for (auto &&triggerState : triggerStates) {
         auto &&trigger = triggerState.first;
@@ -168,10 +166,10 @@ void SamplingManager::processLogs() {
 CpuState SamplingManager::getCpuSamplesMean(long samplesNumber) {
     long i = 0;
     // get last added state
-    CpuState state = cpuSamples.rbegin()->second;
+    CpuState state = cpuSamples->rbegin()->second;
     ++i;
     // each iterator is a std::pair<std::chrono::system_time, CpuState>
-    for (auto it = ++cpuSamples.rbegin(); it != cpuSamples.rend() && i < samplesNumber; ++i, ++it) {
+    for (auto it = ++cpuSamples->rbegin(); it != cpuSamples->rend() && i < samplesNumber; ++i, ++it) {
         state += it->second;
         state /= samplesNumber;
     }
@@ -181,10 +179,10 @@ CpuState SamplingManager::getCpuSamplesMean(long samplesNumber) {
 RamState SamplingManager::getRamSamplesMean(long samplesNumber) {
     long i = 0;
     // get last added state
-    RamState state = ramSamples.rbegin()->second;
+    RamState state = ramSamples->rbegin()->second;
     ++i;
     // each iterator is a std::pair<std::chrono::system_time, RamState>
-    for (auto it = ++ramSamples.rbegin(); it != ramSamples.rend() && i < samplesNumber; ++i, ++it) {
+    for (auto it = ++ramSamples->rbegin(); it != ramSamples->rend() && i < samplesNumber; ++i, ++it) {
         state += it->second;
         state /= samplesNumber;
     }
@@ -194,10 +192,10 @@ RamState SamplingManager::getRamSamplesMean(long samplesNumber) {
 HddState SamplingManager::getHddSamplesMean(long samplesNumber) {
     long i = 0;
     // get last added state
-    HddState state = hddSamples.rbegin()->second;
+    HddState state = hddSamples->rbegin()->second;
     ++i;
     // each iterator is a std::pair<std::chrono::system_time, CpuState>
-    for (auto it = ++hddSamples.rbegin(); it != hddSamples.rend() && i < samplesNumber; ++i, ++it) {
+    for (auto it = ++hddSamples->rbegin(); it != hddSamples->rend() && i < samplesNumber; ++i, ++it) {
         state += it->second;
         state /= samplesNumber;
     }
@@ -220,7 +218,7 @@ SamplingManager::getHddLog(const LogType &logType) const {
 }
 
 void SamplingManager::printDebugInfo() {
-    BOOST_LOG_TRIVIAL(debug) << "Samples size: " << cpuSamples.size();
+    BOOST_LOG_TRIVIAL(debug) << "Samples size: " << cpuSamples->size();
     for (auto &&cpu : cpuLog)
         BOOST_LOG_TRIVIAL(debug) << "CPU res: " << cpu.first.resolution << " logs size: " << cpu.second.first->size();
     for (auto &&ram : ramLog)
@@ -234,6 +232,26 @@ void SamplingManager::initializeTriggers(const std::vector<TriggerType> &trigger
         // initalize every trigger counter
         triggerStates[trigger] = 0;
     }
+}
+
+void SamplingManager::initializeSamplesBuffers(const std::vector<LogType> &logTypes) {
+    long cpuMaxResolution = 1;
+    long ramMaxResolution = 1;
+    long hddMaxResolution = 1;
+    for (auto &&log : logTypes) {
+        if (log.resource == LogType::Resource::CPU) {
+            cpuMaxResolution = std::max(cpuMaxResolution, log.resolution);
+        }
+        else if (log.resource == LogType::Resource::MEMORY) {
+            ramMaxResolution = std::max(ramMaxResolution, log.resolution);
+        }
+        else if (log.resource == LogType::Resource::DISK) {
+            hddMaxResolution = std::max(hddMaxResolution, log.resolution);
+        }
+    }
+    cpuSamples = std::make_unique<CpuSamples>(cpuMaxResolution);
+    ramSamples = std::make_unique<RamSamples>(ramMaxResolution);
+    hddSamples = std::make_unique<HddSamples>(hddMaxResolution);
 }
 
 
