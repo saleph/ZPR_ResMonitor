@@ -23,15 +23,13 @@
  * 	1. Constantly log state of the OS into desired buffers specified by 'LogType's.
  */
 class SamplingManager {
-    const size_t SAMPLES_BUFFER_SIZE = 3600;
     const size_t SAMPLING_TIME_MS = 1000;
 public:
-    SamplingManager(ResUsageProvider && resUsageProvider,
-            const std::vector<LogType> &logTypes,
+
+    SamplingManager(ResUsageProvider &&resUsageProvider,
+                    const std::vector<LogType> &logTypes,
                     const std::vector<TriggerType> &triggerTypes,
-                    std::function<void(const TriggerType&)> triggerCallback = [](const TriggerType&){
-                        BOOST_LOG_TRIVIAL(debug) << "Trigger callback!";
-                    });
+                    std::function<void(const TriggerType &)> triggerCallback = [](const TriggerType &) { });
 
     ~SamplingManager();
 
@@ -46,7 +44,7 @@ public:
 
 private:
     using ChronoTime = std::chrono::time_point<std::chrono::system_clock>;
-    template <class T>
+    template<class T>
     using SamplesBuffer = boost::circular_buffer<std::pair<ChronoTime, T>>;
     using CpuSamples = SamplesBuffer<CpuState>;
     using RamSamples = SamplesBuffer<RamState>;
@@ -58,7 +56,7 @@ private:
     ResUsageProvider resUsageProvider;
     std::thread pollerThread;
     std::atomic_bool isSampling;
-    std::function<void(const TriggerType&)> triggerCallback;
+    std::function<void(const TriggerType &)> triggerCallback;
 
     // most discrete samples - used for logs
     std::unique_ptr<CpuSamples> cpuSamples;
@@ -75,10 +73,17 @@ private:
     // describes exceed time of each trigger - how many read polls exceeded a trigger
     std::unordered_map<TriggerType, long> triggerStates;
 
+
+    void initializeSamplesBuffers(const std::vector<LogType> &logTypes);
+
     void initializeLoggingBuffers(const std::vector<LogType> &logTypes);
+
+    void initializeTriggers(const std::vector<TriggerType> &triggerTypes);
+
 public:
     void pollingFunction();
 
+private:
     void processTriggers();
 
     void processLogs();
@@ -92,10 +97,6 @@ public:
     HddState getHddSamplesMean(long samplesNumber);
 
     void printDebugInfo();
-
-    void initializeTriggers(const std::vector<TriggerType> &triggerTypes);
-
-    void initializeSamplesBuffers(const std::vector<LogType> &logTypes);
 };
 
 

@@ -1,7 +1,6 @@
 #include "SamplingManager.hpp"
 
 
-
 SamplingManager::~SamplingManager() {
     isSampling = false;
     pollerThread.join();
@@ -11,15 +10,32 @@ SamplingManager::~SamplingManager() {
 SamplingManager::SamplingManager(ResUsageProvider &&resUsageProvider,
                                  const std::vector<LogType> &logTypes,
                                  const std::vector<TriggerType> &triggerTypes,
-                                 std::function<void(const TriggerType&)> triggerCallback)
+                                 std::function<void(const TriggerType &)> triggerCallback)
         : isSampling(true),
           resUsageProvider(resUsageProvider),
-          triggerCallback(triggerCallback)
-{
+          triggerCallback(triggerCallback) {
     initializeSamplesBuffers(logTypes);
     initializeLoggingBuffers(logTypes);
     initializeTriggers(triggerTypes);
     //pollerThread = std::thread(&SamplingManager::pollingFunction, this);
+}
+
+void SamplingManager::initializeSamplesBuffers(const std::vector<LogType> &logTypes) {
+    long cpuMaxResolution = 1;
+    long ramMaxResolution = 1;
+    long hddMaxResolution = 1;
+    for (auto &&log : logTypes) {
+        if (log.resource == LogType::Resource::CPU) {
+            cpuMaxResolution = std::max(cpuMaxResolution, log.resolution);
+        } else if (log.resource == LogType::Resource::MEMORY) {
+            ramMaxResolution = std::max(ramMaxResolution, log.resolution);
+        } else if (log.resource == LogType::Resource::DISK) {
+            hddMaxResolution = std::max(hddMaxResolution, log.resolution);
+        }
+    }
+    cpuSamples = std::make_unique<CpuSamples>(cpuMaxResolution);
+    ramSamples = std::make_unique<RamSamples>(ramMaxResolution);
+    hddSamples = std::make_unique<HddSamples>(hddMaxResolution);
 }
 
 void SamplingManager::initializeLoggingBuffers(const std::vector<LogType> &logTypes) {
@@ -46,6 +62,13 @@ void SamplingManager::initializeLoggingBuffers(const std::vector<LogType> &logTy
                     std::make_shared<boost::circular_buffer<HddState>>(size),
                     0);
         }
+    }
+}
+
+void SamplingManager::initializeTriggers(const std::vector<TriggerType> &triggerTypes) {
+    for (auto &&trigger : triggerTypes) {
+        // initalize every trigger counter
+        triggerStates[trigger] = 0;
     }
 }
 
@@ -96,14 +119,12 @@ void SamplingManager::processTriggers() {
                 triggerState.second++;
             else
                 triggerState.second = 0;
-        }
-        else if (trigger.resource == TriggerType::Resource::MEMORY) {
+        } else if (trigger.resource == TriggerType::Resource::MEMORY) {
             if (lastRamState > trigger)
                 triggerState.second++;
             else
                 triggerState.second = 0;
-        }
-        else if (trigger.resource == TriggerType::Resource::DISK) {
+        } else if (trigger.resource == TriggerType::Resource::DISK) {
             if (lastHddState > trigger)
                 triggerState.second++;
             else
@@ -119,6 +140,7 @@ void SamplingManager::processTriggers() {
 }
 
 void SamplingManager::fireTrigger(const TriggerType &trigger) {
+    BOOST_LOG_TRIVIAL(debug) << "!!! Trigger callback !!!";
     triggerCallback(trigger);
 }
 
@@ -202,6 +224,16 @@ HddState SamplingManager::getHddSamplesMean(long samplesNumber) {
     return state;
 }
 
+void SamplingManager::printDebugInfo() {
+    BOOST_LOG_TRIVIAL(debug) << "Samples size: " << cpuSamples->size();
+    for (auto &&cpu : cpuLog)
+        BOOST_LOG_TRIVIAL(debug) << "CPU res: " << cpu.first.resolution << " logs size: " << cpu.second.first->size();
+    for (auto &&ram : ramLog)
+        BOOST_LOG_TRIVIAL(debug) << "ram res: " << ram.first.resolution << " logs size: " << ram.second.first->size();
+    for (auto &&hdd : hddLog)
+        BOOST_LOG_TRIVIAL(debug) << "hDD res: " << hdd.first.resolution << " logs size: " << hdd.second.first->size();
+}
+
 const std::shared_ptr<const boost::circular_buffer<CpuState>>
 SamplingManager::getCpuLog(const LogType &logType) const {
     return cpuLog.at(logType).first;
@@ -215,43 +247,6 @@ SamplingManager::getRamLog(const LogType &logType) const {
 const std::shared_ptr<const boost::circular_buffer<HddState>>
 SamplingManager::getHddLog(const LogType &logType) const {
     return hddLog.at(logType).first;
-}
-
-void SamplingManager::printDebugInfo() {
-    BOOST_LOG_TRIVIAL(debug) << "Samples size: " << cpuSamples->size();
-    for (auto &&cpu : cpuLog)
-        BOOST_LOG_TRIVIAL(debug) << "CPU res: " << cpu.first.resolution << " logs size: " << cpu.second.first->size();
-    for (auto &&ram : ramLog)
-        BOOST_LOG_TRIVIAL(debug) << "ram res: " << ram.first.resolution << " logs size: " << ram.second.first->size();
-    for (auto &&hdd : hddLog)
-        BOOST_LOG_TRIVIAL(debug) << "hDD res: " << hdd.first.resolution << " logs size: " << hdd.second.first->size();
-}
-
-void SamplingManager::initializeTriggers(const std::vector<TriggerType> &triggerTypes) {
-    for (auto &&trigger : triggerTypes) {
-        // initalize every trigger counter
-        triggerStates[trigger] = 0;
-    }
-}
-
-void SamplingManager::initializeSamplesBuffers(const std::vector<LogType> &logTypes) {
-    long cpuMaxResolution = 1;
-    long ramMaxResolution = 1;
-    long hddMaxResolution = 1;
-    for (auto &&log : logTypes) {
-        if (log.resource == LogType::Resource::CPU) {
-            cpuMaxResolution = std::max(cpuMaxResolution, log.resolution);
-        }
-        else if (log.resource == LogType::Resource::MEMORY) {
-            ramMaxResolution = std::max(ramMaxResolution, log.resolution);
-        }
-        else if (log.resource == LogType::Resource::DISK) {
-            hddMaxResolution = std::max(hddMaxResolution, log.resolution);
-        }
-    }
-    cpuSamples = std::make_unique<CpuSamples>(cpuMaxResolution);
-    ramSamples = std::make_unique<RamSamples>(ramMaxResolution);
-    hddSamples = std::make_unique<HddSamples>(hddMaxResolution);
 }
 
 
