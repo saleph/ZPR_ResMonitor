@@ -10,7 +10,8 @@ set(APP_NAME monitor)
 set(TESTS_NAME testsmonitor)
 #set(INTEGRATION_TESTS_NAME LindaIntegrationTests)
 
-SET(BOOST_LIBRARYDIR "~/boost_1_65_1")
+#SET(BOOST_LIBRARYDIR "~/boost_1_65_1/stage/lib")
+set(BOOST_LIBRARYDIR ${BOOST_ROOT}/stage/lib/)
 
 find_package(Boost COMPONENTS unit_test_framework log system filesystem REQUIRED)
 

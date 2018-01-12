@@ -161,7 +161,7 @@ int LinuxResProvider::getRamSelfUsage(void)
 
 /**
  *	@brief	Method that saves initial values of total cpu time from
- *	the system boot for all kind of processes.
+ *	the system boot for all processes.
  *
  *	Code based on
  * 	https://stackoverflow.com/questions/63166/how-to-determine-cpu-and-memory-consumption-from-inside-a-process

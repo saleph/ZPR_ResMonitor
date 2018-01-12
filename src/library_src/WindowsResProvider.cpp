@@ -1,19 +1,20 @@
-/*
- * WindowsResProvider.cpp
- *
- *  Created on: 11 sty 2018
- *      Author: Piotr
- */
-
 #include "WindowsResProvider.hpp"
 
 WindowsResProvider::WindowsResProvider() {
 
 }
 
-CpuState getCpuState(void)
+/**
+ * 	@brief	Method that provides CpuState object in Windows system
+ * 	according to current CPU state.
+ *
+ * 	@return	CpuState object with current CPU usage state.
+ */
+CpuState WindowsResProvider::getCpuState(void)
 {
 	CpuState cpuState;
+	cpuState.setPercentageUsed(getSystemCpuUsage());
+	cpuState.setMonitorPercentageUsed(getSelfCpuUsage());
 	return cpuState;
 }
 
@@ -23,7 +24,7 @@ CpuState getCpuState(void)
  *
  * 	@return	RamState object with current RAM memory usage state.
  */
-RamState getRamState(void)
+RamState WindowsResProvider::getRamState(void)
 {
 	RamState ramState;
 
@@ -46,53 +47,118 @@ RamState getRamState(void)
 	return ramState;
 }
 
-HddState getHddState(void)
+/**
+ * 	@brief	Method that provides HddState object in Windows system
+ * 	according to current hard drive bandwidth usage state.
+ *
+ * 	@return	HddState object with current hard drive bandwidth usage state.
+ */
+HddState WindowsResProvider::getHddState(void)
 {
 	HddState hddState;
 	return hddState;
 }
 
-std::pair<double, double> getHddSelfUsage(void)
+std::pair<double, double> WindowsResProvider::getHddSelfUsage(void)
 {
 	return std::pair<double, double>(1.0, 2.0);
 }
 
-std::pair<double, double> getHddSystemUsage(void)
+std::pair<double, double> WindowsResProvider::getHddSystemUsage(void)
 {
 	return std::pair<double, double>(1.0, 2.0);
 }
 
-void initHddUsage(void)
+void WindowsResProvider::initHddUsage(void)
 {
 
 }
 
-int parseLineRam(char* line)
+/**
+ *	@brief	Method that saves initial values of total cpu time from
+ *	the system boot for all processes.
+ *
+ *	Code based on
+ * 	https://stackoverflow.com/questions/63166/how-to-determine-cpu-and-memory-consumption-from-inside-a-process
+ */
+void WindowsResProvider::initSystemCpuUsage(void)
 {
-
+    PdhOpenQuery(NULL, NULL, &cpuQuery);
+    // You can also use L"\\Processor(*)\\% Processor Time" and get individual CPU values with PdhGetFormattedCounterArray()
+    PdhAddEnglishCounter(cpuQuery, L"\\Processor(_Total)\\% Processor Time", NULL, &cpuTotal);
+    PdhCollectQueryData(cpuQuery);
 }
 
-int getRamSelfUsage(void)	// Value in KB!
+/**
+ *	@brief	Method that returns system cpu usage percentage
+ *
+ *	@return	percent is double, it is percent of the current
+ *	cpu usage by the Windows system with all applications
+ *
+ *	Code based on
+ * 	https://stackoverflow.com/questions/63166/how-to-determine-cpu-and-memory-consumption-from-inside-a-process
+ */
+double WindowsResProvider::getSystemCpuUsage(void)
 {
+    PDH_FMT_COUNTERVALUE counterVal;
 
+    PdhCollectQueryData(cpuQuery);
+    PdhGetFormattedCounterValue(cpuTotal, PDH_FMT_DOUBLE, NULL, &counterVal);
+    return counterVal.doubleValue;
 }
 
-void initSystemCpuUsage(void)
+/**
+ *	@brief	Method that saves initial values of total cpu time for
+ *	the current process.
+ *
+ *	Code based on
+ * 	https://stackoverflow.com/questions/63166/how-to-determine-cpu-and-memory-consumption-from-inside-a-process
+ */
+void WindowsResProvider::initSelfCpuUsage(void)
 {
+	SYSTEM_INFO sysInfo;
+	FILETIME ftime, fsys, fuser;
 
+	GetSystemInfo(&sysInfo);
+	numProcessors = sysInfo.dwNumberOfProcessors;
+
+	GetSystemTimeAsFileTime(&ftime);
+	memcpy(&lastCPU, &ftime, sizeof(FILETIME));
+
+	self = GetCurrentProcess();
+	GetProcessTimes(self, &ftime, &ftime, &fsys, &fuser);
+	memcpy(&lastSysCPU, &fsys, sizeof(FILETIME));
+	memcpy(&lastUserCPU, &fuser, sizeof(FILETIME));
 }
 
-double getSystemCpuUsage(void)
+/**
+ *	@brief	Method that returns this process cpu usage percentage
+ *
+ *	@return	percent is double, it is percent of the current
+ *	cpu usage by this process.
+ *
+ *	Code based on
+ * 	https://stackoverflow.com/questions/63166/how-to-determine-cpu-and-memory-consumption-from-inside-a-process
+ */
+double WindowsResProvider::getSelfCpuUsage(void)
 {
+	FILETIME ftime, fsys, fuser;
+	ULARGE_INTEGER now, sys, user;
+	double percent;
 
-}
+	GetSystemTimeAsFileTime(&ftime);
+	memcpy(&now, &ftime, sizeof(FILETIME));
 
-void initSelfCpuUsage(void)
-{
+	GetProcessTimes(self, &ftime, &ftime, &fsys, &fuser);
+	memcpy(&sys, &fsys, sizeof(FILETIME));
+	memcpy(&user, &fuser, sizeof(FILETIME));
+	percent = (sys.QuadPart - lastSysCPU.QuadPart) +
+		(user.QuadPart - lastUserCPU.QuadPart);
+	percent /= (now.QuadPart - lastCPU.QuadPart);
+	percent /= numProcessors;
+	lastCPU = now;
+	lastUserCPU = user;
+	lastSysCPU = sys;
 
-}
-
-double getSelfCpuUsage(void)
-{
-
+	return percent * 100;
 }

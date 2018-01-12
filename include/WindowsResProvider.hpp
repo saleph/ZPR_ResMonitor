@@ -10,6 +10,8 @@
 #include <chrono>
 #include "windows.h"
 #include "psapi.h"
+#include "TCHAR.h"
+#include "pdh.h"
 
 using namespace std::chrono;
 
@@ -33,6 +35,12 @@ private:
 	double getSystemCpuUsage(void);
 	void initSelfCpuUsage(void);
 	double getSelfCpuUsage(void);
+
+	static ULARGE_INTEGER lastCPU, lastSysCPU, lastUserCPU;
+	static int numProcessors;
+	static HANDLE self;
+	PDH_HQUERY cpuQuery;
+	PDH_HCOUNTER cpuTotal;
 };
 
 #endif /* INCLUDE_WINDOWSRESPROVIDER_HPP_ */
