@@ -157,6 +157,7 @@ public:
 
 	std::vector<TriggerType>& getTriggerTypes() { return triggerTypes; }
 	std::vector<LogType> &getLogTypes() { return logTypes; }
+	void resetLexer() { triggerTypes.clear(); logTypes.clear(); }
 
 protected:
 	virtual int LexerInput( char* buf, int max_size );

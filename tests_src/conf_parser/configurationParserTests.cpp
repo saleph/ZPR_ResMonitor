@@ -2,7 +2,7 @@
 #define BOOST_TEST_NO_LIB
 #include <boost/test/unit_test.hpp>
 #include <string>
-#include <configurationParser.hpp>
+#include <ConfigurationParser.hpp>
 
 BOOST_AUTO_TEST_SUITE(configurationParser)
 
