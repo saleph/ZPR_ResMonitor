@@ -24,7 +24,6 @@ void SamplingManager::initializeLoggingBuffers(const std::vector<LogType> &logTy
 
 void SamplingManager::pollingFunction() {
     while (isSampling) {
-        BOOST_LOG_TRIVIAL(debug) << "hello";
         auto start = std::chrono::steady_clock::now();
         cpuSamples.push_back(std::make_pair<ChronoTime, CpuState>(
                 std::chrono::system_clock::now(),
@@ -41,16 +40,61 @@ void SamplingManager::pollingFunction() {
                 resUsageProvider.getHddState()
         ));
 
-
+        processTriggers();
+        processLogs();
 
         if (!isSampling)
             break;
         auto end = std::chrono::steady_clock::now();
         std::chrono::duration<double, std::milli> duration = end - start;
         BOOST_LOG_TRIVIAL(debug) << "Poll time: " << duration.count() << " ms";
-        size_t sleepTime = static_cast<size_t>(SAMPLING_TIME_MS - duration.count());
+        auto sleepTime = static_cast<size_t>(SAMPLING_TIME_MS - duration.count());
         std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
     }
+}
+
+
+void SamplingManager::processTriggers() {
+    // get last read values
+    CpuState lastCpuState = cpuSamples.back().second;
+    RamState lastRamState = ramSamples.back().second;
+    HddState lastHddState = hddSamples.back().second;
+
+    for (auto &&triggerState : triggerStates) {
+        auto &&trigger = triggerState.first;
+        // process different types of resources
+        if (trigger.resource == TriggerType::Resource::CPU) {
+            if (lastCpuState > trigger)
+                triggerState.second++;
+            else
+                triggerState.second = 0;
+        }
+        else if (trigger.resource == TriggerType::Resource::MEMORY) {
+            if (lastRamState > trigger)
+                triggerState.second++;
+            else
+                triggerState.second = 0;
+        }
+        else if (trigger.resource == TriggerType::Resource::DISK) {
+            if (lastHddState > trigger)
+                triggerState.second++;
+            else
+                triggerState.second = 0;
+        }
+
+        // if trigger duration exceedes, fire it
+        if (triggerState.second > triggerState.first.duration) {
+            fireTrigger(trigger);
+        }
+    }
+}
+
+void SamplingManager::fireTrigger(const TriggerType &trigger) {
+
+}
+
+void SamplingManager::processLogs() {
+
 }
 
 SamplingManager::~SamplingManager() {
@@ -86,4 +130,6 @@ const std::shared_ptr<const boost::circular_buffer<HddState>> &
 SamplingManager::getHddLog(const LogType &logType) const {
     return hddLog.at(logType);
 }
+
+
 

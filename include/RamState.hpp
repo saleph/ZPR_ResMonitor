@@ -1,6 +1,8 @@
 #ifndef SRC_LIBRARY_SRC_RAMSTATE_H_
 #define SRC_LIBRARY_SRC_RAMSTATE_H_
 
+#include "configrawdata.hpp"
+
 /**
  * 	@brief	Class RamState represents state of the RAM memory.
  * 	Contains information about total, used and used by this
@@ -14,7 +16,7 @@ public:
 	virtual ~RamState();
 
 	double currMBUsed(void);
-	double currPercentageUsed(void);
+	double currPercentageUsed(void) const;
 	double currMonitorMBUsed(void);
 	double currMonitorPercentageUsed(void);
 	double totalMB(void);
@@ -22,6 +24,7 @@ public:
 	void setMonitorMBUsed(double _monitorRamInUseMB);
 	void setTotalMB(double _totalRamMB);
 
+    bool operator>(const TriggerType &triggerType) const;
 private:
 	double totalRamMB;
 	double ramInUseMB;

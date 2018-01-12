@@ -59,3 +59,25 @@ void HddState::setMonitorKBsUsedWrite(double _monitorHddInUseKBsWrite)
 	monitorHddInUseKBsWrite = _monitorHddInUseKBsWrite;
 }
 
+bool HddState::operator>(const TriggerType &triggerType) const {
+	// for disk percent is not supported
+	assert(triggerType.triggerValue.unitType != ResourceValue::ResourceUnit::PERCENT);
+
+	bool out = false;
+    double maxInUse = std::max(hddInUseKBsRead, hddInUseKBsWrite);
+
+	if (triggerType.triggerValue.unitType == ResourceValue::ResourceUnit::MB) {
+		if (triggerType.fluctuationType == TriggerType::FluctuationType::OVER)
+			out = maxInUse/1000 > triggerType.triggerValue.value;
+		else
+			out = maxInUse/1000 < triggerType.triggerValue.value;
+	} else if (triggerType.triggerValue.unitType == ResourceValue::ResourceUnit::GB) {
+		if (triggerType.fluctuationType == TriggerType::FluctuationType::OVER)
+			out = maxInUse/1000000 > triggerType.triggerValue.value;
+		else
+			out = maxInUse/1000000 < triggerType.triggerValue.value;
+	}
+
+	return out;
+}
+

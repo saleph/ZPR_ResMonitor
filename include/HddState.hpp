@@ -1,6 +1,8 @@
 #ifndef SRC_LIBRARY_SRC_HDDSTATE_H_
 #define SRC_LIBRARY_SRC_HDDSTATE_H_
 
+#include "configrawdata.hpp"
+
 /**
  * 	@brief	Class that represents state of the Hard Drive bandwidth.
  * 	Contains information about total bandwidth, used bandwidth and
@@ -23,6 +25,7 @@ public:
 	void setMonitorKBsUsedRead(double _monitorHddInUseKBsRead);
 	void setMonitorKBsUsedWrite(double _monitorHddInUseKBsWrite);
 
+	bool operator>(const TriggerType &triggerType) const;
 private:
 	double hddInUseKBsRead;
 	double hddInUseKBsWrite;

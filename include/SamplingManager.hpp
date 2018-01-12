@@ -65,11 +65,17 @@ private:
     std::unordered_map<LogType, RamLog> ramLog;
     std::unordered_map<LogType, HddLog> hddLog;
 
-    std::unordered_map<TriggerType, long> triggersState;
+    std::unordered_map<TriggerType, long> triggerStates;
 
     void initializeLoggingBuffers(const std::vector<LogType> &logTypes);
 
     void pollingFunction();
+
+    void processTriggers();
+
+    void processLogs();
+
+    void fireTrigger(const TriggerType &trigger);
 };
 
 
