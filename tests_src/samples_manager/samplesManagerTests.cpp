@@ -12,7 +12,7 @@ BOOST_AUTO_TEST_CASE(first_test)
     ConfigurationParser parser ("../tests_src/conf_parser/example");
     parser.run();
     SamplingManager samplingManager{LinuxResProvider(), parser.getLogTypes(), parser.getTriggerTypes()};
-    //samplingManager.getCpuLog();
+    samplingManager.pollingFunction();
     std::this_thread::sleep_for(std::chrono::seconds(10));
 }
 

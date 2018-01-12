@@ -27,7 +27,10 @@ class SamplingManager {
 public:
     SamplingManager(ResUsageProvider && resUsageProvider,
             const std::vector<LogType> &logTypes,
-                    const std::vector<TriggerType> &triggerType);
+                    const std::vector<TriggerType> &triggerTypes,
+                    std::function<void(const TriggerType&)> triggerCallback = [](const TriggerType&){
+                        BOOST_LOG_TRIVIAL(debug) << "Trigger callback!";
+                    });
 
     ~SamplingManager();
 
@@ -54,6 +57,7 @@ private:
     ResUsageProvider resUsageProvider;
     std::thread pollerThread;
     std::atomic_bool isSampling;
+    std::function<void(const TriggerType&)> triggerCallback;
 
     // most discrete samples - used for triggers and logs
     CpuSamples cpuSamples;
@@ -73,7 +77,7 @@ private:
     void initializeLoggingBuffers(const std::vector<LogType> &logTypes);
 public:
     void pollingFunction();
-private:
+
     void processTriggers();
 
     void processLogs();
@@ -87,6 +91,8 @@ private:
     HddState getHddSamplesMean(long samplesNumber);
 
     void printDebugInfo();
+
+    void initializeTriggers(const std::vector<TriggerType> &triggerTypes);
 };
 
 

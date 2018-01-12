@@ -10,15 +10,18 @@ SamplingManager::~SamplingManager() {
 
 SamplingManager::SamplingManager(ResUsageProvider &&resUsageProvider,
                                  const std::vector<LogType> &logTypes,
-                                 const std::vector<TriggerType> &triggerType)
+                                 const std::vector<TriggerType> &triggerTypes,
+                                 std::function<void(const TriggerType&)> triggerCallback)
         : cpuSamples(SAMPLES_BUFFER_SIZE),
           ramSamples(SAMPLES_BUFFER_SIZE),
           hddSamples(SAMPLES_BUFFER_SIZE),
           isSampling(true),
-          resUsageProvider(resUsageProvider)
+          resUsageProvider(resUsageProvider),
+          triggerCallback(triggerCallback)
 {
     initializeLoggingBuffers(logTypes);
-    pollerThread = std::thread(&SamplingManager::pollingFunction, this);
+    initializeTriggers(triggerTypes);
+    //pollerThread = std::thread(&SamplingManager::pollingFunction, this);
 }
 
 void SamplingManager::initializeLoggingBuffers(const std::vector<LogType> &logTypes) {
@@ -81,7 +84,6 @@ void SamplingManager::pollingFunction() {
     }
 }
 
-
 void SamplingManager::processTriggers() {
     // get last read values
     CpuState lastCpuState = cpuSamples.back().second;
@@ -119,7 +121,7 @@ void SamplingManager::processTriggers() {
 }
 
 void SamplingManager::fireTrigger(const TriggerType &trigger) {
-
+    triggerCallback(trigger);
 }
 
 void SamplingManager::processLogs() {
@@ -225,6 +227,13 @@ void SamplingManager::printDebugInfo() {
         BOOST_LOG_TRIVIAL(debug) << "ram res: " << ram.first.resolution << " logs size: " << ram.second.first->size();
     for (auto &&hdd : hddLog)
         BOOST_LOG_TRIVIAL(debug) << "hDD res: " << hdd.first.resolution << " logs size: " << hdd.second.first->size();
+}
+
+void SamplingManager::initializeTriggers(const std::vector<TriggerType> &triggerTypes) {
+    for (auto &&trigger : triggerTypes) {
+        // initalize every trigger counter
+        triggerStates[trigger] = 0;
+    }
 }
 
 
