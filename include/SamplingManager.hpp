@@ -31,13 +31,13 @@ public:
 
     ~SamplingManager();
 
-    const std::shared_ptr<const boost::circular_buffer<CpuState>>&
+    const std::shared_ptr<const boost::circular_buffer<CpuState>>
     getCpuLog(const LogType &logType) const;
 
-    const std::shared_ptr<const boost::circular_buffer<RamState>>&
+    const std::shared_ptr<const boost::circular_buffer<RamState>>
     getRamLog(const LogType &logType) const;
 
-    const std::shared_ptr<const boost::circular_buffer<HddState>>&
+    const std::shared_ptr<const boost::circular_buffer<HddState>>
     getHddLog(const LogType &logType) const;
 
 private:
@@ -71,9 +71,9 @@ private:
     std::unordered_map<TriggerType, long> triggerStates;
 
     void initializeLoggingBuffers(const std::vector<LogType> &logTypes);
-
+public:
     void pollingFunction();
-
+private:
     void processTriggers();
 
     void processLogs();
@@ -85,6 +85,8 @@ private:
     RamState getRamSamplesMean(long samplesNumber);
 
     HddState getHddSamplesMean(long samplesNumber);
+
+    void printDebugInfo();
 };
 
 

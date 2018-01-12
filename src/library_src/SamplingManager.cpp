@@ -2,6 +2,25 @@
 
 
 
+SamplingManager::~SamplingManager() {
+    isSampling = false;
+    pollerThread.join();
+    BOOST_LOG_TRIVIAL(debug) << "joined";
+}
+
+SamplingManager::SamplingManager(ResUsageProvider &&resUsageProvider,
+                                 const std::vector<LogType> &logTypes,
+                                 const std::vector<TriggerType> &triggerType)
+        : cpuSamples(SAMPLES_BUFFER_SIZE),
+          ramSamples(SAMPLES_BUFFER_SIZE),
+          hddSamples(SAMPLES_BUFFER_SIZE),
+          isSampling(true),
+          resUsageProvider(resUsageProvider)
+{
+    initializeLoggingBuffers(logTypes);
+    pollerThread = std::thread(&SamplingManager::pollingFunction, this);
+}
+
 void SamplingManager::initializeLoggingBuffers(const std::vector<LogType> &logTypes) {
     for (auto &&logType : logTypes) {
         long size = 1;
@@ -50,6 +69,7 @@ void SamplingManager::pollingFunction() {
 
         processTriggers();
         processLogs();
+        printDebugInfo();
 
         if (!isSampling)
             break;
@@ -107,7 +127,7 @@ void SamplingManager::processLogs() {
         auto &&logType = cpu.first;
         // get how many seconds passed since last log store
         auto &&secondsSinceLastLog = cpu.second.second;
-        if (secondsSinceLastLog >= logType.duration) {
+        if (++secondsSinceLastLog >= logType.resolution) {
             // time to compute mean of (logType.duration) samples
             auto &&cpuLogBuffer = cpu.second.first;
             auto &&cpuStateMean = getCpuSamplesMean(logType.duration);
@@ -120,7 +140,7 @@ void SamplingManager::processLogs() {
         auto &&logType = ram.first;
         // get how many seconds passed since last log store
         auto &&secondsSinceLastLog = ram.second.second;
-        if (secondsSinceLastLog >= logType.duration) {
+        if (++secondsSinceLastLog >= logType.resolution) {
             // time to compute mean of (logType.duration) samples
             auto &&ramLogBuffer = ram.second.first;
             auto &&ramStateMean = getRamSamplesMean(logType.duration);
@@ -133,7 +153,7 @@ void SamplingManager::processLogs() {
         auto &&logType = hdd.first;
         // get how many seconds passed since last log store
         auto &&secondsSinceLastLog = hdd.second.second;
-        if (secondsSinceLastLog >= logType.duration) {
+        if (++secondsSinceLastLog >= logType.resolution) {
             // time to compute mean of (logType.duration) samples
             auto &&hddLogBuffer = hdd.second.first;
             auto &&hddStateMean = getHddSamplesMean(logType.duration);
@@ -144,49 +164,67 @@ void SamplingManager::processLogs() {
 }
 
 CpuState SamplingManager::getCpuSamplesMean(long samplesNumber) {
-    return CpuState();
+    long i = 0;
+    // get last added state
+    CpuState state = cpuSamples.rbegin()->second;
+    ++i;
+    // each iterator is a std::pair<std::chrono::system_time, CpuState>
+    for (auto it = ++cpuSamples.rbegin(); it != cpuSamples.rend() && i < samplesNumber; ++i, ++it) {
+        state += it->second;
+        state /= samplesNumber;
+    }
+    return state;
 }
 
 RamState SamplingManager::getRamSamplesMean(long samplesNumber) {
-    return RamState();
+    long i = 0;
+    // get last added state
+    RamState state = ramSamples.rbegin()->second;
+    ++i;
+    // each iterator is a std::pair<std::chrono::system_time, RamState>
+    for (auto it = ++ramSamples.rbegin(); it != ramSamples.rend() && i < samplesNumber; ++i, ++it) {
+        state += it->second;
+        state /= samplesNumber;
+    }
+    return state;
 }
 
 HddState SamplingManager::getHddSamplesMean(long samplesNumber) {
-    return HddState();
+    long i = 0;
+    // get last added state
+    HddState state = hddSamples.rbegin()->second;
+    ++i;
+    // each iterator is a std::pair<std::chrono::system_time, CpuState>
+    for (auto it = ++hddSamples.rbegin(); it != hddSamples.rend() && i < samplesNumber; ++i, ++it) {
+        state += it->second;
+        state /= samplesNumber;
+    }
+    return state;
 }
 
-SamplingManager::~SamplingManager() {
-    isSampling = false;
-    pollerThread.join();
-    BOOST_LOG_TRIVIAL(debug) << "joined";
-}
-
-SamplingManager::SamplingManager(ResUsageProvider &&resUsageProvider,
-                                 const std::vector<LogType> &logTypes,
-                                 const std::vector<TriggerType> &triggerType)
-        : cpuSamples(SAMPLES_BUFFER_SIZE),
-          ramSamples(SAMPLES_BUFFER_SIZE),
-          hddSamples(SAMPLES_BUFFER_SIZE),
-          isSampling(true),
-          resUsageProvider(resUsageProvider)
-{
-    initializeLoggingBuffers(logTypes);
-    pollerThread = std::thread(&SamplingManager::pollingFunction, this);
-}
-
-const std::shared_ptr<const boost::circular_buffer<CpuState>> &
+const std::shared_ptr<const boost::circular_buffer<CpuState>>
 SamplingManager::getCpuLog(const LogType &logType) const {
     return cpuLog.at(logType).first;
 }
 
-const std::shared_ptr<const boost::circular_buffer<RamState>> &
+const std::shared_ptr<const boost::circular_buffer<RamState>>
 SamplingManager::getRamLog(const LogType &logType) const {
     return ramLog.at(logType).first;
 }
 
-const std::shared_ptr<const boost::circular_buffer<HddState>> &
+const std::shared_ptr<const boost::circular_buffer<HddState>>
 SamplingManager::getHddLog(const LogType &logType) const {
     return hddLog.at(logType).first;
+}
+
+void SamplingManager::printDebugInfo() {
+    BOOST_LOG_TRIVIAL(debug) << "Samples size: " << cpuSamples.size();
+    for (auto &&cpu : cpuLog)
+        BOOST_LOG_TRIVIAL(debug) << "CPU res: " << cpu.first.resolution << " logs size: " << cpu.second.first->size();
+    for (auto &&ram : ramLog)
+        BOOST_LOG_TRIVIAL(debug) << "ram res: " << ram.first.resolution << " logs size: " << ram.second.first->size();
+    for (auto &&hdd : hddLog)
+        BOOST_LOG_TRIVIAL(debug) << "hDD res: " << hdd.first.resolution << " logs size: " << hdd.second.first->size();
 }
 
 
