@@ -61,10 +61,13 @@ private:
     HddSamples hddSamples;
 
     // logging circular buffers
-    std::unordered_map<LogType, CpuLog> cpuLog;
-    std::unordered_map<LogType, RamLog> ramLog;
-    std::unordered_map<LogType, HddLog> hddLog;
+    // LogType: describes each log
+    // std::pair<CpuLog buffer, time since last update>
+    std::unordered_map<LogType, std::pair<CpuLog, long>> cpuLog;
+    std::unordered_map<LogType, std::pair<RamLog, long>> ramLog;
+    std::unordered_map<LogType, std::pair<HddLog, long>> hddLog;
 
+    // describes exceed time of each trigger - how many read polls exceeded a trigger
     std::unordered_map<TriggerType, long> triggerStates;
 
     void initializeLoggingBuffers(const std::vector<LogType> &logTypes);
@@ -76,6 +79,12 @@ private:
     void processLogs();
 
     void fireTrigger(const TriggerType &trigger);
+
+    CpuState getCpuSamplesMean(long samplesNumber);
+
+    RamState getRamSamplesMean(long samplesNumber);
+
+    HddState getHddSamplesMean(long samplesNumber);
 };
 
 
