@@ -14,15 +14,18 @@ linux_boost_prefix = "~/boost_1_65_1"
 boost_prefix = ""
 if platform == "win32":
     boost_prefix = windows_boost_prefix
+    CXXFLAGS=["-DDEBUG"]
+    LIBS=["pdh.lib"]
 else:
     boost_prefix = linux_boost_prefix
+    CXXFLAGS=["-std=c++11", "-g", "-DDEBUG"]
     
 # boost's libs dir
 boost_libs = path.join(boost_prefix, "libs")
 
 # environment prep
 env = Environment()
-env.Prepend(CXXFLAGS=["-std=c++11", "-g", "-DDEBUG"], CPPPATH = [boost_prefix, ".."], LIBPATH=[boost_libs, "."])
+env.Prepend(CXXFLAGS=[CXXFLAGS], CPPPATH = [boost_prefix, ".."], LIBPATH=[boost_libs, "."])
 env.Repository(path.join("..", "include"))
 
 # multithread compilation - problems on windows
@@ -37,11 +40,11 @@ env.StaticLibrary("monitorLib", monitor_lib_src)
 
 # main executing program prep
 monitor_src = env.Glob(path.join("src", "*.cpp"))
-monitor = env.Program(path.join("..", "monitor"), monitor_src, LIBS='monitorLib')
+monitor = env.Program(path.join("..", "monitor"), monitor_src, LIBS=[LIBS, 'monitorLib'])
 
 # tests preparation
 tests_files = [env.Glob(path.join("tests_src", "*", "*.cpp")), path.join("tests_src", "main.cpp")]
-tests = env.Program(path.join("..", "tests"), tests_files, LIBS=['monitorLib'])
+tests = env.Program(path.join("..", "tests"), tests_files, LIBS=[LIBS, 'monitorLib'])
 
 # "$ scons" default build
 env.Default(monitor, tests)

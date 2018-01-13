@@ -1,6 +1,11 @@
 #ifndef INCLUDE_LINUXRESPROVIDER_HPP_
 #define INCLUDE_LINUXRESPROVIDER_HPP_
 
+
+#ifdef __linux__
+
+
+
 #include "ResUsageProvider.hpp"
 #include "sys/types.h"
 #include "sys/sysinfo.h"
@@ -50,5 +55,5 @@ private:
 	milliseconds hddSelfLastMeasureTime, hddSystemLastMeasureTime;
 
 };
-
+#endif
 #endif /* INCLUDE_LINUXRESPROVIDER_HPP_ */

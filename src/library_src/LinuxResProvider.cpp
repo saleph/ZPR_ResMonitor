@@ -1,5 +1,7 @@
 #include "LinuxResProvider.hpp"
 
+#ifdef __linux__
+
 /**
  *	@brief	Default constructor for LinuxResProvider.
  *	Initializes first CPU usage measurements.
@@ -334,3 +336,4 @@ HddState LinuxResProvider::getHddState(void)
 
 	return hddState;
 }
+#endif

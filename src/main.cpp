@@ -1,12 +1,13 @@
 #include <iostream>
 #include <fstream>
 #include "ResUsageProvider.hpp"
+#include <iostream>
+#include <thread>
 
 #ifdef __linux__
 #include "LinuxResProvider.hpp"
 #elif _WIN32
 #include "WindowsResProvider.hpp"
-#else
 #endif
 
 int main()
@@ -17,6 +18,7 @@ int main()
 	ResUsageProvider * resProvider = new WindowsResProvider();
 	#endif
 
+	std::this_thread::sleep_for(1s);
 	RamState ramState = resProvider->getRamState();
 
 	std::cout<<"Zasoby RAM: "<< std::endl;
@@ -33,6 +35,7 @@ int main()
 		std::cout<<"Zasoby CPU: "<<std::endl;
 		std::cout<<"CPU used [%]: "<<cpuState.currPercentageUsed()<<std::endl;
 		std::cout<<"CPU used by app [%]: "<<cpuState.currMonitorPercentageUsed()<<std::endl;
+		std::this_thread::sleep_for(1s);
 	}
 
 	HddState hddState = resProvider->getHddState();
@@ -40,5 +43,6 @@ int main()
 	std::cout<<"Self - Write KB/s: "<<hddState.currKBsUsedWrite()<<std::endl;
 	std::cout<<"System - Read KB/s: "<<hddState.currMonitorKBsUsedRead()<<std::endl;
 	std::cout<<"System - Write KB/s: "<<hddState.currMonitorKBsUsedWrite()<<std::endl;
+	getchar();
 	return 0;
 }

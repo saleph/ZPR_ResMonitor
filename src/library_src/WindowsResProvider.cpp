@@ -1,7 +1,12 @@
 #include "WindowsResProvider.hpp"
 
-WindowsResProvider::WindowsResProvider() {
+#ifdef _WIN32
 
+WindowsResProvider::WindowsResProvider()
+{
+	initSystemCpuUsage();
+	initSelfCpuUsage();
+	initHddUsage();
 }
 
 /**
@@ -39,7 +44,7 @@ RamState WindowsResProvider::getRamState(void)
 	ramState.setMBUsed(physMemUsed/1000000.0);
 
 	// Get memory used by current process
-	PROCESS_MEMORY_COUNTERS_EX pmc;
+	PROCESS_MEMORY_COUNTERS pmc;
 	GetProcessMemoryInfo(GetCurrentProcess(), &pmc, sizeof(pmc));
 	SIZE_T physMemUsedByMe = pmc.WorkingSetSize;
 	ramState.setMonitorMBUsed(physMemUsedByMe/1000000.0);
@@ -85,7 +90,7 @@ void WindowsResProvider::initSystemCpuUsage(void)
 {
     PdhOpenQuery(NULL, NULL, &cpuQuery);
     // You can also use L"\\Processor(*)\\% Processor Time" and get individual CPU values with PdhGetFormattedCounterArray()
-    PdhAddEnglishCounter(cpuQuery, L"\\Processor(_Total)\\% Processor Time", NULL, &cpuTotal);
+    PdhAddEnglishCounter(cpuQuery, "\\Processor(_Total)\\% Processor Time", NULL, &cpuTotal);
     PdhCollectQueryData(cpuQuery);
 }
 
@@ -160,5 +165,6 @@ double WindowsResProvider::getSelfCpuUsage(void)
 	lastUserCPU = user;
 	lastSysCPU = sys;
 
-	return percent * 100;
+	return percent * 100.0;
 }
+#endif

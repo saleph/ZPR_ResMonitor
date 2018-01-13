@@ -1,6 +1,9 @@
 #ifndef INCLUDE_WINDOWSRESPROVIDER_HPP_
 #define INCLUDE_WINDOWSRESPROVIDER_HPP_
 
+
+#ifdef _WIN32
+
 #include "ResUsageProvider.hpp"
 #include "stdlib.h"
 #include "stdio.h"
@@ -36,11 +39,11 @@ private:
 	void initSelfCpuUsage(void);
 	double getSelfCpuUsage(void);
 
-	static ULARGE_INTEGER lastCPU, lastSysCPU, lastUserCPU;
-	static int numProcessors;
-	static HANDLE self;
+	ULARGE_INTEGER lastCPU, lastSysCPU, lastUserCPU;
+	int numProcessors;
+	HANDLE self;
 	PDH_HQUERY cpuQuery;
 	PDH_HCOUNTER cpuTotal;
 };
-
+#endif
 #endif /* INCLUDE_WINDOWSRESPROVIDER_HPP_ */
