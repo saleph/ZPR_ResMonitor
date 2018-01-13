@@ -35,12 +35,11 @@ int main()
 		sleep(1);
 	}
 
-	std::pair<double, double> p1 = linuxRes.getHddSelfUsage();
-	std::cout<<"Self - Read KB/s: "<<p1.first<<std::endl;
-	std::cout<<"Self - Write KB/s: "<<p1.second<<std::endl;
+	HddState hddState = linuxRes.getHddState();
+	std::cout<<"Self - Read KB/s: "<<hddState.currMonitorKBsUsedRead()<<std::endl;
+	std::cout<<"Self - Write KB/s: "<<hddState.currMonitorKBsUsedWrite()<<std::endl;
 	sleep(1);
-	std::pair<double, double> p2 = linuxRes.getHddSystemUsage();
-	std::cout<<"System - Read KB/s: "<<p2.first<<std::endl;
-	std::cout<<"System - Write KB/s: "<<p2.second<<std::endl;
+	std::cout<<"System - Read KB/s: "<<hddState.currKBsUsedRead()<<std::endl;
+	std::cout<<"System - Write KB/s: "<<hddState.currMonitorKBsUsedWrite()<<std::endl;
 	return 0;
 }
