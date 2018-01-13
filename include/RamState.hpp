@@ -30,11 +30,13 @@ public:
     RamState &operator+=(const RamState &other) {
         ramInUseMB += other.ramInUseMB;
         monitorRamInUseMB += other.monitorRamInUseMB;
+        return *this;
     }
     /// Divide operator. Used in mean computing.
     RamState &operator/=(double val) {
         ramInUseMB /= val;
         monitorRamInUseMB /= val;
+        return *this;
     }
 private:
 	double totalRamMB;

@@ -26,11 +26,13 @@ public:
     CpuState &operator+=(const CpuState &other) {
         cpuInUsePercentage += other.cpuInUsePercentage;
         monitorCpuInUsePercentage += other.monitorCpuInUsePercentage;
+		return *this;
     }
     /// Divide operator. Used in mean computing.
     CpuState &operator/=(double val) {
         cpuInUsePercentage /= val;
         monitorCpuInUsePercentage /= val;
+		return *this;
     }
 private:
 	double cpuInUsePercentage;

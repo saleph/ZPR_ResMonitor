@@ -33,6 +33,7 @@ public:
         hddInUseKBsWrite += other.hddInUseKBsWrite;
         monitorHddInUseKBsRead += other.monitorHddInUseKBsRead;
         monitorHddInUseKBsWrite += other.monitorHddInUseKBsWrite;
+		return *this;
     }
 
     /// Divide operator. Used in mean computing.
@@ -41,6 +42,7 @@ public:
         hddInUseKBsWrite /= val;
         monitorHddInUseKBsRead /= val;
         monitorHddInUseKBsWrite /= val;
+		return *this;
     }
 private:
 	double hddInUseKBsRead;
