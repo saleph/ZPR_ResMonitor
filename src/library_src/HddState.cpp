@@ -1,64 +1,61 @@
-/*
- * HddState.cpp
- *
- *  Created on: Dec 8, 2017
- *      Author: piotr
- */
-
 #include "HddState.hpp"
 
 HddState::HddState()
 {
-	totalHddMBs = 0.0;
-	hddInUseMBs = 0.0;
-	monitorHddInUseMBs = 0.0;
+	hddInUseKBsRead = 0.0;
+	hddInUseKBsWrite = 0.0;
+	monitorHddInUseKBsRead = 0.0;
+	monitorHddInUseKBsWrite = 0.0;
 }
 
-HddState::HddState(double _totalHddMBs, double _hddInUseMBs, double _monitorHddInUseMBs)
+HddState::HddState(double _hddInUseKBsRead, double _hddInUseKBsWrite,
+		double _monitorHddInUseKBsRead, double _monitorHddInUseKBsWrite)
 {
-	totalHddMBs = _totalHddMBs;
-	hddInUseMBs = _hddInUseMBs;
-	monitorHddInUseMBs = _monitorHddInUseMBs;
+	hddInUseKBsRead = _hddInUseKBsRead;
+	hddInUseKBsWrite = _hddInUseKBsWrite;
+	monitorHddInUseKBsRead = _monitorHddInUseKBsRead;
+	monitorHddInUseKBsWrite = _monitorHddInUseKBsWrite;
 }
 
 HddState::~HddState(){}
 
-
-void HddState::init(double _totalHddMBs)
+double HddState::currKBsUsedRead(void)
 {
-	totalHddMBs = _totalHddMBs;
+	return hddInUseKBsRead;
 }
 
-double HddState::currMBsUsed(void)
+double HddState::currKBsUsedWrite(void)
 {
-	return hddInUseMBs;
+	return hddInUseKBsWrite;
 }
 
-double HddState::currPercentageUsed(void)
+double HddState::currMonitorKBsUsedRead(void)
 {
-	if(totalHddMBs != 0.0)
-		return hddInUseMBs/totalHddMBs;
-	return -1.0;
+	return monitorHddInUseKBsRead;
 }
 
-double HddState::currMonitorMBsUsed(void)
+double HddState::currMonitorKBsUsedWrite(void)
 {
-	return monitorHddInUseMBs;
+	return monitorHddInUseKBsWrite;
 }
 
-double HddState::currMonitorPercentageUsed(void)
+void HddState::setKBsUsedRead(double _hddInUseKBsRead)
 {
-	if(totalHddMBs != 0.0)
-		return monitorHddInUseMBs/totalHddMBs;
-	return -1.0;
+	hddInUseKBsRead = _hddInUseKBsRead;
 }
 
-void HddState::setMBsUsed(double _hddInUseMBs)
+void HddState::setKBsUsedWrite(double _hddInUseKBsWrite)
 {
-	hddInUseMBs = _hddInUseMBs;
+	hddInUseKBsWrite = _hddInUseKBsWrite;
 }
 
-void HddState::setMonitorMBsUsed(double _monitorHddInUseMBs)
+void HddState::setMonitorKBsUsedRead(double _monitorHddInUseKBsRead)
 {
-	monitorHddInUseMBs = _monitorHddInUseMBs;
+	monitorHddInUseKBsRead = _monitorHddInUseKBsRead;
 }
+
+void HddState::setMonitorKBsUsedWrite(double _monitorHddInUseKBsWrite)
+{
+	monitorHddInUseKBsWrite = _monitorHddInUseKBsWrite;
+}
+

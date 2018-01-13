@@ -1,6 +1,11 @@
 #ifndef SRC_LIBRARY_SRC_CPUSTATE_H_
 #define SRC_LIBRARY_SRC_CPUSTATE_H_
 
+/**
+ * 	@brief	Class that represents state of the CPU usage.
+ * 	Contains information about percentage of CPU usage for
+ * 	system and this application.
+ */
 class CpuState
 {
 public:

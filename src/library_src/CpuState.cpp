@@ -1,10 +1,3 @@
-/*
- * CpuState.cpp
- *
- *  Created on: Dec 8, 2017
- *      Author: piotr
- */
-
 #include "CpuState.hpp"
 
 CpuState::CpuState()

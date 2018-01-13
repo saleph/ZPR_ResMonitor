@@ -1,25 +1,33 @@
 #ifndef SRC_LIBRARY_SRC_HDDSTATE_H_
 #define SRC_LIBRARY_SRC_HDDSTATE_H_
 
+/**
+ * 	@brief	Class that represents state of the Hard Drive bandwidth.
+ * 	Contains information about total bandwidth, used bandwidth and
+ * 	bandwidth used by this application in MB/s.
+ */
 class HddState
 {
 public:
 	HddState();
-	HddState(double _totalHddMBs, double _hddInUseMBs, double _monitorHddInUseMBs);
+	HddState(double _hddInUseKBsRead, double _hddInUseKBsWrite,
+			double _monitorHddInUseKBsRead, double _monitorHddInUseKBsWrite);
 	virtual ~HddState();
 
-	void init(double _totalHddMBs);
-	double currMBsUsed(void);
-	double currPercentageUsed(void);
-	double currMonitorMBsUsed(void);
-	double currMonitorPercentageUsed(void);
-	void setMBsUsed(double _ramInUseMB);
-	void setMonitorMBsUsed(double _monitorRamInUseMB);
+	double currKBsUsedRead(void);
+	double currKBsUsedWrite(void);
+	double currMonitorKBsUsedRead(void);
+	double currMonitorKBsUsedWrite(void);
+	void setKBsUsedRead(double _hddInUseKBsRead);
+	void setKBsUsedWrite(double _hddInUseKBsWrite);
+	void setMonitorKBsUsedRead(double _monitorHddInUseKBsRead);
+	void setMonitorKBsUsedWrite(double _monitorHddInUseKBsWrite);
 
 private:
-	double totalHddMBs;
-	double hddInUseMBs;
-	double monitorHddInUseMBs;
+	double hddInUseKBsRead;
+	double hddInUseKBsWrite;
+	double monitorHddInUseKBsRead;
+	double monitorHddInUseKBsWrite;
 };
 
 #endif /* SRC_LIBRARY_SRC_HDDSTATE_H_ */
