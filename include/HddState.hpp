@@ -1,6 +1,8 @@
 #ifndef SRC_LIBRARY_SRC_HDDSTATE_H_
 #define SRC_LIBRARY_SRC_HDDSTATE_H_
 
+#include "configrawdata.hpp"
+
 /**
  * 	@brief	Class that represents state of the Hard Drive bandwidth.
  * 	Contains information about total bandwidth, used bandwidth and
@@ -23,6 +25,25 @@ public:
 	void setMonitorKBsUsedRead(double _monitorHddInUseKBsRead);
 	void setMonitorKBsUsedWrite(double _monitorHddInUseKBsWrite);
 
+	bool operator>(const TriggerType &triggerType) const;
+
+    /// Addition operator. Used in mean computing.
+    HddState &operator+=(const HddState &other) {
+        hddInUseKBsRead += other.hddInUseKBsRead;
+        hddInUseKBsWrite += other.hddInUseKBsWrite;
+        monitorHddInUseKBsRead += other.monitorHddInUseKBsRead;
+        monitorHddInUseKBsWrite += other.monitorHddInUseKBsWrite;
+		return *this;
+    }
+
+    /// Divide operator. Used in mean computing.
+    HddState &operator/=(double val) {
+        hddInUseKBsRead /= val;
+        hddInUseKBsWrite /= val;
+        monitorHddInUseKBsRead /= val;
+        monitorHddInUseKBsWrite /= val;
+		return *this;
+    }
 private:
 	double hddInUseKBsRead;
 	double hddInUseKBsWrite;

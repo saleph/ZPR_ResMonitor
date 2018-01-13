@@ -10,7 +10,7 @@
 	const long SEC_IN_DAY = SEC_IN_HOUR * 24;
 	// sumaric duration time in seconds for current element
 	long currentDurationTime;
-	// last read value - eg. number of hours. Will be multiplied by
+	// last read triggerValue - eg. number of hours. Will be multiplied by
 	// specifc multipler (for hour - 3600) and added to currentDurationTime
 	long lastReadDurationElement;
 		
@@ -37,7 +37,7 @@
 	static void produceTriggersCrossproduct() {
 		for (auto &&res : triggerResourceValues) {
 			for (auto &&duration : triggerDurationTimes) {
-				currentTriggerType.value = res;
+				currentTriggerType.triggerValue = res;
 				currentTriggerType.duration = duration;
 				triggerTypes.push_back(currentTriggerType);
 			}
@@ -233,7 +233,7 @@ typedef unsigned int flex_uint32_t;
  */
 #define BEGIN (yy_start) = 1 + 2 *
 
-/* Translate the current start state into a value that can be later handed
+/* Translate the current start state into a triggerValue that can be later handed
  * to BEGIN to return to the state.  The YYSTATE alias is for lex
  * compatibility.
  */
@@ -1309,7 +1309,7 @@ YY_RULE_SETUP
 triggerResourceValues.push_back(currentResourceValue); yy_pop_state();
 	YY_BREAK
 
-/* plain value */
+/* plain triggerValue */
 
 case 14:
 YY_RULE_SETUP
@@ -1389,7 +1389,7 @@ YY_RULE_SETUP
 		}
 	YY_BREAK
 
-/* plain value */
+/* plain triggerValue */
 
 case 27:
 YY_RULE_SETUP
@@ -1498,7 +1498,7 @@ YY_RULE_SETUP
 logDurations.push_back(currentDurationTime); currentDurationTime = 0; yy_pop_state(); 
 	YY_BREAK
 
-/* plain value */
+/* plain triggerValue */
 
 case 45:
 YY_RULE_SETUP
@@ -1587,7 +1587,7 @@ YY_RULE_SETUP
 			}
 	YY_BREAK
 
-/* plain resolution value */
+/* plain resolution triggerValue */
 
 case 60:
 YY_RULE_SETUP

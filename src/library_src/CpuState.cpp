@@ -33,3 +33,15 @@ void CpuState::setMonitorPercentageUsed(double _monitorCpuInUsePercentage)
 {
 	monitorCpuInUsePercentage = _monitorCpuInUsePercentage;
 }
+
+bool CpuState::operator>(const TriggerType &triggerType) const {
+	// for cpu only percents have sens
+	assert(triggerType.triggerValue.unitType == ResourceValue::ResourceUnit::PERCENT);
+	bool out;
+	if (triggerType.fluctuationType == TriggerType::FluctuationType::OVER)
+		out = cpuInUsePercentage > triggerType.triggerValue.value;
+	else
+		out = cpuInUsePercentage < triggerType.triggerValue.value;
+
+	return out;
+}
