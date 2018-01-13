@@ -27,19 +27,17 @@ public:
 	CpuState getCpuState(void);
 	RamState getRamState(void);
 	HddState getHddState(void);
-	std::pair<double, double> getHddSelfUsage(void);
-	std::pair<double, double> getHddSystemUsage(void);
 
 private:
-	void initHddUsage(void);
 	BOOL GetDrivePerformance(LPCTSTR wszPath, DISK_PERFORMANCE *pdp);
-	int parseLineRam(char* line);
-	int getRamSelfUsage(void);	// Value in KB!
 
 	void initSystemCpuUsage(void);
 	double getSystemCpuUsage(void);
 	void initSelfCpuUsage(void);
 	double getSelfCpuUsage(void);
+	void initHddUsage(void);
+	std::pair<double, double> getHddSelfUsage(void);
+	std::pair<double, double> getHddSystemUsage(void);
 
 	ULARGE_INTEGER lastCPU, lastSysCPU, lastUserCPU;
 	int numProcessors;
@@ -48,7 +46,6 @@ private:
 	PDH_HCOUNTER cpuTotal;
 
 	long long lastHddSelfRead, lastHddSelfWrite, lastHddSystemRead, lastHddSystemWrite;
-	//unsigned hddSectorSize;
 	milliseconds hddSelfLastMeasureTime, hddSystemLastMeasureTime;
 };
 #endif

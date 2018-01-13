@@ -62,6 +62,13 @@ RamState WindowsResProvider::getRamState(void)
 HddState WindowsResProvider::getHddState(void)
 {
 	HddState hddState;
+	std::pair<double, double> systemHddUsage = getHddSystemUsage();
+	std::pair<double, double> selfHddUsage = getHddSelfUsage();
+	hddState.setKBsUsedRead(systemHddUsage.first);
+	hddState.setKBsUsedWrite(systemHddUsage.second);
+	hddState.setMonitorKBsUsedRead(selfHddUsage.first);
+	hddState.setMonitorKBsUsedWrite(selfHddUsage.second);
+
 	return hddState;
 }
 
@@ -87,8 +94,6 @@ std::pair<double, double> WindowsResProvider::getHddSelfUsage(void)
 	readBytes = ioCounters.ReadTransferCount;
 	writeBytes = ioCounters.WriteTransferCount;
 	milliseconds currMs = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-
-	hddSelfLastMeasureTime = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	readKBs = (readBytes - lastHddSelfRead)/
 			(double)((currMs - hddSelfLastMeasureTime).count());
 	writeKBs = (writeBytes - lastHddSelfWrite)/
