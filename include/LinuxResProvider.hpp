@@ -1,10 +1,7 @@
 #ifndef INCLUDE_LINUXRESPROVIDER_HPP_
 #define INCLUDE_LINUXRESPROVIDER_HPP_
 
-
 #ifdef __linux__
-
-
 
 #include "ResUsageProvider.hpp"
 #include "sys/types.h"

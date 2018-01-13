@@ -10,8 +10,10 @@
 #include "string.h"
 #include <string>
 #include <utility>
+#include <iostream>
 #include <chrono>
 #include "windows.h"
+#include <winioctl.h>
 #include "psapi.h"
 #include "TCHAR.h"
 #include "pdh.h"
@@ -30,7 +32,7 @@ public:
 
 private:
 	void initHddUsage(void);
-
+	BOOL GetDrivePerformance(LPCTSTR wszPath, DISK_PERFORMANCE *pdp);
 	int parseLineRam(char* line);
 	int getRamSelfUsage(void);	// Value in KB!
 
@@ -44,6 +46,10 @@ private:
 	HANDLE self;
 	PDH_HQUERY cpuQuery;
 	PDH_HCOUNTER cpuTotal;
+
+	long long lastHddSelfRead, lastHddSelfWrite, lastHddSystemRead, lastHddSystemWrite;
+	//unsigned hddSectorSize;
+	milliseconds hddSelfLastMeasureTime, hddSystemLastMeasureTime;
 };
 #endif
 #endif /* INCLUDE_WINDOWSRESPROVIDER_HPP_ */

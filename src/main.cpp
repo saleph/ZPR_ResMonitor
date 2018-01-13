@@ -3,6 +3,7 @@
 #include "ResUsageProvider.hpp"
 #include <iostream>
 #include <thread>
+#include <fstream>
 
 #ifdef __linux__
 #include "LinuxResProvider.hpp"
@@ -21,6 +22,9 @@ int main()
 	std::this_thread::sleep_for(std::chrono::seconds(1));
 	RamState ramState = resProvider->getRamState();
 
+	std::ofstream myFile;
+	myFile.open("Pliczek.txt", std::ios::out);
+
 	std::cout<<"Zasoby RAM: "<< std::endl;
 	std::cout << "Total RAM: "<<ramState.totalMB()<<std::endl;
 	std::cout<<"RAM used [MB]: "<<ramState.currMBUsed()<<std::endl;
@@ -35,8 +39,13 @@ int main()
 		std::cout<<"Zasoby CPU: "<<std::endl;
 		std::cout<<"CPU used [%]: "<<cpuState.currPercentageUsed()<<std::endl;
 		std::cout<<"CPU used by app [%]: "<<cpuState.currMonitorPercentageUsed()<<std::endl;
-		std::this_thread::sleep_for(std::chrono::seconds(1));
+		//std::this_thread::sleep_for(std::chrono::seconds(1));
+		for(int i = 0; i < 10000; ++i)
+		{
+			myFile << "Siema tu Czesiek, yo³"<<std::endl;
+		}
 	}
+	myFile.close();
 
 	HddState hddState = resProvider->getHddState();
 	std::cout<<"Self - Read KB/s: "<<hddState.currKBsUsedRead()<<std::endl;

@@ -4,6 +4,7 @@
 
 WindowsResProvider::WindowsResProvider()
 {
+	self = GetCurrentProcess();
 	initSystemCpuUsage();
 	initSelfCpuUsage();
 	initHddUsage();
@@ -64,19 +65,132 @@ HddState WindowsResProvider::getHddState(void)
 	return hddState;
 }
 
+/**
+ * 	@brief	Method which reads current disk bandwidth usage for
+ * 	this process for read and write operations in KB/s.
+ *
+ * 	@return	std::pair<double, double> objects in which 1st value is
+ * 	current disk read bandwidth usage [KB/s], 2nd is current disk write
+ * 	bandwidth usage [KB/s]
+ */
 std::pair<double, double> WindowsResProvider::getHddSelfUsage(void)
 {
-	return std::pair<double, double>(1.0, 2.0);
+	IO_COUNTERS ioCounters;
+	long long readBytes, writeBytes;
+	double readKBs, writeKBs;
+
+	if(GetProcessIoCounters(self, &ioCounters) == 0)
+	{
+		std::cerr<<"Failed to get IoCounters for Windows self-process..."<<std::endl;
+		return std::pair<double, double>(-1.0, -1.0);
+	}
+	readBytes = ioCounters.ReadTransferCount;
+	writeBytes = ioCounters.WriteTransferCount;
+	milliseconds currMs = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+
+	hddSelfLastMeasureTime = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	readKBs = (readBytes - lastHddSelfRead)/
+			(double)((currMs - hddSelfLastMeasureTime).count());
+	writeKBs = (writeBytes - lastHddSelfWrite)/
+			(double)((currMs - hddSelfLastMeasureTime).count());
+	hddSelfLastMeasureTime = currMs;
+	lastHddSelfRead = readBytes;
+	lastHddSelfWrite = writeBytes;
+
+	return std::pair<double, double>(readKBs, writeKBs);
 }
 
+/**
+ * 	@brief	Method which reads current disk bandwidth usage in the
+ * 	system for read and write operations in KB/s.
+ *
+ * 	@return	std::pair<double, double> objects in which 1st value is
+ * 	current disk read bandwidth usage [KB/s], 2nd is current disk write
+ * 	bandwidth usage [KB/s]
+ */
 std::pair<double, double> WindowsResProvider::getHddSystemUsage(void)
 {
-	return std::pair<double, double>(1.0, 2.0);
+	unsigned long long writeBytes, readBytes;
+	double readKBs, writeKBs;
+	DISK_PERFORMANCE diskPerformance;
+
+	LPCTSTR hddPath = "\\\\.\\PhysicalDrive0";
+	if(GetDrivePerformance(hddPath, &diskPerformance) == 0)
+	{
+		std::cerr<<"Failed to get disk performance structure for Windows..."<<std::endl;
+		return std::pair<double, double>(-1.0, -1.0);
+	}
+	readBytes = diskPerformance.BytesRead.QuadPart;
+	writeBytes = diskPerformance.BytesWritten.QuadPart;
+
+	milliseconds currMs = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	readKBs = (readBytes - lastHddSystemRead)/
+			(double)((currMs - hddSystemLastMeasureTime).count());
+	writeKBs = (writeBytes - lastHddSystemWrite)/
+			(double)((currMs - hddSystemLastMeasureTime).count());
+
+	hddSystemLastMeasureTime = currMs;
+	lastHddSystemRead = readBytes;
+	lastHddSystemWrite = writeBytes;
+
+	return std::pair<double, double>(readKBs, writeKBs);
 }
 
 void WindowsResProvider::initHddUsage(void)
 {
+	IO_COUNTERS ioCounters;
+	DISK_PERFORMANCE diskPerformance;
+	if(GetProcessIoCounters(self, &ioCounters) == 0)
+	{
+		std::cerr<<"Failed to get IoCounters for Windows self-process..."<<std::endl;
+		return;
+	}
+	lastHddSelfRead = ioCounters.ReadTransferCount;
+	lastHddSelfWrite = ioCounters.WriteTransferCount;
 
+	LPCTSTR hddPath = "\\\\.\\PhysicalDrive0";
+	if(GetDrivePerformance(hddPath, &diskPerformance) == 0)
+	{
+		std::cerr<<"Failed to get disk performance structure for Windows..."<<std::endl;
+		return;
+	}
+	lastHddSystemRead = diskPerformance.BytesRead.QuadPart;
+	lastHddSystemWrite = diskPerformance.BytesWritten.QuadPart;
+	hddSystemLastMeasureTime = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	hddSelfLastMeasureTime = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+}
+
+
+BOOL WindowsResProvider::GetDrivePerformance(LPCTSTR devPath, DISK_PERFORMANCE *pdp)
+{
+  HANDLE hDevice = INVALID_HANDLE_VALUE;  // handle to the drive to be examined
+  BOOL bResult   = FALSE;                 // results flag
+  DWORD junk     = 0;                     // discard results
+
+  hDevice = CreateFile(devPath,          // drive to open
+                        0,                // no access to the drive
+                        FILE_SHARE_READ | // share mode
+                        FILE_SHARE_WRITE,
+                        NULL,             // default security attributes
+                        OPEN_EXISTING,    // disposition
+                        0,                // file attributes
+                        NULL);            // do not copy file attributes
+
+  if (hDevice == INVALID_HANDLE_VALUE)    // cannot open the drive
+  {
+    return (FALSE);
+  }
+
+  bResult = DeviceIoControl(hDevice,                       // device to be queried
+		  	  	  	  	  	IOCTL_DISK_PERFORMANCE, // operation to perform
+                            NULL, 0,                       // no input buffer
+                            pdp, sizeof(*pdp),            // output buffer
+                            &junk,                         // # bytes returned
+                            (LPOVERLAPPED) NULL);          // synchronous I/O
+
+  CloseHandle(hDevice);
+
+  return (bResult);
 }
 
 /**
@@ -130,7 +244,6 @@ void WindowsResProvider::initSelfCpuUsage(void)
 	GetSystemTimeAsFileTime(&ftime);
 	memcpy(&lastCPU, &ftime, sizeof(FILETIME));
 
-	self = GetCurrentProcess();
 	GetProcessTimes(self, &ftime, &ftime, &fsys, &fuser);
 	memcpy(&lastSysCPU, &fsys, sizeof(FILETIME));
 	memcpy(&lastUserCPU, &fuser, sizeof(FILETIME));
