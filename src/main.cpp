@@ -12,7 +12,7 @@
 #include <fstream>
 #include "LinuxResProvider.hpp"
 #include <unistd.h>
-
+/*
 int main()
 {
 	LinuxResProvider linuxRes;
@@ -43,3 +43,4 @@ int main()
 	std::cout<<"System - Write KB/s: "<<hddState.currMonitorKBsUsedWrite()<<std::endl;
 	return 0;
 }
+*/

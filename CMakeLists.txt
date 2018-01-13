@@ -13,6 +13,7 @@ set(TESTS_NAME testsmonitor)
 SET(BOOST_LIBRARYDIR "~/boost_1_65_1")
 
 find_package(Boost COMPONENTS unit_test_framework log system filesystem REQUIRED)
+find_package(OpenSSL REQUIRED)
 
 file(GLOB APP_SOURCE_FILES ${PROJECT_SOURCE_DIR}/src/*.cpp)
 file(GLOB_RECURSE LIB_SOURCE_FILES ${PROJECT_SOURCE_DIR}/src/library_src/*.cpp)
@@ -26,7 +27,7 @@ message(STATUS "TESTS_FILES " ${TESTS_SOURCE_FILES})
 #message(STATUS "INTEGRATION_TESTS_FILES " ${INTEGRATION_TESTS_SOURCE_FILES})
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
-set(LIBS ${Boost_LIBRARIES} pthread)
+set(LIBS ${Boost_LIBRARIES} pthread OpenSSL::SSL)
 
 add_library(${LIB_NAME} STATIC ${LIB_SOURCE_FILES} ${APP_INCLUDE_FILES})
 target_link_libraries(${LIB_NAME} ${LIBS})
