@@ -19,6 +19,7 @@ if platform == "win32":
 else:
     boost_prefix = linux_boost_prefix
     CXXFLAGS=["-std=c++11", "-g", "-DDEBUG"]
+    LIBS=[]
     
 # boost's libs dir
 boost_libs = path.join(boost_prefix, "libs")

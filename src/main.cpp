@@ -18,7 +18,7 @@ int main()
 	ResUsageProvider * resProvider = new WindowsResProvider();
 	#endif
 
-	std::this_thread::sleep_for(1s);
+	std::this_thread::sleep_for(std::chrono::seconds(1));
 	RamState ramState = resProvider->getRamState();
 
 	std::cout<<"Zasoby RAM: "<< std::endl;
@@ -35,7 +35,7 @@ int main()
 		std::cout<<"Zasoby CPU: "<<std::endl;
 		std::cout<<"CPU used [%]: "<<cpuState.currPercentageUsed()<<std::endl;
 		std::cout<<"CPU used by app [%]: "<<cpuState.currMonitorPercentageUsed()<<std::endl;
-		std::this_thread::sleep_for(1s);
+		std::this_thread::sleep_for(std::chrono::seconds(1));
 	}
 
 	HddState hddState = resProvider->getHddState();
