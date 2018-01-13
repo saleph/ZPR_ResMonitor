@@ -12,7 +12,7 @@
 	static const long SEC_IN_DAY = SEC_IN_HOUR * 24;
 	// sumaric duration time in seconds for current element
 	static long currentDurationTime;
-	// last read value - eg. number of hours. Will be multiplied by
+	// last read triggerValue - eg. number of hours. Will be multiplied by
 	// specifc multipler (for hour - 3600) and added to currentDurationTime
 	static long lastReadDurationElement;
 		
@@ -46,7 +46,7 @@
 	static void produceTriggersCrossproduct() {
 		for (auto &&res : triggerResourceValues) {
 			for (auto &&duration : triggerDurationTimes) {
-				currentTriggerType.value = res;
+				currentTriggerType.triggerValue = res;
 				currentTriggerType.duration = duration;
 				triggerTypes.push_back(currentTriggerType);
 			}
@@ -123,7 +123,7 @@ for			(?i:"for")
 	
 	/* bracket with set of values */
 	<resourceSetEnv>{
-		{number}		currentResourceValue.value = atol(yytext);
+		{number}		currentResourceValue.triggerValue = atol(yytext);
 		{ws}*"%"		currentResourceValue.unitType = ResourceValue::ResourceUnit::PERCENT;
 		{ws}*{MB}		currentResourceValue.unitType = ResourceValue::ResourceUnit::MB;
 		{ws}*{GB}		currentResourceValue.unitType = ResourceValue::ResourceUnit::GB;
@@ -132,9 +132,9 @@ for			(?i:"for")
 		{ws}*"}"{ws}*	triggerResourceValues.push_back(currentResourceValue); yy_pop_state();
 	}
 	
-	/* plain value */
+	/* plain triggerValue */
 	<resourceSingleNoEnv>{
-		{number}			currentResourceValue.value = atol(yytext);
+		{number}			currentResourceValue.triggerValue = atol(yytext);
 		{ws}*"%"{ws}+		currentResourceValue.unitType = ResourceValue::ResourceUnit::PERCENT; triggerResourceValues.push_back(currentResourceValue); yy_pop_state();
 		{ws}*{MB}{ws}+		currentResourceValue.unitType = ResourceValue::ResourceUnit::MB; triggerResourceValues.push_back(currentResourceValue); yy_pop_state(); 
 		{ws}*{GB}{ws}+		currentResourceValue.unitType = ResourceValue::ResourceUnit::GB; triggerResourceValues.push_back(currentResourceValue); yy_pop_state();
@@ -163,7 +163,7 @@ for			(?i:"for")
 		}
 	}
 	
-	/* plain value */
+	/* plain triggerValue */
 	<triggerDurationSingleNoEnv>{
 		{number}		lastReadDurationElement = atol(yytext);
 		{ws}*"s"		currentDurationTime += lastReadDurationElement; 				/* no of seconds in seconds */
@@ -206,7 +206,7 @@ for			(?i:"for")
 			{ws}*"}"{ws}+	logDurations.push_back(currentDurationTime); currentDurationTime = 0; yy_pop_state(); 
 		}
 		
-	/* plain value */
+	/* plain triggerValue */
 	<logDurationSingleNoEnv>{
 		{number}		lastReadDurationElement = atol(yytext);
 		{ws}*"s"		currentDurationTime += lastReadDurationElement; 				/* no of seconds in seconds */
@@ -239,7 +239,7 @@ for			(?i:"for")
 			}
 		}
 		
-	/* plain resolution value */
+	/* plain resolution triggerValue */
 	<logResolutionSingleNoEnv>{
 		{number}		lastReadDurationElement = atol(yytext);
 		{ws}*"s"		currentDurationTime += lastReadDurationElement; 				/* no of seconds in seconds */
