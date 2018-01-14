@@ -24,7 +24,6 @@ struct ResourceValue {
     }
 };
 
-
 /// Raw structure describing trigger.
 /// Used during parsing config file and
 /// loading configuration into monitor.
@@ -48,7 +47,6 @@ struct TriggerType {
     }
 };
 
-
 /// Raw structure describing logging type.
 /// Used during parsing config file and
 /// loading configuration into monitor.
@@ -67,6 +65,13 @@ struct LogType {
 		return resource == other.resource && resolution == other.resolution;
 	}
 };
+
+std::ostream& operator<< (std::ostream& stream, const TriggerType::FluctuationType& fluctuationType);
+std::ostream& operator<< (std::ostream& stream, const TriggerType::Resource& resource);
+std::ostream& operator<< (std::ostream& stream, const TriggerType& triggerType);
+std::ostream& operator<< (std::ostream& stream, const ResourceValue::ResourceUnit& unit);
+std::ostream& operator<< (std::ostream& stream, const ResourceValue& resource);
+
 
 namespace std {
     template <>
@@ -102,7 +107,6 @@ namespace std {
             return hashValue;
         }
     };
-
 }
 
 #endif /* INCLUDE_CONFIGRAWDATA_HPP_ */

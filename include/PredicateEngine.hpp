@@ -30,6 +30,15 @@ public:
         }
     }
 
+    /// Add predicates to the engine. Engine DOES NOT obtain ownership of the predicate (stores only weak_ptr)!
+    void addPredicate(std::vector<std::shared_ptr<Predicate>> newPredicates) {
+        for (auto &&predicate : newPredicates) {
+            for (auto &&triggerType : predicate->getPredicateOperands()) {
+                predicates[triggerType].push_back(predicate);
+            }
+        }
+    }
+
 private:
     std::function<void(const TriggerType &)> triggerActivation = [this](const TriggerType & triggerType) {
         for (auto &&predicate : predicates[triggerType]) {
@@ -38,6 +47,7 @@ private:
                 predicateObject->activate(triggerType);
             }
         }
+        BOOST_LOG_TRIVIAL(debug) << "###### Activated: " << triggerType;
     };
 
     std::function<void(const TriggerType &)> triggerDeactivation = [this](const TriggerType & triggerType) {
@@ -47,6 +57,7 @@ private:
                 predicateObject->deactivate(triggerType);
             }
         }
+        BOOST_LOG_TRIVIAL(debug) << "###### Dectivated: " << triggerType;
     };
 
     std::unordered_map<TriggerType, std::vector<std::weak_ptr<Predicate>>> predicates;

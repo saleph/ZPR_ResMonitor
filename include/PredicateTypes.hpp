@@ -12,7 +12,7 @@
 class Predicate_1or2and3 : public Predicate {
 public:
     /// Constructs this predicate. Takes callback function and operands.
-    explicit Predicate_1or2and3(std::function<void()> &callback,
+    explicit Predicate_1or2and3(std::function<void()> callback,
                                 const TriggerType &or1Operand, const TriggerType &or2Operand,
                                 const TriggerType &andOperand);
 
@@ -24,6 +24,7 @@ public:
     virtual bool isPredicateSatisfied() const;
 
 private:
+    mutable bool lastSatisfied = false;
     TriggerType or1Operand;
     TriggerType or2Operand;
     TriggerType andOperand;
@@ -36,7 +37,7 @@ private:
 class Predicate_1and2 : public Predicate {
 public:
     /// Constructs this predicate. Takes callback function and operands.
-    explicit Predicate_1and2(std::function<void()> &callback,
+    explicit Predicate_1and2(std::function<void()> callback,
                              const TriggerType &and1Operand, const TriggerType &and2Operand);
 
     /// Returns vector of TriggerType used in this Predicate.
@@ -58,7 +59,7 @@ private:
 class Predicate_1element : public Predicate {
 public:
     /// Constructs this predicate. Takes callback function and operands.
-    explicit Predicate_1element(std::function<void()> &callback,
+    explicit Predicate_1element(std::function<void()> callback,
                                 const TriggerType &operand);
 
     /// Returns vector of TriggerType used in this Predicate.
