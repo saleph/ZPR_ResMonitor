@@ -16,6 +16,11 @@
 #include <vector>
 #include <memory>
 
+#include "ConfigurationParser.hpp"
+#include "SamplingManager.hpp"
+#include "LinuxResProvider.hpp"
+
+
 using namespace std;
 // Added for the json-example:
 using namespace boost::property_tree;
@@ -134,7 +139,7 @@ void exampleHttpsServerExecution() {
 	         !equal(web_root_path.begin(), web_root_path.end(), path.begin()))
 	        throw invalid_argument("path must be within root path");
 	      if(boost::filesystem::is_directory(path))
-	        path /= "index.html";
+	        path /= "test.html";
 
 	      SimpleWeb::CaseInsensitiveMultimap header;
 
@@ -245,5 +250,33 @@ int main() {
 //			"zprresmonitor!1");
 //	mailc.sendEmail("zpr_resmonitor@wp.pl", { "zpr_resmonitor@wp.pl"}, "tescikkk",
 //			"Hello from C++ SMTP Client!");
+
+	std::string conf = "\n"
+			"    trigger cpu over {70%, 80%, 90%} last for {8s, 1m}\n"
+			"    trigger memory over 200MB last for 6s\n"
+			"    trigger memory over 75% last for 10s\n"
+			"    trigger disk over 9mb/s last for 1m2s\n"
+			"    trigger disk under 10MB/s last for 2s\n"
+			"\n"
+			"    log cpu for {3h} resolution {7s}\n"
+			"    log memory for {12h} resolution {1h}\n"
+			"    log disk for 3h resolution 4s\n";
+	std::stringstream stream(conf);
+	ConfigurationParser parser (stream);
+	parser.run();
+
+
+	std::shared_ptr<ResUsageProvider> provider = std::make_shared<LinuxResProvider>();
+
+	// samplerManagerMock is set to take only 10 samples
+	// (as 10 samples in 10 second, but without any delay between them)
+	std::unique_ptr<SamplingManager> samplingManager =
+			std::make_unique<SamplingManager>(
+					provider, parser.getLogTypes(), parser.getTriggerTypes(),
+					[](const TriggerType & t){std::cout<<"Callback triggered\n"<<t.resource<<", "<<t.fluctuationType<<", "<<t.triggerValue<<std::endl;}
+			);
+	samplingManager->startSampling();
+
+
     exampleHttpsServerExecution();
 }
