@@ -15,6 +15,7 @@
 #include <thread>
 #include <chrono>
 #include "ResUsageProvider.hpp"
+#include "PredicateEngine.hpp"
 
 
 /**
@@ -24,26 +25,39 @@
  */
 class SamplingManager {
 public:
-
+    /// Constructs new SamplingManager for particular ResUsageProvider and configuration.
     SamplingManager(std::shared_ptr<ResUsageProvider> &resUsageProvider,
                     const std::vector<LogType> &logTypes,
                     const std::vector<TriggerType> &triggerTypes,
-                    std::function<void(const TriggerType &)> triggerCallback = [](const TriggerType &) { });
+                    std::function<void(const TriggerType &)> triggerActivate = [](const TriggerType &) { },
+                    std::function<void(const TriggerType &)> triggerDeactivate = [](const TriggerType &) { });
 
     ~SamplingManager();
 
+    /// Returns gathered CPU logs of type 'logType'
     const std::shared_ptr<const boost::circular_buffer<CpuState>>
     getCpuLog(const LogType &logType) const;
 
+    /// Returns gathered RAM logs of type 'logType'
     const std::shared_ptr<const boost::circular_buffer<RamState>>
     getRamLog(const LogType &logType) const;
 
+    /// Returns gathered HDD logs of type 'logType'
     const std::shared_ptr<const boost::circular_buffer<HddState>>
     getHddLog(const LogType &logType) const;
 
+    /// Starts sampling thread.
     void startSampling();
 
+    /// Stops sampling thread.
     void stopSampling();
+
+    /// Connects PredicateEngine to sampler.
+    /// NOTE: it overwrites triggerActivate and triggerDeactivate callbacks!
+    void connectPredicateEngine(const PredicateEngine &predicateEngine) {
+        triggerActivate = predicateEngine.triggerActivation;
+        triggerDeactivate = predicateEngine.triggerDeactivation;
+    }
 
 private:
     using ChronoTime = std::chrono::time_point<std::chrono::system_clock>;
@@ -57,7 +71,9 @@ private:
     using HddLog = std::shared_ptr<boost::circular_buffer<HddState>>;
 
     std::shared_ptr<ResUsageProvider> resUsageProvider;
-    std::function<void(const TriggerType &)> triggerCallback;
+    std::function<void(const TriggerType &)> triggerActivate;
+    std::function<void(const TriggerType &)> triggerDeactivate;
+
 
     // most discrete samples - used for logs
     std::unique_ptr<CpuSamples> cpuSamples;
