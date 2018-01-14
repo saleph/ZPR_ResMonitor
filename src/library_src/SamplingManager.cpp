@@ -11,10 +11,12 @@ SamplingManager::~SamplingManager() {
 SamplingManager::SamplingManager(std::shared_ptr<ResUsageProvider> &resUsageProvider,
                                  const std::vector<LogType> &logTypes,
                                  const std::vector<TriggerType> &triggerTypes,
-                                 std::function<void(const TriggerType &)> triggerCallback)
+                                 std::function<void(const TriggerType &)> triggerActivate,
+                                 std::function<void(const TriggerType &)> triggerDeactivate)
         : isSampling(false),
           resUsageProvider(resUsageProvider),
-          triggerCallback(std::move(triggerCallback)) {
+          triggerActivate(std::move(triggerActivate)),
+          triggerDeactivate(std::move(triggerDeactivate)){
     initializeSamplesBuffers(logTypes);
     initializeLoggingBuffers(logTypes);
     initializeTriggers(triggerTypes);
@@ -135,31 +137,39 @@ void SamplingManager::processTriggers() {
         if (trigger.resource == TriggerType::Resource::CPU) {
             if (lastCpuState > trigger)
                 triggerState.second++;
-            else
+            else {
+                if (triggerState.second >= triggerState.first.duration)
+                    triggerDeactivate(trigger);
                 triggerState.second = 0;
+            }
         } else if (trigger.resource == TriggerType::Resource::MEMORY) {
             if (lastRamState > trigger)
                 triggerState.second++;
-            else
+            else {
+                if (triggerState.second >= triggerState.first.duration)
+                    triggerDeactivate(trigger);
                 triggerState.second = 0;
+            }
         } else if (trigger.resource == TriggerType::Resource::DISK) {
             if (lastHddState > trigger)
                 triggerState.second++;
-            else
+            else {
+                if (triggerState.second >= triggerState.first.duration)
+                    triggerDeactivate(trigger);
                 triggerState.second = 0;
+            }
         }
 
         // if trigger duration exceedes, fire it
-        if (triggerState.second >= triggerState.first.duration) {
+        if (triggerState.second == triggerState.first.duration) {
             fireTrigger(trigger);
-            triggerState.second = 0;
         }
     }
 }
 
 void SamplingManager::fireTrigger(const TriggerType &trigger) {
     BOOST_LOG_TRIVIAL(debug) << "!!! Trigger callback !!!";
-    triggerCallback(trigger);
+    triggerActivate(trigger);
 }
 
 void SamplingManager::processLogs() {

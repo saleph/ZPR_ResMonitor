@@ -28,7 +28,8 @@ public:
     SamplingManager(std::shared_ptr<ResUsageProvider> &resUsageProvider,
                     const std::vector<LogType> &logTypes,
                     const std::vector<TriggerType> &triggerTypes,
-                    std::function<void(const TriggerType &)> triggerCallback = [](const TriggerType &) { });
+                    std::function<void(const TriggerType &)> triggerActivate = [](const TriggerType &) { },
+                    std::function<void(const TriggerType &)> triggerDeactivate = [](const TriggerType &) { });
 
     ~SamplingManager();
 
@@ -57,7 +58,9 @@ private:
     using HddLog = std::shared_ptr<boost::circular_buffer<HddState>>;
 
     std::shared_ptr<ResUsageProvider> resUsageProvider;
-    std::function<void(const TriggerType &)> triggerCallback;
+    std::function<void(const TriggerType &)> triggerActivate;
+    std::function<void(const TriggerType &)> triggerDeactivate;
+
 
     // most discrete samples - used for logs
     std::unique_ptr<CpuSamples> cpuSamples;
