@@ -199,7 +199,7 @@ double LinuxResProvider::getSystemCpuUsage()
     if (totalUser < lastTotalUser || totalNiced < lastTotalNiced ||
         totalSys < lastTotalSys || totalIdle < lastTotalIdle)
     {
-        //Overflow detection. Just skip this value.
+        //Overflow detection. Just skip this triggerValue.
         percent = -1.0;
     }
     else
@@ -261,7 +261,7 @@ double LinuxResProvider::getSelfCpuUsage(){
     now = times(&timeSample);
     if (now <= lastCPU || timeSample.tms_stime < lastSysCPU ||
         timeSample.tms_utime < lastUserCPU){
-        //Overflow detection. Just skip this value.
+        //Overflow detection. Just skip this triggerValue.
         percent = -1.0;
     }
     else{
@@ -336,4 +336,4 @@ HddState LinuxResProvider::getHddState(void)
 
 	return hddState;
 }
-#endif
+#endif /* __linux__ */

@@ -28,20 +28,18 @@ public:
 	CpuState getCpuState(void);
 	RamState getRamState(void);
 	HddState getHddState(void);
-	std::pair<double, double> getHddSelfUsage(void);
-	std::pair<double, double> getHddSystemUsage(void);
-
 
 private:
-	void initHddUsage(void);
-
 	int parseLineRam(char* line);
-	int getRamSelfUsage(void);	// Value in KB!
 
 	void initSystemCpuUsage(void);
 	double getSystemCpuUsage(void);
 	void initSelfCpuUsage(void);
 	double getSelfCpuUsage(void);
+	void initHddUsage(void);
+	std::pair<double, double> getHddSelfUsage(void);
+	std::pair<double, double> getHddSystemUsage(void);
+	int getRamSelfUsage(void);	// Value in KB!
 
 	unsigned long long lastTotalUser, lastTotalNiced, lastTotalSys, lastTotalIdle;
 	unsigned long long lastHddSelfRead, lastHddSelfWrite, lastHddSystemRead, lastHddSystemWrite;
@@ -52,5 +50,5 @@ private:
 	milliseconds hddSelfLastMeasureTime, hddSystemLastMeasureTime;
 
 };
-#endif
+#endif /* __linux__ */
 #endif /* INCLUDE_LINUXRESPROVIDER_HPP_ */
