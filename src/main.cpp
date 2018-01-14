@@ -13,9 +13,9 @@
 int main()
 {
 	#ifdef __linux__
-	ResUsageProvider * resProvider = new LinuxResProvider();
+	std::unique_ptr<ResUsageProvider> resProvider = std::make_unique<LinuxResProvider>();
 	#elif _WIN32
-	ResUsageProvider * resProvider = new WindowsResProvider();
+	std::unique_ptr<ResUsageProvider> resProvider = std::make_unique<WindowsResProvider>();
 	#endif
 
 	std::this_thread::sleep_for(std::chrono::seconds(1));

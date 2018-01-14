@@ -87,3 +87,4 @@ Thumbs.db
 
 # Cmake generated files
 *.tcl
+*.cmake
