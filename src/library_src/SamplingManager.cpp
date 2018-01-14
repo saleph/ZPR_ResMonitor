@@ -117,7 +117,9 @@ void SamplingManager::pollingFunction() {
         auto end = std::chrono::steady_clock::now();
         std::chrono::duration<double, std::milli> duration = end - start;
         BOOST_LOG_TRIVIAL(debug) << "Poll time: " << duration.count() << " ms";
-        auto sleepTime = static_cast<size_t>(SAMPLING_TIME_INTERVAL_MS - duration.count());
+		auto sleepTime = 0u;
+		if (SAMPLING_TIME_INTERVAL_MS > duration.count())
+			sleepTime = static_cast<size_t>(SAMPLING_TIME_INTERVAL_MS - duration.count());
         std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
     }
     isSampling = false;
