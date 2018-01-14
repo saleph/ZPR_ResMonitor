@@ -5,7 +5,7 @@
     <body>
         This is the content of test.html
          <button type="button">Click Me!</button>
-           <select>
+           <select id = "CarsList">
 			  <option value="volvo">Volvo</option>
 			  <option value="saab">Saab</option>
 			  <option value="mercedes">Mercedes</option>
@@ -13,9 +13,21 @@
 			</select> 
     </body>
     
-    <form action = "/http_examples.cpp" method = "get">
+    <form action = "/gettriggers" method = "get">
    		First Name: <input type = "text" name = "first_name">  <br />
    		Last Name: <input type = "text" name = "last_name" />
    		<input type = "submit" value = "Submit" />
 	</form>
+	
+	<input type="button" id = "Add" value = "Add" onclick = "Add()" />
+    <script type="text/javascript">
+        function Add() {
+            var carsList = document.getElementById("CarsList");
+            var option = document.createElement("OPTION");
+            option.innerHTML = "siema";
+            option.value = "3";
+            carsList.options.add(option);
+        }
+    </script>
+    
 </html>

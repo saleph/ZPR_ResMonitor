@@ -19,6 +19,7 @@
 #include "ConfigurationParser.hpp"
 #include "SamplingManager.hpp"
 #include "LinuxResProvider.hpp"
+#include "configrawdata.hpp"
 
 
 using namespace std;
@@ -28,7 +29,7 @@ using namespace boost::property_tree;
 using HttpServer = SimpleWeb::Server<SimpleWeb::HTTP>;
 using HttpClient = SimpleWeb::Client<SimpleWeb::HTTP>;
 
-void exampleHttpsServerExecution() {
+void exampleHttpsServerExecution(std::shared_ptr<ConfigurationParser> confParser) {
 	// HTTP-server at port 8080 using 1 thread
 	  // Unless you do more heavy non-threaded processing in the resources,
 	  // 1 thread is usually faster than several threads
@@ -51,6 +52,24 @@ void exampleHttpsServerExecution() {
 
 	    // Alternatively, use one of the convenience functions, for instance:
 	    // response->write(content);
+	  };
+
+	  server.resource["^/gettriggers$"]["POST"] = [&confParser](shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request) {
+		// Retrieve string:
+		auto content = request->content.string();
+
+		std::stringstream ss;
+		for(auto && triggType : confParser->getTriggerTypes())
+		{
+			 ss << triggType.resource << "\n";
+		}
+		std::string resp = ss.str();
+		*response << "HTTP/1.1 200 OK\r\nContent-Length: " << resp.length() << "\r\n\r\n"
+				  << resp;
+
+
+		// Alternatively, use one of the convenience functions, for instance:
+		// response->write(content);
 	  };
 
 	  // POST-example for the path /json, responds firstName+" "+lastName from the posted json
@@ -124,6 +143,11 @@ void exampleHttpsServerExecution() {
 	      response->write("Work done");
 	    });
 	    work_thread.detach();
+	  };
+
+	  // GET-example simulating heavy work in a separate thread
+	  server.resource["^/trigger$"]["GET"] = [](shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> /*request*/) {
+		  response->write("Work done");
 	  };
 
 	  // Default GET-example. If no other matches, this anonymous function will be called.
@@ -262,8 +286,8 @@ int main() {
 			"    log memory for {12h} resolution {1h}\n"
 			"    log disk for 3h resolution 4s\n";
 	std::stringstream stream(conf);
-	ConfigurationParser parser (stream);
-	parser.run();
+	std::shared_ptr<ConfigurationParser> parser = std::make_shared<ConfigurationParser>(stream);
+	parser->run();
 
 
 	std::shared_ptr<ResUsageProvider> provider = std::make_shared<LinuxResProvider>();
@@ -272,11 +296,11 @@ int main() {
 	// (as 10 samples in 10 second, but without any delay between them)
 	std::unique_ptr<SamplingManager> samplingManager =
 			std::make_unique<SamplingManager>(
-					provider, parser.getLogTypes(), parser.getTriggerTypes(),
-					[](const TriggerType & t){std::cout<<"Callback triggered\n"<<t.resource<<", "<<t.fluctuationType<<", "<<t.triggerValue<<std::endl;}
+					provider, parser->getLogTypes(), parser->getTriggerTypes(),
+					[](const TriggerType & t){std::cout<<"Callback triggered\n"<<std::endl;}//<<t.resource<<", "<<t.fluctuationType<<", "<<t.triggerValue
 			);
-	samplingManager->startSampling();
+	//samplingManager->startSampling();
 
 
-    exampleHttpsServerExecution();
+    exampleHttpsServerExecution(parser);
 }

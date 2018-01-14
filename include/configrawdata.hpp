@@ -80,7 +80,6 @@ std::ostream& operator<< (std::ostream& stream, const TriggerType& triggerType);
 std::ostream& operator<< (std::ostream& stream, const ResourceValue::ResourceUnit& unit);
 std::ostream& operator<< (std::ostream& stream, const ResourceValue& resource);
 
-
 namespace std {
     template <>
     struct hash<LogType>
