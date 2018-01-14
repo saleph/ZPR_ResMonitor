@@ -16,6 +16,8 @@ public:
                                 const TriggerType &or1Operand, const TriggerType &or2Operand,
                                 const TriggerType &andOperand);
 
+    virtual ~Predicate_1or2and3() = default;
+
     /// Returns vector of TriggerType used in this Predicate.
     /// Used in PredicateEngine.
     virtual std::vector<TriggerType> getPredicateOperands() const;
@@ -40,6 +42,8 @@ public:
     explicit Predicate_1and2(std::function<void()> callback,
                              const TriggerType &and1Operand, const TriggerType &and2Operand);
 
+    virtual ~Predicate_1and2() = default;
+
     /// Returns vector of TriggerType used in this Predicate.
     /// Used in PredicateEngine.
     virtual std::vector<TriggerType> getPredicateOperands() const;
@@ -61,6 +65,8 @@ public:
     /// Constructs this predicate. Takes callback function and operands.
     explicit Predicate_1element(std::function<void()> callback,
                                 const TriggerType &operand);
+
+    virtual ~Predicate_1element() = default;
 
     /// Returns vector of TriggerType used in this Predicate.
     /// Used in PredicateEngine.

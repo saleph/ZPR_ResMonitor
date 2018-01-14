@@ -16,6 +16,8 @@ public:
     /// Constructor of the Predicate body.
     /// Takes function to call after the predicate met.
     explicit Predicate(std::function<void()> &callback);
+    
+    virtual ~Predicate() = default;
 
     /// Returns vector of TriggerType used in particular Predicate.
     /// Used in PredicateEngine.
