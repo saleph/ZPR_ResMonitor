@@ -80,4 +80,3 @@ bool HddState::operator>(const TriggerType &triggerType) const {
 
 	return out;
 }
-

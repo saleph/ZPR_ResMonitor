@@ -85,6 +85,6 @@ Thumbs.db
 *.dll
 *.exe
 
-# cmake files
-*.cmake
+# Cmake generated files
 *.tcl
+*.cmake
