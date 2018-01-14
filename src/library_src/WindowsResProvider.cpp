@@ -2,6 +2,10 @@
 
 #ifdef _WIN32
 
+/**
+ *	@brief	Default constructor for WindowsResProvider.
+ *	Initializes first CPU and Hdd usage measurements.
+ */
 WindowsResProvider::WindowsResProvider()
 {
 	self = GetCurrentProcess();
@@ -141,6 +145,10 @@ std::pair<double, double> WindowsResProvider::getHddSystemUsage(void)
 	return std::pair<double, double>(readKBs, writeKBs);
 }
 
+/**
+ * 	@brief	This method initializes resource provider members used
+ * 	to store hdd usage information between resource getter calls.
+ */
 void WindowsResProvider::initHddUsage(void)
 {
 	IO_COUNTERS ioCounters;
@@ -165,7 +173,14 @@ void WindowsResProvider::initHddUsage(void)
 	hddSelfLastMeasureTime = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 }
 
-
+/**
+ * 	@brief	Method that reads current hard drive performance.
+ *
+ * 	@param	devPath is name of the device which performance is to be captured
+ * 	@param	pdp is pointer to DISK_PERFORMANCE structure
+ *
+ * 	@return	true if data succesfully read, false otherwise.
+ */
 BOOL WindowsResProvider::GetDrivePerformance(LPCTSTR devPath, DISK_PERFORMANCE *pdp)
 {
   HANDLE hDevice = INVALID_HANDLE_VALUE;  // handle to the drive to be examined

@@ -4,7 +4,7 @@
 
 /**
  *	@brief	Default constructor for LinuxResProvider.
- *	Initializes first CPU usage measurements.
+ *	Initializes first CPU and Hdd usage measurements.
  */
 LinuxResProvider::LinuxResProvider()
 {
