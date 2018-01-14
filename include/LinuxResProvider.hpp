@@ -50,6 +50,5 @@ private:
 	milliseconds hddSelfLastMeasureTime, hddSystemLastMeasureTime;
 
 };
-
 #endif /* __linux__ */
 #endif /* INCLUDE_LINUXRESPROVIDER_HPP_ */
