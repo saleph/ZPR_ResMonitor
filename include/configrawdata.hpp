@@ -74,6 +74,13 @@ struct LogType {
 	}
 };
 
+std::ostream& operator<< (std::ostream& stream, const TriggerType::FluctuationType& fluctuationType);
+std::ostream& operator<< (std::ostream& stream, const TriggerType::Resource& resource);
+std::ostream& operator<< (std::ostream& stream, const TriggerType& triggerType);
+std::ostream& operator<< (std::ostream& stream, const ResourceValue::ResourceUnit& unit);
+std::ostream& operator<< (std::ostream& stream, const ResourceValue& resource);
+
+
 namespace std {
     template <>
     struct hash<LogType>
@@ -108,7 +115,6 @@ namespace std {
             return hashValue;
         }
     };
-
 }
 
 #endif /* INCLUDE_CONFIGRAWDATA_HPP_ */
