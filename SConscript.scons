@@ -21,16 +21,8 @@ else:
 boost_libs = path.join(boost_prefix, "libs")
 
 # environment prep
-<<<<<<< HEAD
-env = Environment(LIBS=["pthread", "ssl", "crypto", "boost_system", "boost_filesystem"])
-env.Prepend(CXXFLAGS=["-std=c++11"], CPPPATH = [boost_prefix, ".."], LIBPATH=[boost_libs, "."])
-||||||| merged common ancestors
-env = Environment()
-env.Prepend(CXXFLAGS=["-std=c++11"], CPPPATH = [boost_prefix, ".."], LIBPATH=[boost_libs, "."])
-=======
-env = Environment()
-env.Prepend(CXXFLAGS=["-std=c++11", "-g", "-DDEBUG"], CPPPATH = [boost_prefix, ".."], LIBPATH=[boost_libs, "."])
->>>>>>> dev
+env = Environment(LIBS=["pthread", "ssl", "crypto", "boost_system", "boost_filesystem", "boost_log"])
+env.Prepend(CXXFLAGS=["-std=c++14"], CPPPATH = [boost_prefix, ".."], LIBPATH=[boost_libs, "."])
 env.Repository(path.join("..", "include"))
 
 # multithread compilation - problems on windows
