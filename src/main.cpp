@@ -6,10 +6,11 @@
 
 #ifdef __linux__
 #include "LinuxResProvider.hpp"
+
 #elif _WIN32
 #include "WindowsResProvider.hpp"
 #endif
-
+/*
 int main()
 {
 	#ifdef __linux__
@@ -53,3 +54,4 @@ int main()
 	getchar();
 	return 0;
 }
+*/

@@ -44,11 +44,15 @@ public:
         monitorHddInUseKBsWrite /= val;
 		return *this;
     }
+
+    friend std::ostream & operator<<(std::ostream & stream, const HddState & hddState);
 private:
 	double hddInUseKBsRead;
 	double hddInUseKBsWrite;
 	double monitorHddInUseKBsRead;
 	double monitorHddInUseKBsWrite;
 };
+
+std::ostream & operator<<(std::ostream & stream, const HddState & hddState);
 
 #endif /* SRC_LIBRARY_SRC_HDDSTATE_H_ */

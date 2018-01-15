@@ -18,7 +18,7 @@ public:
 	double currMBUsed(void);
 	double currPercentageUsed(void) const;
 	double currMonitorMBUsed(void);
-	double currMonitorPercentageUsed(void);
+	double currMonitorPercentageUsed(void) const;
 	double totalMB(void);
 	void setMBUsed(double _ramInUseMB);
 	void setMonitorMBUsed(double _monitorRamInUseMB);
@@ -38,10 +38,14 @@ public:
       monitorRamInUseMB /= val;
       return *this;
   }
+
+  friend std::ostream & operator<<(std::ostream & stream, const RamState & ramState);
 private:
 	double totalRamMB;
 	double ramInUseMB;
 	double monitorRamInUseMB;
 };
+
+std::ostream & operator<<(std::ostream & stream, const RamState & ramState);
 
 #endif /* SRC_LIBRARY_SRC_RAMSTATE_H_ */

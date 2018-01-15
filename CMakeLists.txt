@@ -4,7 +4,7 @@ project(zpr_monitor)
 include(CTest)
 enable_testing()
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 ")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -g")
 set(LIB_NAME monitorlib)
 set(APP_NAME monitor)
 set(TESTS_NAME testsmonitor)

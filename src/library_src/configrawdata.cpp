@@ -42,3 +42,20 @@ std::ostream &operator<<(std::ostream &stream, const ResourceValue &resource) {
     stream << resource.value << resource.unitType;
     return stream;
 }
+
+std::ostream &operator<<(std::ostream &stream, const LogType::Resource &resource) {
+    if (resource == LogType::Resource::CPU)
+        stream << "CPU";
+    if (resource == LogType::Resource::MEMORY)
+        stream << "RAM";
+    if (resource == LogType::Resource::DISK)
+        stream << "HDD";
+    return stream;
+}
+
+std::ostream& operator<< (std::ostream& stream, const LogType& logType){
+    stream << "Trigger " << logType.resource << " "
+            << "resolution (every) " << logType.resolution << "s "
+           << "last for " << logType.duration << "s";
+    return stream;
+}
