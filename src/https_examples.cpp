@@ -1,3 +1,8 @@
+// magic define for windows' boost
+#ifdef _WIN32
+#define _WIN32_WINNT 0x601
+#endif
+
 #include "client_http.hpp"
 #include "server_http.hpp"
 #include "smtp_client.hpp"
