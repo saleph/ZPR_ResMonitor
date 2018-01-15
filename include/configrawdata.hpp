@@ -8,7 +8,9 @@
 /// Structure describing resource value of particular trigger.
 /// Eg. memory over {70%, 200MB}
 struct ResourceValue {
-	enum class ResourceUnit		{PERCENT, MB, GB};
+	enum class ResourceUnit {
+		PERCENT, MB, GB
+	};
 
 	/// Resource unit - percent, MB or GB
 	ResourceUnit unitType;
@@ -28,8 +30,12 @@ struct ResourceValue {
 /// Used during parsing config file and
 /// loading configuration into monitor.
 struct TriggerType {
-	enum class Resource 		{CPU, MEMORY, DISK};
-	enum class FluctuationType 	{UNDER, OVER};
+	enum class Resource {
+		CPU, MEMORY, DISK
+	};
+	enum class FluctuationType {
+		UNDER, OVER
+	};
 
 	/// Resource type
 	Resource resource;
@@ -51,7 +57,9 @@ struct TriggerType {
 /// Used during parsing config file and
 /// loading configuration into monitor.
 struct LogType {
-	enum class Resource	{CPU, MEMORY, DISK};
+	enum class Resource {
+		CPU, MEMORY, DISK
+	};
 
 	/// Resource type
 	Resource resource;
@@ -71,7 +79,8 @@ std::ostream& operator<< (std::ostream& stream, const TriggerType::Resource& res
 std::ostream& operator<< (std::ostream& stream, const TriggerType& triggerType);
 std::ostream& operator<< (std::ostream& stream, const ResourceValue::ResourceUnit& unit);
 std::ostream& operator<< (std::ostream& stream, const ResourceValue& resource);
-
+std::ostream &operator<<(std::ostream &stream, const LogType::Resource &resource);
+std::ostream& operator<< (std::ostream& stream, const LogType& logType);
 
 namespace std {
     template <>

@@ -2,7 +2,6 @@
 
 #include <utility>
 
-
 SamplingManager::~SamplingManager() {
     stopSampling();
     BOOST_LOG_TRIVIAL(debug) << "joined";

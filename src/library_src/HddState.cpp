@@ -80,3 +80,12 @@ bool HddState::operator>(const TriggerType &triggerType) const {
 
 	return out;
 }
+
+std::ostream & operator<<(std::ostream & stream, const HddState & hddState)
+{
+	stream << "Hdd (system) read/write [KB/s]: "
+			<< hddState.hddInUseKBsRead << "/" << hddState.hddInUseKBsWrite
+			<< ", Hdd (monitor) read/write KB/s]: "
+			<< hddState.monitorHddInUseKBsRead << "/" << hddState.monitorHddInUseKBsWrite;
+	return stream;
+}
