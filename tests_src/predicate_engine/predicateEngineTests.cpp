@@ -105,11 +105,12 @@ BOOST_AUTO_TEST_CASE(predicate_1or2and3_both_or_active) {
         samplingManager->startSampling();
         samplingManager->waitForEndOfSampling();
 
-        // predicate should fire only once. This trigger
+        // predicate should fire twice. This trigger
         // trigger memory over 200MB last for 6s
         // fire as second after
         // trigger disk under 10MB/s last for 2s
-        BOOST_CHECK_EQUAL(predicateFiredNumber, 1);
+        // and after next 2s disk trigger fires again
+        BOOST_CHECK_EQUAL(predicateFiredNumber, 2);
 }
 
 BOOST_AUTO_TEST_CASE(predicate_1or2and3_one_or_active) {
@@ -155,9 +156,13 @@ BOOST_AUTO_TEST_CASE(predicate_1or2and3_one_or_active) {
     samplingManager->startSampling();
     samplingManager->waitForEndOfSampling();
 
-    // predicate should fire only once.
-    // trigger disk under 10MB/s last for 2s => trigger cpu over 80% last for 8s
-    BOOST_CHECK_EQUAL(predicateFiredNumber, 1);
+    // predicate should three times
+    // trigger disk under 10MB/s last for 2s (now disk trigger is constantly ACTIVE!)
+    // 1. trigger cpu over 80% last for 8s in 8th sec
+    // 2. trigger disk under 10MB/s last for 2s in 8th sec
+    // 3. trigger disk under 10MB/s last for 2s in 10th sec
+
+    BOOST_CHECK_EQUAL(predicateFiredNumber, 3);
 }
 
 BOOST_AUTO_TEST_CASE(predicate_1or2and3_none_or_active) {
