@@ -32,7 +32,11 @@ public:
 	bool sendEmail(const std::string &pFrom, const std::vector<std::string> &pTo,
 			const std::string &pSubject, const std::string &pMessage) {
 		mFrom = pFrom;
+		mFrom.erase(std::remove_if(mFrom.begin(), mFrom.end(), ::isspace), mFrom.end());
 		mTo = pTo;
+		for(auto &&to : mTo) {
+			to.erase(std::remove_if(to.begin(), to.end(), ::isspace), to.end());
+		}
 		mSubject = pSubject;
 		mMessage = pMessage;
 		mIOService.run();
