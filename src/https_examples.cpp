@@ -116,7 +116,7 @@ void exampleHttpsServerExecution(std::shared_ptr<ConfigurationParser> confParser
 		   seglist.push_back(segment);
 		}
 
-		std::function<void()> pf = [&](){
+		std::function<void()> pf = [&userName, &userEmail](){
 			cout<<"User name: "<<userName<<endl;
 			cout<<"User email: "<<userEmail<<endl;
 			cout<<"_____________________________________________________"<<endl;
