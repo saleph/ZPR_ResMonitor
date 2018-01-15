@@ -54,8 +54,8 @@ std::ostream &operator<<(std::ostream &stream, const LogType::Resource &resource
 }
 
 std::ostream& operator<< (std::ostream& stream, const LogType& logType){
-    stream << "Trigger " << logType.resource << " "
-            << "resolution (every) " << logType.resolution << "s "
+    stream << "Log " << logType.resource << " "
+            << "resolution " << logType.resolution << "s "
            << "last for " << logType.duration << "s";
     return stream;
 }

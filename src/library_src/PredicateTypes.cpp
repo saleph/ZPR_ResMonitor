@@ -25,6 +25,12 @@ bool Predicate_1or2and3::isPredicateSatisfied() const {
     return lastSatisfied;
 }
 
+std::ostream & operator<<(std::ostream & stream, const Predicate_1or2and3 & pred)
+{
+	stream << pred.or1Operand << " OR " << pred.or2Operand << " AND " << pred.andOperand;
+	return stream;
+}
+
 Predicate_1and2::Predicate_1and2(std::function<void()> callback, const TriggerType &and1Operand,
                                  const TriggerType &and2Operand)
         : Predicate(callback), and1Operand(and1Operand), and2Operand(and2Operand)
@@ -42,6 +48,12 @@ bool Predicate_1and2::isPredicateSatisfied() const {
     return triggerState.at(and1Operand) && triggerState.at(and2Operand);
 }
 
+std::ostream & operator<<(std::ostream & stream, const Predicate_1and2 & pred)
+{
+	stream << pred.and1Operand << " AND " << pred.and2Operand;
+	return stream;
+}
+
 Predicate_1element::Predicate_1element(std::function<void()> callback, const TriggerType &operand)
         : Predicate(callback), operand(operand)
 {
@@ -56,4 +68,10 @@ std::vector <TriggerType> Predicate_1element::getPredicateOperands() const {
 
 bool Predicate_1element::isPredicateSatisfied() const {
     return triggerState.at(operand);
+}
+
+std::ostream & operator<<(std::ostream & stream, const Predicate_1element & pred)
+{
+	stream << pred.operand;
+	return stream;
 }

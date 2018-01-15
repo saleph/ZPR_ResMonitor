@@ -25,6 +25,7 @@ public:
     /// Checks if the Predicate is met.
     virtual bool isPredicateSatisfied() const;
 
+    friend std::ostream & operator<<(std::ostream & stream, const Predicate_1or2and3 & pred);
 private:
     mutable bool lastSatisfied = false;
     TriggerType or1Operand;
@@ -32,6 +33,7 @@ private:
     TriggerType andOperand;
 };
 
+std::ostream & operator<<(std::ostream & stream, const Predicate_1or2and3 & pred);
 
 /**
  * @brief Predicate of type (trigger1 AND trigger2).
@@ -51,12 +53,13 @@ public:
     /// Checks if the Predicate is met.
     virtual bool isPredicateSatisfied() const;
 
+    friend std::ostream & operator<<(std::ostream & stream, const Predicate_1and2 & pred);
 private:
     TriggerType and1Operand;
     TriggerType and2Operand;
 };
 
-
+std::ostream & operator<<(std::ostream & stream, const Predicate_1and2 & pred);
 /**
  * @brief Predicate of type (trigger1).
  */
@@ -75,8 +78,10 @@ public:
     /// Checks if the Predicate is met.
     virtual bool isPredicateSatisfied() const;
 
+    friend std::ostream & operator<<(std::ostream & stream, const Predicate_1element & pred);
 private:
     TriggerType operand;
 };
 
+std::ostream & operator<<(std::ostream & stream, const Predicate_1element & pred);
 #endif //ZPR_MONITOR_PREDICATETYPES_HPP

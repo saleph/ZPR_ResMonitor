@@ -18,3 +18,9 @@ void Predicate::activate(const TriggerType &triggerType) {
 void Predicate::deactivate(const TriggerType &triggerType) {
     triggerState[triggerType] = false;
 }
+
+void Predicate::setCallback(std::function<void()> & clbck){
+	this->callback = clbck;
+}
+
+std::ostream & operator<<(std::ostream & stream, const Predicate & pred) {return stream << "Trolololo";};

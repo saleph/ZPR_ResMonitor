@@ -32,9 +32,14 @@ public:
     /// Sets trigger's value to false.
     void deactivate(const TriggerType &triggerType);
 
+    /// Sets callback function for this predicate.
+    void setCallback(std::function<void()> & clbck);
+
 protected:
     std::unordered_map<TriggerType, bool> triggerState;
     std::function<void()> callback;
 };
+
+std::ostream & operator<<(std::ostream & stream, const Predicate & pred);
 
 #endif //ZPR_PREDICATE_HPP

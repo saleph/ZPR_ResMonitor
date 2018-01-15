@@ -83,7 +83,7 @@ void writeHtmlToString(std::shared_ptr<ConfigurationParser> confParser, std::str
 
 void exampleHttpsServerExecution(std::shared_ptr<ConfigurationParser> confParser,
 		std::shared_ptr<PredicateEngine> predEngine, std::shared_ptr<SamplingManager> samplingManager) {
-	// HTTP-server at port 8080 using 1 thread
+	  // HTTP-server at port 8080 using 1 thread
 	  // Unless you do more heavy non-threaded processing in the resources,
 	  // 1 thread is usually faster than several threads
 	  HttpServer server;
@@ -92,24 +92,6 @@ void exampleHttpsServerExecution(std::shared_ptr<ConfigurationParser> confParser
 	  std::string userName;
 	  std::string userEmail;
 	  std::vector<std::shared_ptr<Predicate>> predicates;
-
-	  // Add resources using path-regex and method-string, and an anonymous function
-	  // POST-example for the path /string, responds the posted string
-	  server.resource["^/string$"]["POST"] = [](shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request) {
-	    // Retrieve string:
-	    auto content = request->content.string();
-	    // request->content.string() is a convenience function for:
-	    // stringstream ss;
-	    // ss << request->content.rdbuf();
-	    // auto content=ss.str();
-
-	    *response << "HTTP/1.1 200 OK\r\nContent-Length: " << content.length() << "\r\n\r\n"
-	              << content;
-
-
-	    // Alternatively, use one of the convenience functions, for instance:
-	    // response->write(content);
-	  };
 
 	  server.resource["^/getlogs$"]["GET"] = [&confParser, &samplingManager](shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request) {
 		  	std::string resp;
@@ -123,25 +105,26 @@ void exampleHttpsServerExecution(std::shared_ptr<ConfigurationParser> confParser
 			{
 				seglist.push_back(segment);
 			}
+			stringstream newStream;
 			unsigned logNumber = std::stoi(seglist.at(1));
 			const LogType selectedLogType = confParser->getLogTypes().at(logNumber);
 			if(selectedLogType.resource == LogType::Resource::CPU){
 				for(auto && cpuLog : *(samplingManager->getCpuLog(selectedLogType))){
-					stream << cpuLog << "\n";
+					newStream << cpuLog << "\n";
 				}
 			}
 			else if(selectedLogType.resource == LogType::Resource::MEMORY){
 				for(auto && ramLog : *(samplingManager->getRamLog(selectedLogType))){
-					stream << ramLog << "\n";
+					newStream << ramLog << "\n";
 				}
 			}
 			else if(selectedLogType.resource == LogType::Resource::DISK){
 				for(auto && hddLog : *(samplingManager->getHddLog(selectedLogType))){
-					stream << hddLog << "\n";
+					newStream << hddLog << "\n";
 				}
 			}
 
-		  resp = stream.str();
+		  resp = newStream.str();
 		  *response << "HTTP/1.1 200 OK\r\nContent-Length: " << resp.length() << "\r\n\r\n"
 				  << resp;
 	  };
@@ -152,48 +135,51 @@ void exampleHttpsServerExecution(std::shared_ptr<ConfigurationParser> confParser
 	    auto query_fields = request->parse_query_string();
 	    for(auto &field : query_fields)
 	      stream << field.first << ": " << field.second << ":";
-		std::string segment;
+		std::string auxString;
 		std::vector<std::string> seglist;
-		while(std::getline(stream, segment, ':'))
+		while(std::getline(stream, auxString, ':'))
 		{
-		   seglist.push_back(segment);
+		   seglist.push_back(auxString);
 		}
 
-		std::function<void()> pf = [&userName, &userEmail](){
-			cout<<"User name: "<<userName<<endl;
-			cout<<"User email: "<<userEmail<<endl;
-			cout<<"_____________________________________________________"<<endl;
-			SMTPClient mailc("smtp.wp.pl", 25, "zpr_resmonitor@wp.pl",
-					"zprresmonitor!1");
-			mailc.sendEmail("zpr_resmonitor@wp.pl", {userEmail}, "tescikkk",
-					"Hello" + userName + "from C++ SMTP Client!");
-		};
-	    std::shared_ptr<Predicate> pred;
+	    std::shared_ptr<Predicate> pred = nullptr;
 	    if(query_fields.size() == 3){
-	    	pred = std::make_shared<Predicate_1or2and3>(pf,
+	    	pred = std::make_shared<Predicate_1or2and3>([](){},
 	    			confParser->getTriggerTypes().at(std::stoi(seglist.at(5))),
 					confParser->getTriggerTypes().at(std::stoi(seglist.at(3))),
 					confParser->getTriggerTypes().at(std::stoi(seglist.at(1))));
 	    	predicates.push_back(pred);
-	    	predEngine->addPredicate(pred);
 	    }
 	    else if(query_fields.size() == 2){
-	    	pred = std::make_shared<Predicate_1and2>(pf,
+	    	pred = std::make_shared<Predicate_1and2>([](){},
 	    			confParser->getTriggerTypes().at(std::stoi(seglist.at(3))),
 					confParser->getTriggerTypes().at(std::stoi(seglist.at(1))));
 	    	predicates.push_back(pred);
-	    	predEngine->addPredicate(pred);
 	    }
 	    else if(query_fields.size() == 1){
-	    	pred = std::make_shared<Predicate_1element>(pf,
+	    	pred = std::make_shared<Predicate_1element>([](){},
 					confParser->getTriggerTypes().at(std::stoi(seglist.at(1))));
 	    	predicates.push_back(pred);
-	    	predEngine->addPredicate(pred);
 	    }
 	    else
 	    	resp = "Wrong data!";
 
-		std::cout<< "Request: \n"<<stream.str()<<std::endl;
+	    if(pred != nullptr){
+	    	stream.str("");
+	    	stream << *pred;
+	    	auxString = stream.str();
+	    }
+		std::function<void()> sendMailFunction = [&userName, &userEmail, &auxString](){
+			SMTPClient mailc("smtp.wp.pl", 25, "zpr_resmonitor@wp.pl",
+					"zprresmonitor!1");
+			mailc.sendEmail("zpr_resmonitor@wp.pl", {userEmail}, "ZPR Monitor trigger notification",
+					"Hello" + userName + ",\nfollowing trigger has been exceeded:\n" + auxString + "\n\nYour ZPRMonitor");
+		};
+		if(pred != nullptr){
+			pred->setCallback(sendMailFunction);
+	    	predEngine->addPredicate(pred);
+		}
+
 		*response << "HTTP/1.1 200 OK\r\nContent-Length: " << resp.length() << "\r\n\r\n"
 				  << resp;
 	  };
@@ -228,64 +214,6 @@ void exampleHttpsServerExecution(std::shared_ptr<ConfigurationParser> confParser
 				  << resp;
 	  };
 
-	  // POST-example for the path /json, responds firstName+" "+lastName from the posted json
-	  // Responds with an appropriate error message if the posted json is not valid, or if firstName or lastName is missing
-	  // Example posted json:
-	  // {
-	  //   "firstName": "John",
-	  //   "lastName": "Smith",
-	  //   "age": 25
-	  // }
-	  server.resource["^/json$"]["POST"] = [](shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request) {
-	    try {
-	      ptree pt;
-	      read_json(request->content, pt);
-
-	      auto name = pt.get<string>("firstName") + " " + pt.get<string>("lastName");
-
-	      *response << "HTTP/1.1 200 OK\r\n"
-	                << "Content-Length: " << name.length() << "\r\n\r\n"
-	                << name;
-	    }
-	    catch(const exception &e) {
-	      *response << "HTTP/1.1 400 Bad Request\r\nContent-Length: " << strlen(e.what()) << "\r\n\r\n"
-	                << e.what();
-	    }
-
-
-	    // Alternatively, using a convenience function:
-	    // try {
-	    //     ptree pt;
-	    //     read_json(request->content, pt);
-
-	    //     auto name=pt.get<string>("firstName")+" "+pt.get<string>("lastName");
-	    //     response->write(name);
-	    // }
-	    // catch(const exception &e) {
-	    //     response->write(SimpleWeb::StatusCode::client_error_bad_request, e.what());
-	    // }
-	  };
-
-	  // GET-example for the path /info
-	  // Responds with request-information
-	  server.resource["^/info$"]["GET"] = [](shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request) {
-	    stringstream stream;
-	    stream << "<h1>Request from " << request->remote_endpoint_address() << ":" << request->remote_endpoint_port() << "</h1>";
-
-	    stream << request->method << " " << request->path << " HTTP/" << request->http_version;
-
-	    stream << "<h2>Query Fields</h2>";
-	    auto query_fields = request->parse_query_string();
-	    for(auto &field : query_fields)
-	      stream << field.first << ": " << field.second << "<br>";
-
-	    stream << "<h2>Header Fields</h2>";
-	    for(auto &field : request->header)
-	      stream << field.first << ": " << field.second << "<br>";
-
-	    response->write(stream);
-	  };
-
 	  // GET-example for the path /match/[number], responds with the matched string in path (number)
 	  // For instance a request GET /match/123 will receive: 123
 	  server.resource["^/match/([0-9]+)$"]["GET"] = [](shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request) {
@@ -299,11 +227,6 @@ void exampleHttpsServerExecution(std::shared_ptr<ConfigurationParser> confParser
 	      response->write("Work done");
 	    });
 	    work_thread.detach();
-	  };
-
-	  // GET-example simulating heavy work in a separate thread
-	  server.resource["^/trigger$"]["GET"] = [](shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> /*request*/) {
-		  response->write("Work done");
 	  };
 
 	  // Default GET-example. If no other matches, this anonymous function will be called.
