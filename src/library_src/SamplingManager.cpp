@@ -165,6 +165,7 @@ void SamplingManager::processTriggers() {
         // if trigger duration exceedes, fire it
         if (triggerState.second == triggerState.first.duration) {
             fireTrigger(trigger);
+            triggerState.second = 0;
         }
     }
 }
