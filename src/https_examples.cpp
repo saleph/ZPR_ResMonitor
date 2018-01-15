@@ -169,7 +169,7 @@ void exampleHttpsServerExecution(std::shared_ptr<ConfigurationParser> confParser
 	    	stream << *pred;
 	    	auxString = stream.str();
 	    }
-		std::function<void()> sendMailFunction = [&userName, &userEmail, &auxString](){
+		std::function<void()> sendMailFunction = [userName, userEmail, auxString](){
 			SMTPClient mailc("smtp.wp.pl", 25, "zpr_resmonitor@wp.pl",
 					"zprresmonitor!1");
 			mailc.sendEmail("zpr_resmonitor@wp.pl", {userEmail}, "ZPR Monitor trigger notification",

@@ -33,7 +33,7 @@ public:
     void deactivate(const TriggerType &triggerType);
 
     /// Sets callback function for this predicate.
-    void setCallback(std::function<void()> & clbck);
+    void setCallback(std::function<void()> clbck);
 
 protected:
     std::unordered_map<TriggerType, bool> triggerState;

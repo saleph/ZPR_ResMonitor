@@ -19,7 +19,7 @@ void Predicate::deactivate(const TriggerType &triggerType) {
     triggerState[triggerType] = false;
 }
 
-void Predicate::setCallback(std::function<void()> & clbck){
+void Predicate::setCallback(std::function<void()> clbck){
 	this->callback = clbck;
 }
 
