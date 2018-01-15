@@ -26,13 +26,9 @@
 #include "configrawdata.hpp"
 #include "PredicateTypes.hpp"
 
-
 using namespace std;
-// Added for the json-example:
-using namespace boost::property_tree;
 
 using HttpServer = SimpleWeb::Server<SimpleWeb::HTTP>;
-using HttpClient = SimpleWeb::Client<SimpleWeb::HTTP>;
 
 void writeHtmlToString(std::shared_ptr<ConfigurationParser> confParser, std::string & resp){
 	std::stringstream html, triggerSelections, logSelections;
@@ -49,10 +45,10 @@ void writeHtmlToString(std::shared_ptr<ConfigurationParser> confParser, std::str
 
 	html << "<html>\n<head>\n<title>Simple-Web-Server html-file</title>\n</head>\n<body>"
 	"Choose your trigger type and subscribe for e-mail!\n"
-	"</br>\n</br>\n<form action = \"/set_email\" method = \"get\">\n"
+	"</br></br></br>\n<form action = \"/set_email\" method = \"get\">\n"
 	   "Email: <input type = \"text\" name = \"email\">\n"
 	   "User name: <input type = \"text\" name = \"name\" />\n"
-	   "<input type = \"submit\" value = \"Apply\" />\n"
+	   "<input type = \"submit\" value = \"Apply\" />\n</br></br>"
 	"</form>\n<form method=\"GET\" action=\"/trigger_choose\">\n"
 	"<select name=\"trigger0\" required>";
 	html << triggerSelections.str();
@@ -71,7 +67,7 @@ void writeHtmlToString(std::shared_ptr<ConfigurationParser> confParser, std::str
 			  "<select name=\"trigger0\" required>";
 	html << triggerSelections.str();;
 	html << "</select>\n<input type=\"submit\" value=\"Submit\">\n"
-			"</form>\n<form method=\"GET\" action=\"/getlogs\">\n"
+			"</form>\n</br></br></br><form method=\"GET\" action=\"/getlogs\">\n"
 				"Show logs of type\n"
 			  "<select name=\"trigger\" required>\n";
 	html << logSelections.str();
@@ -249,44 +245,13 @@ void exampleHttpsServerExecution(std::shared_ptr<ConfigurationParser> confParser
 	    server.start();
 	  });
 
-	  // Wait for server to start so that the client can connect
-	  this_thread::sleep_for(chrono::seconds(1));
-
-	  // Client examples
-	  HttpClient client("localhost:8080");
-
-	  string json_string = "{\"firstName\": \"John\",\"lastName\": \"Smith\",\"age\": 25}";
-
-	  // Synchronous request examples
-	  try {
-	    auto r1 = client.request("GET", "/match/123");
-	    cout << r1->content.rdbuf() << endl; // Alternatively, use the convenience function r1->content.string()
-
-	    auto r2 = client.request("POST", "/string", json_string);
-	    cout << r2->content.rdbuf() << endl;
-	  }
-	  catch(const SimpleWeb::system_error &e) {
-	    cerr << "Client request error: " << e.what() << endl;
-	  }
-
-	  // Asynchronous request example
-	  client.request("POST", "/json", json_string, [](shared_ptr<HttpClient::Response> response, const SimpleWeb::error_code &ec) {
-	    if(!ec)
-	      cout << response->content.rdbuf() << endl;
-	  });
-	  client.io_service->run();
-
 	server_thread.join();
 }
 
 int main() {
-//	SMTPClient mailc("smtp.wp.pl", 25, "zpr_resmonitor@wp.pl",
-//			"zprresmonitor!1");
-//	mailc.sendEmail("zpr_resmonitor@wp.pl", { "piterek93p@wp.pl"}, "tescikkk",
-//			"Hello from C++ SMTP Client!");
-
 	std::ifstream configFile( "tests_src/conf_parser/example" );
-	if ( configFile )
+
+	if (configFile)
 	{
 		std::stringstream stream;
 		stream << configFile.rdbuf();
@@ -303,12 +268,10 @@ int main() {
 
 		std::shared_ptr<PredicateEngine> engine = std::make_shared<PredicateEngine>();
 
-		// samplerManagerMock is set to take only 10 samples
-		// (as 10 samples in 10 second, but without any delay between them)
 		std::shared_ptr<SamplingManager> samplingManager =
 				std::make_unique<SamplingManager>(
 						provider, parser->getLogTypes(), parser->getTriggerTypes(),
-						[](const TriggerType & t){std::cout<<"Callback triggered\n"<<std::endl;}//<<t.resource<<", "<<t.fluctuationType<<", "<<t.triggerValue
+						[](const TriggerType & t){std::cout<<"Callback triggered\n"<<std::endl;}
 				);
 		samplingManager->startSampling();
 		samplingManager->connectPredicateEngine(*engine);
