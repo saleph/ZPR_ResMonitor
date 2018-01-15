@@ -1,0 +1,53 @@
+\hypertarget{structTriggerType}{}\section{Trigger\+Type Struct Reference}
+\label{structTriggerType}\index{Trigger\+Type@{Trigger\+Type}}
+
+
+{\ttfamily \#include $<$configrawdata.\+hpp$>$}
+
+
+
+Collaboration diagram for Trigger\+Type\+:
+% FIG 0
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum {\bfseries Resource} \{ {\bfseries C\+PU}, 
+{\bfseries M\+E\+M\+O\+RY}, 
+{\bfseries D\+I\+SK}
+ \}\hypertarget{structTriggerType_af482b9023d9bb83021538f2ac863b641}{}\label{structTriggerType_af482b9023d9bb83021538f2ac863b641}
+
+\item 
+enum {\bfseries Fluctuation\+Type} \{ {\bfseries U\+N\+D\+ER}, 
+{\bfseries O\+V\+ER}
+ \}\hypertarget{structTriggerType_a03fc94031373f12d204d97890b7e8fce}{}\label{structTriggerType_a03fc94031373f12d204d97890b7e8fce}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{structTriggerType_aec3b8c200c49716be8bc21f11dad519f}{operator==} (const \hyperlink{structTriggerType}{Trigger\+Type} \&other) const \hypertarget{structTriggerType_aec3b8c200c49716be8bc21f11dad519f}{}\label{structTriggerType_aec3b8c200c49716be8bc21f11dad519f}
+
+\begin{DoxyCompactList}\small\item\em Operator equals used in hash maps. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+Resource \hyperlink{structTriggerType_a1745935dd37baba0320cdac856a9aa6d}{resource}\hypertarget{structTriggerType_a1745935dd37baba0320cdac856a9aa6d}{}\label{structTriggerType_a1745935dd37baba0320cdac856a9aa6d}
+
+\begin{DoxyCompactList}\small\item\em Resource type. \end{DoxyCompactList}\item 
+Fluctuation\+Type \hyperlink{structTriggerType_adb6538c5cfef3d29f6ed1ada3817b6de}{fluctuation\+Type}\hypertarget{structTriggerType_adb6538c5cfef3d29f6ed1ada3817b6de}{}\label{structTriggerType_adb6538c5cfef3d29f6ed1ada3817b6de}
+
+\begin{DoxyCompactList}\small\item\em Fluctuation type (under or over some value) \end{DoxyCompactList}\item 
+\hyperlink{structResourceValue}{Resource\+Value} \hyperlink{structTriggerType_a1f77870d66ee02dd7125cf51532b2db3}{trigger\+Value}\hypertarget{structTriggerType_a1f77870d66ee02dd7125cf51532b2db3}{}\label{structTriggerType_a1f77870d66ee02dd7125cf51532b2db3}
+
+\begin{DoxyCompactList}\small\item\em Fluctuation treshold. \end{DoxyCompactList}\item 
+long \hyperlink{structTriggerType_ac5a050ba31cde59487b91e3ac16079ff}{duration}\hypertarget{structTriggerType_ac5a050ba31cde59487b91e3ac16079ff}{}\label{structTriggerType_ac5a050ba31cde59487b91e3ac16079ff}
+
+\begin{DoxyCompactList}\small\item\em Log duration in seconds. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Raw structure describing trigger. Used during parsing config file and loading configuration into monitor. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/configrawdata.\+hpp\end{DoxyCompactItemize}

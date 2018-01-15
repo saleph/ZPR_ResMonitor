@@ -1,0 +1,59 @@
+\hypertarget{classHddState}{}\section{Hdd\+State Class Reference}
+\label{classHddState}\index{Hdd\+State@{Hdd\+State}}
+
+
+Class that represents state of the Hard Drive bandwidth. Contains information about total bandwidth, used bandwidth and bandwidth used by this application in M\+B/s.  
+
+
+
+
+{\ttfamily \#include $<$Hdd\+State.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries Hdd\+State} (double \+\_\+hdd\+In\+Use\+K\+Bs\+Read, double \+\_\+hdd\+In\+Use\+K\+Bs\+Write, double \+\_\+monitor\+Hdd\+In\+Use\+K\+Bs\+Read, double \+\_\+monitor\+Hdd\+In\+Use\+K\+Bs\+Write)\hypertarget{classHddState_a8f0a4f976c42a689c31aa8f3c750b9d4}{}\label{classHddState_a8f0a4f976c42a689c31aa8f3c750b9d4}
+
+\item 
+double {\bfseries curr\+K\+Bs\+Used\+Read} (void)\hypertarget{classHddState_a48b849ce238b6e830169e39d81ebd2f8}{}\label{classHddState_a48b849ce238b6e830169e39d81ebd2f8}
+
+\item 
+double {\bfseries curr\+K\+Bs\+Used\+Write} (void)\hypertarget{classHddState_a015826def238b010da1413939ff3ea1e}{}\label{classHddState_a015826def238b010da1413939ff3ea1e}
+
+\item 
+double {\bfseries curr\+Monitor\+K\+Bs\+Used\+Read} (void)\hypertarget{classHddState_ab0b8b045d72b8bd8aa1c68dc845f5350}{}\label{classHddState_ab0b8b045d72b8bd8aa1c68dc845f5350}
+
+\item 
+double {\bfseries curr\+Monitor\+K\+Bs\+Used\+Write} (void)\hypertarget{classHddState_a9fba13f44b261b2cf5a69be3746c6857}{}\label{classHddState_a9fba13f44b261b2cf5a69be3746c6857}
+
+\item 
+void {\bfseries set\+K\+Bs\+Used\+Read} (double \+\_\+hdd\+In\+Use\+K\+Bs\+Read)\hypertarget{classHddState_a9f8612decc9f2bccd016289af5f3b682}{}\label{classHddState_a9f8612decc9f2bccd016289af5f3b682}
+
+\item 
+void {\bfseries set\+K\+Bs\+Used\+Write} (double \+\_\+hdd\+In\+Use\+K\+Bs\+Write)\hypertarget{classHddState_acae5c83d3cf83afa0dbcaf88b30ce67f}{}\label{classHddState_acae5c83d3cf83afa0dbcaf88b30ce67f}
+
+\item 
+void {\bfseries set\+Monitor\+K\+Bs\+Used\+Read} (double \+\_\+monitor\+Hdd\+In\+Use\+K\+Bs\+Read)\hypertarget{classHddState_a577573f55afe777aff67c4fd07ddd6d8}{}\label{classHddState_a577573f55afe777aff67c4fd07ddd6d8}
+
+\item 
+void {\bfseries set\+Monitor\+K\+Bs\+Used\+Write} (double \+\_\+monitor\+Hdd\+In\+Use\+K\+Bs\+Write)\hypertarget{classHddState_a4daae6dc429d04daee5b3332909ae001}{}\label{classHddState_a4daae6dc429d04daee5b3332909ae001}
+
+\item 
+bool {\bfseries operator$>$} (const \hyperlink{structTriggerType}{Trigger\+Type} \&trigger\+Type) const \hypertarget{classHddState_a6de8b96115f4b7cae9cab8c87a98aadd}{}\label{classHddState_a6de8b96115f4b7cae9cab8c87a98aadd}
+
+\item 
+\hyperlink{classHddState}{Hdd\+State} \& \hyperlink{classHddState_a19295031a2c076b9f02c40c3a3ae2319}{operator+=} (const \hyperlink{classHddState}{Hdd\+State} \&other)\hypertarget{classHddState_a19295031a2c076b9f02c40c3a3ae2319}{}\label{classHddState_a19295031a2c076b9f02c40c3a3ae2319}
+
+\begin{DoxyCompactList}\small\item\em Addition operator. Used in mean computing. \end{DoxyCompactList}\item 
+\hyperlink{classHddState}{Hdd\+State} \& \hyperlink{classHddState_af2c42584f8d88f34860677da7b73a460}{operator/=} (double val)\hypertarget{classHddState_af2c42584f8d88f34860677da7b73a460}{}\label{classHddState_af2c42584f8d88f34860677da7b73a460}
+
+\begin{DoxyCompactList}\small\item\em Divide operator. Used in mean computing. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class that represents state of the Hard Drive bandwidth. Contains information about total bandwidth, used bandwidth and bandwidth used by this application in M\+B/s. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/Hdd\+State.\+hpp\item 
+src/library\+\_\+src/Hdd\+State.\+cpp\end{DoxyCompactItemize}

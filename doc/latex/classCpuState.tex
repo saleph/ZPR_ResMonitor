@@ -1,0 +1,47 @@
+\hypertarget{classCpuState}{}\section{Cpu\+State Class Reference}
+\label{classCpuState}\index{Cpu\+State@{Cpu\+State}}
+
+
+Class that represents state of the C\+PU usage. Contains information about percentage of C\+PU usage for system and this application.  
+
+
+
+
+{\ttfamily \#include $<$Cpu\+State.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries Cpu\+State} (double \+\_\+cpu\+In\+Use\+Percentage, double \+\_\+monitor\+Cpu\+In\+Use\+Percentage)\hypertarget{classCpuState_a3b167aab35c977484af7a1288868538a}{}\label{classCpuState_a3b167aab35c977484af7a1288868538a}
+
+\item 
+double {\bfseries curr\+Percentage\+Used} (void)\hypertarget{classCpuState_a37925c37362e0857655eb02bea295af6}{}\label{classCpuState_a37925c37362e0857655eb02bea295af6}
+
+\item 
+double {\bfseries curr\+Monitor\+Percentage\+Used} (void)\hypertarget{classCpuState_a3b65b3dd5bb67181f0fa643ef9f3c25a}{}\label{classCpuState_a3b65b3dd5bb67181f0fa643ef9f3c25a}
+
+\item 
+void {\bfseries set\+Percentage\+Used} (double \+\_\+cpu\+In\+Use\+Percentage)\hypertarget{classCpuState_a6d3715f1b8f189af792b675a2dc7f0c7}{}\label{classCpuState_a6d3715f1b8f189af792b675a2dc7f0c7}
+
+\item 
+void {\bfseries set\+Monitor\+Percentage\+Used} (double \+\_\+monitor\+Cpu\+In\+Use\+Percentage)\hypertarget{classCpuState_a1c42ccd8a57dd00ef2b15f963c9fd57e}{}\label{classCpuState_a1c42ccd8a57dd00ef2b15f963c9fd57e}
+
+\item 
+bool {\bfseries operator$>$} (const \hyperlink{structTriggerType}{Trigger\+Type} \&trigger\+Type) const \hypertarget{classCpuState_ad916c435388bfa5588db267b374dea00}{}\label{classCpuState_ad916c435388bfa5588db267b374dea00}
+
+\item 
+\hyperlink{classCpuState}{Cpu\+State} \& \hyperlink{classCpuState_a809a06f39eb017c89b6d9e025fa19e20}{operator+=} (const \hyperlink{classCpuState}{Cpu\+State} \&other)\hypertarget{classCpuState_a809a06f39eb017c89b6d9e025fa19e20}{}\label{classCpuState_a809a06f39eb017c89b6d9e025fa19e20}
+
+\begin{DoxyCompactList}\small\item\em Addition operator. Used in mean computing. \end{DoxyCompactList}\item 
+\hyperlink{classCpuState}{Cpu\+State} \& \hyperlink{classCpuState_a3e436b173911d6ac8bed63cb2d6b3566}{operator/=} (double val)\hypertarget{classCpuState_a3e436b173911d6ac8bed63cb2d6b3566}{}\label{classCpuState_a3e436b173911d6ac8bed63cb2d6b3566}
+
+\begin{DoxyCompactList}\small\item\em Divide operator. Used in mean computing. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class that represents state of the C\+PU usage. Contains information about percentage of C\+PU usage for system and this application. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/Cpu\+State.\+hpp\item 
+src/library\+\_\+src/Cpu\+State.\+cpp\end{DoxyCompactItemize}

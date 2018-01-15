@@ -1,0 +1,91 @@
+\hypertarget{classFlexLexer}{}\section{Flex\+Lexer Class Reference}
+\label{classFlexLexer}\index{Flex\+Lexer@{Flex\+Lexer}}
+
+
+Flex\textquotesingle{}es core lexer class.  
+
+
+
+
+{\ttfamily \#include $<$flex.\+hpp$>$}
+
+
+
+Inheritance diagram for Flex\+Lexer\+:
+% FIG 0
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+const char $\ast$ {\bfseries Y\+Y\+Text} () const \hypertarget{classFlexLexer_adca6f8aa6ac5e871e2ffd01e76cd5d14}{}\label{classFlexLexer_adca6f8aa6ac5e871e2ffd01e76cd5d14}
+
+\item 
+int {\bfseries Y\+Y\+Leng} () const \hypertarget{classFlexLexer_a54e92981ddbd6f05ce40b784bfc733f2}{}\label{classFlexLexer_a54e92981ddbd6f05ce40b784bfc733f2}
+
+\item 
+virtual void {\bfseries yy\+\_\+switch\+\_\+to\+\_\+buffer} (struct \hyperlink{structyy__buffer__state}{yy\+\_\+buffer\+\_\+state} $\ast$new\+\_\+buffer)=0\hypertarget{classFlexLexer_a3fa4649c1866a483fc391923ca90ca1d}{}\label{classFlexLexer_a3fa4649c1866a483fc391923ca90ca1d}
+
+\item 
+virtual struct \hyperlink{structyy__buffer__state}{yy\+\_\+buffer\+\_\+state} $\ast$ {\bfseries yy\+\_\+create\+\_\+buffer} (F\+L\+E\+X\+\_\+\+S\+TD istream $\ast$s, int size)=0\hypertarget{classFlexLexer_a9e0d5e33726e0270b241a730a3028990}{}\label{classFlexLexer_a9e0d5e33726e0270b241a730a3028990}
+
+\item 
+virtual struct \hyperlink{structyy__buffer__state}{yy\+\_\+buffer\+\_\+state} $\ast$ {\bfseries yy\+\_\+create\+\_\+buffer} (F\+L\+E\+X\+\_\+\+S\+TD istream \&s, int size)=0\hypertarget{classFlexLexer_a68cf0b5d3a7f1070da3763552c5ab7d6}{}\label{classFlexLexer_a68cf0b5d3a7f1070da3763552c5ab7d6}
+
+\item 
+virtual void {\bfseries yy\+\_\+delete\+\_\+buffer} (struct \hyperlink{structyy__buffer__state}{yy\+\_\+buffer\+\_\+state} $\ast$b)=0\hypertarget{classFlexLexer_a6c59180ab84ba98af3704ba2cb018230}{}\label{classFlexLexer_a6c59180ab84ba98af3704ba2cb018230}
+
+\item 
+virtual void {\bfseries yyrestart} (F\+L\+E\+X\+\_\+\+S\+TD istream $\ast$s)=0\hypertarget{classFlexLexer_a15aea8e169874756674e4f79553e68ed}{}\label{classFlexLexer_a15aea8e169874756674e4f79553e68ed}
+
+\item 
+virtual void {\bfseries yyrestart} (F\+L\+E\+X\+\_\+\+S\+TD istream \&s)=0\hypertarget{classFlexLexer_a4792fc9cafe4c7831d818aa46d189855}{}\label{classFlexLexer_a4792fc9cafe4c7831d818aa46d189855}
+
+\item 
+virtual int {\bfseries yylex} ()=0\hypertarget{classFlexLexer_a1b1f93d24f5a97f50eb1747fac568ccb}{}\label{classFlexLexer_a1b1f93d24f5a97f50eb1747fac568ccb}
+
+\item 
+int {\bfseries yylex} (F\+L\+E\+X\+\_\+\+S\+TD istream \&new\+\_\+in, F\+L\+E\+X\+\_\+\+S\+TD ostream \&new\+\_\+out)\hypertarget{classFlexLexer_a50b12a527598b4ceb7a23ea8a9119ae5}{}\label{classFlexLexer_a50b12a527598b4ceb7a23ea8a9119ae5}
+
+\item 
+int {\bfseries yylex} (F\+L\+E\+X\+\_\+\+S\+TD istream $\ast$new\+\_\+in, F\+L\+E\+X\+\_\+\+S\+TD ostream $\ast$new\+\_\+out=0)\hypertarget{classFlexLexer_a5ec7f8b71a9cd9142963f0d924ddaa7c}{}\label{classFlexLexer_a5ec7f8b71a9cd9142963f0d924ddaa7c}
+
+\item 
+virtual void {\bfseries switch\+\_\+streams} (F\+L\+E\+X\+\_\+\+S\+TD istream $\ast$new\+\_\+in, F\+L\+E\+X\+\_\+\+S\+TD ostream $\ast$new\+\_\+out)=0\hypertarget{classFlexLexer_a5d66869f9168a87bccd2d02063c06cf4}{}\label{classFlexLexer_a5d66869f9168a87bccd2d02063c06cf4}
+
+\item 
+virtual void {\bfseries switch\+\_\+streams} (F\+L\+E\+X\+\_\+\+S\+TD istream \&new\+\_\+in, F\+L\+E\+X\+\_\+\+S\+TD ostream \&new\+\_\+out)=0\hypertarget{classFlexLexer_a8a2f84fe0e5409820914b3ad6c4c5131}{}\label{classFlexLexer_a8a2f84fe0e5409820914b3ad6c4c5131}
+
+\item 
+int {\bfseries lineno} () const \hypertarget{classFlexLexer_a57ca10b72b34694901ea4c6a989830ff}{}\label{classFlexLexer_a57ca10b72b34694901ea4c6a989830ff}
+
+\item 
+int {\bfseries debug} () const \hypertarget{classFlexLexer_aedc593d3f484e8d433abf1f26856ccc6}{}\label{classFlexLexer_aedc593d3f484e8d433abf1f26856ccc6}
+
+\item 
+void {\bfseries set\+\_\+debug} (int flag)\hypertarget{classFlexLexer_a1da05b19b783fd94e8a65cb4ee02dec8}{}\label{classFlexLexer_a1da05b19b783fd94e8a65cb4ee02dec8}
+
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+char $\ast$ {\bfseries yytext}\hypertarget{classFlexLexer_a31e594872cba4bb896011d3ee1f75f0d}{}\label{classFlexLexer_a31e594872cba4bb896011d3ee1f75f0d}
+
+\item 
+int {\bfseries yyleng}\hypertarget{classFlexLexer_a7a483b8c8426cace921d961cd9634c8b}{}\label{classFlexLexer_a7a483b8c8426cace921d961cd9634c8b}
+
+\item 
+int {\bfseries yylineno}\hypertarget{classFlexLexer_a511f8fed6925478cb9925edce88024c7}{}\label{classFlexLexer_a511f8fed6925478cb9925edce88024c7}
+
+\item 
+int {\bfseries yy\+\_\+flex\+\_\+debug}\hypertarget{classFlexLexer_afb25c8701977e6f510799f4cf8a4a029}{}\label{classFlexLexer_afb25c8701977e6f510799f4cf8a4a029}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Flex\textquotesingle{}es core lexer class. 
+
+Wraps C implementation into C++ environment. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/flex.\+hpp\end{DoxyCompactItemize}

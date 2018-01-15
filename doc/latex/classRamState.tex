@@ -1,0 +1,59 @@
+\hypertarget{classRamState}{}\section{Ram\+State Class Reference}
+\label{classRamState}\index{Ram\+State@{Ram\+State}}
+
+
+Class \hyperlink{classRamState}{Ram\+State} represents state of the R\+AM memory. Contains information about total, used and used by this application R\+AM bytes in \mbox{[}MB\mbox{]}.  
+
+
+
+
+{\ttfamily \#include $<$Ram\+State.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries Ram\+State} (double \+\_\+total\+Ram\+MB, double \+\_\+ram\+In\+Use\+MB, double \+\_\+monitor\+Ram\+In\+Use\+MB)\hypertarget{classRamState_a4912c894e281046584ea3bf2b1b29b00}{}\label{classRamState_a4912c894e281046584ea3bf2b1b29b00}
+
+\item 
+double {\bfseries curr\+M\+B\+Used} (void)\hypertarget{classRamState_a4dfe7387bb173f4d728e0229a51e3dde}{}\label{classRamState_a4dfe7387bb173f4d728e0229a51e3dde}
+
+\item 
+double {\bfseries curr\+Percentage\+Used} (void) const \hypertarget{classRamState_a53f3328ae46b132087672607052e5505}{}\label{classRamState_a53f3328ae46b132087672607052e5505}
+
+\item 
+double {\bfseries curr\+Monitor\+M\+B\+Used} (void)\hypertarget{classRamState_a466ea42215a7837a41cc9a6dbf7e678e}{}\label{classRamState_a466ea42215a7837a41cc9a6dbf7e678e}
+
+\item 
+double {\bfseries curr\+Monitor\+Percentage\+Used} (void)\hypertarget{classRamState_a72133a30f2022e6eaa8f93dc0cd57a9f}{}\label{classRamState_a72133a30f2022e6eaa8f93dc0cd57a9f}
+
+\item 
+double {\bfseries total\+MB} (void)\hypertarget{classRamState_ac8433fa656cf67da00dfdc48b6587fba}{}\label{classRamState_ac8433fa656cf67da00dfdc48b6587fba}
+
+\item 
+void {\bfseries set\+M\+B\+Used} (double \+\_\+ram\+In\+Use\+MB)\hypertarget{classRamState_abb016ce060940f92f342073088f65bc9}{}\label{classRamState_abb016ce060940f92f342073088f65bc9}
+
+\item 
+void {\bfseries set\+Monitor\+M\+B\+Used} (double \+\_\+monitor\+Ram\+In\+Use\+MB)\hypertarget{classRamState_aaaa615fa4dd8bd8c0d6cb56344c9d8fd}{}\label{classRamState_aaaa615fa4dd8bd8c0d6cb56344c9d8fd}
+
+\item 
+void {\bfseries set\+Total\+MB} (double \+\_\+total\+Ram\+MB)\hypertarget{classRamState_a7001938fa83271174c7790b6a9193d62}{}\label{classRamState_a7001938fa83271174c7790b6a9193d62}
+
+\item 
+bool {\bfseries operator$>$} (const \hyperlink{structTriggerType}{Trigger\+Type} \&trigger\+Type) const \hypertarget{classRamState_a89756fcad64ab046d2a9a013f726e09c}{}\label{classRamState_a89756fcad64ab046d2a9a013f726e09c}
+
+\item 
+\hyperlink{classRamState}{Ram\+State} \& \hyperlink{classRamState_a0e5831d3cf8bc8c87d325b04459ddfcf}{operator+=} (const \hyperlink{classRamState}{Ram\+State} \&other)\hypertarget{classRamState_a0e5831d3cf8bc8c87d325b04459ddfcf}{}\label{classRamState_a0e5831d3cf8bc8c87d325b04459ddfcf}
+
+\begin{DoxyCompactList}\small\item\em Addition operator. Used in mean computing. \end{DoxyCompactList}\item 
+\hyperlink{classRamState}{Ram\+State} \& \hyperlink{classRamState_a89fc47688808511c00150963fcb70494}{operator/=} (double val)\hypertarget{classRamState_a89fc47688808511c00150963fcb70494}{}\label{classRamState_a89fc47688808511c00150963fcb70494}
+
+\begin{DoxyCompactList}\small\item\em Divide operator. Used in mean computing. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class \hyperlink{classRamState}{Ram\+State} represents state of the R\+AM memory. Contains information about total, used and used by this application R\+AM bytes in \mbox{[}MB\mbox{]}. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/Ram\+State.\+hpp\item 
+src/library\+\_\+src/Ram\+State.\+cpp\end{DoxyCompactItemize}

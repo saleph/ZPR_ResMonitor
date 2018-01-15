@@ -1,0 +1,54 @@
+\hypertarget{classPredicate__1or2and3}{}\section{Predicate\+\_\+1or2and3 Class Reference}
+\label{classPredicate__1or2and3}\index{Predicate\+\_\+1or2and3@{Predicate\+\_\+1or2and3}}
+
+
+\hyperlink{classPredicate}{Predicate} of type ((trigger1 OR trigger2) A\+ND trigger3).  
+
+
+
+
+{\ttfamily \#include $<$Predicate\+Types.\+hpp$>$}
+
+
+
+Inheritance diagram for Predicate\+\_\+1or2and3\+:
+% FIG 0
+
+
+Collaboration diagram for Predicate\+\_\+1or2and3\+:
+% FIG 1
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classPredicate__1or2and3_a6dd5264bc2759b2a799763ee75c81679}{Predicate\+\_\+1or2and3} (std\+::function$<$ void()$>$ callback, const \hyperlink{structTriggerType}{Trigger\+Type} \&or1\+Operand, const \hyperlink{structTriggerType}{Trigger\+Type} \&or2\+Operand, const \hyperlink{structTriggerType}{Trigger\+Type} \&and\+Operand)\hypertarget{classPredicate__1or2and3_a6dd5264bc2759b2a799763ee75c81679}{}\label{classPredicate__1or2and3_a6dd5264bc2759b2a799763ee75c81679}
+
+\begin{DoxyCompactList}\small\item\em Constructs this predicate. Takes callback function and operands. \end{DoxyCompactList}\item 
+virtual std\+::vector$<$ \hyperlink{structTriggerType}{Trigger\+Type} $>$ \hyperlink{classPredicate__1or2and3_ada2177d1a46e192c2ba2429bcb7ed8e5}{get\+Predicate\+Operands} () const 
+\item 
+virtual bool \hyperlink{classPredicate__1or2and3_aae17c4d95f403c995a56c11e8a31bfb8}{is\+Predicate\+Satisfied} () const \hypertarget{classPredicate__1or2and3_aae17c4d95f403c995a56c11e8a31bfb8}{}\label{classPredicate__1or2and3_aae17c4d95f403c995a56c11e8a31bfb8}
+
+\begin{DoxyCompactList}\small\item\em Checks if the \hyperlink{classPredicate}{Predicate} is met. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\hyperlink{classPredicate}{Predicate} of type ((trigger1 OR trigger2) A\+ND trigger3). 
+
+\subsection{Member Function Documentation}
+\index{Predicate\+\_\+1or2and3@{Predicate\+\_\+1or2and3}!get\+Predicate\+Operands@{get\+Predicate\+Operands}}
+\index{get\+Predicate\+Operands@{get\+Predicate\+Operands}!Predicate\+\_\+1or2and3@{Predicate\+\_\+1or2and3}}
+\subsubsection[{\texorpdfstring{get\+Predicate\+Operands() const }{getPredicateOperands() const }}]{\setlength{\rightskip}{0pt plus 5cm}std\+::vector$<$ {\bf Trigger\+Type} $>$ Predicate\+\_\+1or2and3\+::get\+Predicate\+Operands (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{classPredicate__1or2and3_ada2177d1a46e192c2ba2429bcb7ed8e5}{}\label{classPredicate__1or2and3_ada2177d1a46e192c2ba2429bcb7ed8e5}
+Returns vector of \hyperlink{structTriggerType}{Trigger\+Type} used in this \hyperlink{classPredicate}{Predicate}. Used in \hyperlink{classPredicateEngine}{Predicate\+Engine}. 
+
+Implements \hyperlink{classPredicate_ae7e2eb0f72d66030168a0995fa9f05a0}{Predicate}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/Predicate\+Types.\+hpp\item 
+src/library\+\_\+src/Predicate\+Types.\+cpp\end{DoxyCompactItemize}

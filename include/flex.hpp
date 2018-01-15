@@ -64,6 +64,12 @@ extern "C++" {
 struct yy_buffer_state;
 typedef int yy_state_type;
 
+
+/**
+ * @brief Flex'es core lexer class.
+ *
+ * Wraps C implementation into C++ environment.
+ */
 class FlexLexer {
 public:
 	virtual ~FlexLexer()	{ }
@@ -126,6 +132,11 @@ protected:
 
 extern "C++" {
 
+/**
+ * @brief Flex'es main lexer class.
+ *
+ * Main lexer class used in configuration file parsing based on passed std::istream stream type.
+ */
 class yyFlexLexer : public FlexLexer {
 public:
 	// arg_yyin and arg_yyout default to the cin and cout, but we

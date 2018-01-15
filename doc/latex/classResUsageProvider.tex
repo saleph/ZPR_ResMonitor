@@ -1,0 +1,85 @@
+\hypertarget{classResUsageProvider}{}\section{Res\+Usage\+Provider Class Reference}
+\label{classResUsageProvider}\index{Res\+Usage\+Provider@{Res\+Usage\+Provider}}
+
+
+{\ttfamily \#include $<$Res\+Usage\+Provider.\+hpp$>$}
+
+
+
+Inheritance diagram for Res\+Usage\+Provider\+:
+% FIG 0
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual \hyperlink{classCpuState}{Cpu\+State} \hyperlink{classResUsageProvider_a7c870e3b73ff64a908d7b8f55f277b3e}{get\+Cpu\+State} ()
+\begin{DoxyCompactList}\small\item\em Interface method that provides \hyperlink{classCpuState}{Cpu\+State} object according to current C\+PU state. \end{DoxyCompactList}\item 
+virtual \hyperlink{classRamState}{Ram\+State} \hyperlink{classResUsageProvider_ac992fba31e9212759ff1423583e98b42}{get\+Ram\+State} ()
+\begin{DoxyCompactList}\small\item\em Interface method that provides \hyperlink{classRamState}{Ram\+State} object according to current R\+AM memory state. \end{DoxyCompactList}\item 
+virtual \hyperlink{classHddState}{Hdd\+State} \hyperlink{classResUsageProvider_af77f53b73bea76a925a6a6fd24c356fb}{get\+Hdd\+State} ()
+\begin{DoxyCompactList}\small\item\em Interface method that provides \hyperlink{classHddState}{Hdd\+State} object according to current hard drive state. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class that defines interface for system-\/specific resource usage providers (Linux and Windows resource providers). 
+
+\subsection{Member Function Documentation}
+\index{Res\+Usage\+Provider@{Res\+Usage\+Provider}!get\+Cpu\+State@{get\+Cpu\+State}}
+\index{get\+Cpu\+State@{get\+Cpu\+State}!Res\+Usage\+Provider@{Res\+Usage\+Provider}}
+\subsubsection[{\texorpdfstring{get\+Cpu\+State()}{getCpuState()}}]{\setlength{\rightskip}{0pt plus 5cm}virtual {\bf Cpu\+State} Res\+Usage\+Provider\+::get\+Cpu\+State (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\hypertarget{classResUsageProvider_a7c870e3b73ff64a908d7b8f55f277b3e}{}\label{classResUsageProvider_a7c870e3b73ff64a908d7b8f55f277b3e}
+
+
+Interface method that provides \hyperlink{classCpuState}{Cpu\+State} object according to current C\+PU state. 
+
+\begin{DoxyReturn}{Returns}
+\hyperlink{classCpuState}{Cpu\+State} object with current C\+PU state. 
+\end{DoxyReturn}
+
+
+Reimplemented in \hyperlink{classResProviderMock_ab41174ae59a127ae6ad40867090b4d6f}{Res\+Provider\+Mock}, and \hyperlink{classResProviderMock_ab41174ae59a127ae6ad40867090b4d6f}{Res\+Provider\+Mock}.
+
+\index{Res\+Usage\+Provider@{Res\+Usage\+Provider}!get\+Hdd\+State@{get\+Hdd\+State}}
+\index{get\+Hdd\+State@{get\+Hdd\+State}!Res\+Usage\+Provider@{Res\+Usage\+Provider}}
+\subsubsection[{\texorpdfstring{get\+Hdd\+State()}{getHddState()}}]{\setlength{\rightskip}{0pt plus 5cm}virtual {\bf Hdd\+State} Res\+Usage\+Provider\+::get\+Hdd\+State (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\hypertarget{classResUsageProvider_af77f53b73bea76a925a6a6fd24c356fb}{}\label{classResUsageProvider_af77f53b73bea76a925a6a6fd24c356fb}
+
+
+Interface method that provides \hyperlink{classHddState}{Hdd\+State} object according to current hard drive state. 
+
+\begin{DoxyReturn}{Returns}
+\hyperlink{classHddState}{Hdd\+State} object with current hard drive state. 
+\end{DoxyReturn}
+
+
+Reimplemented in \hyperlink{classResProviderMock_a4e964f4f5f0cee703cdd6f82fc399a16}{Res\+Provider\+Mock}, and \hyperlink{classResProviderMock_a4e964f4f5f0cee703cdd6f82fc399a16}{Res\+Provider\+Mock}.
+
+\index{Res\+Usage\+Provider@{Res\+Usage\+Provider}!get\+Ram\+State@{get\+Ram\+State}}
+\index{get\+Ram\+State@{get\+Ram\+State}!Res\+Usage\+Provider@{Res\+Usage\+Provider}}
+\subsubsection[{\texorpdfstring{get\+Ram\+State()}{getRamState()}}]{\setlength{\rightskip}{0pt plus 5cm}virtual {\bf Ram\+State} Res\+Usage\+Provider\+::get\+Ram\+State (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\hypertarget{classResUsageProvider_ac992fba31e9212759ff1423583e98b42}{}\label{classResUsageProvider_ac992fba31e9212759ff1423583e98b42}
+
+
+Interface method that provides \hyperlink{classRamState}{Ram\+State} object according to current R\+AM memory state. 
+
+\begin{DoxyReturn}{Returns}
+\hyperlink{classRamState}{Ram\+State} object with current R\+AM memory state. 
+\end{DoxyReturn}
+
+
+Reimplemented in \hyperlink{classResProviderMock_a0331cddd2937c9e58ad3f67b064251d0}{Res\+Provider\+Mock}, and \hyperlink{classResProviderMock_a0331cddd2937c9e58ad3f67b064251d0}{Res\+Provider\+Mock}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/Res\+Usage\+Provider.\+hpp\item 
+src/library\+\_\+src/Res\+Usage\+Provider.\+cpp\end{DoxyCompactItemize}

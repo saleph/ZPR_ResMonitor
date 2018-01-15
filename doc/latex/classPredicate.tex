@@ -1,0 +1,73 @@
+\hypertarget{classPredicate}{}\section{Predicate Class Reference}
+\label{classPredicate}\index{Predicate@{Predicate}}
+
+
+Abstract interface for \hyperlink{classPredicate}{Predicate} computations. If the derivative class\textquotesingle{} \hyperlink{classPredicate_a5734faf53a034e3521f6305c1b3c02d1}{is\+Predicate\+Satisfied()} become true, it fire the callback function.  
+
+
+
+
+{\ttfamily \#include $<$Predicate.\+hpp$>$}
+
+
+
+Inheritance diagram for Predicate\+:
+% FIG 0
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classPredicate_ab6f0b27135d9f08f97bf79649e26f9c4}{Predicate} (std\+::function$<$ void()$>$ \&callback)
+\item 
+virtual std\+::vector$<$ \hyperlink{structTriggerType}{Trigger\+Type} $>$ \hyperlink{classPredicate_ae7e2eb0f72d66030168a0995fa9f05a0}{get\+Predicate\+Operands} () const =0
+\item 
+virtual bool \hyperlink{classPredicate_a5734faf53a034e3521f6305c1b3c02d1}{is\+Predicate\+Satisfied} () const =0\hypertarget{classPredicate_a5734faf53a034e3521f6305c1b3c02d1}{}\label{classPredicate_a5734faf53a034e3521f6305c1b3c02d1}
+
+\begin{DoxyCompactList}\small\item\em Checks if the \hyperlink{classPredicate}{Predicate} is met. \end{DoxyCompactList}\item 
+void \hyperlink{classPredicate_a8ff5d1b869af329aec0976512141ac45}{activate} (const \hyperlink{structTriggerType}{Trigger\+Type} \&trigger\+Type)\hypertarget{classPredicate_a8ff5d1b869af329aec0976512141ac45}{}\label{classPredicate_a8ff5d1b869af329aec0976512141ac45}
+
+\begin{DoxyCompactList}\small\item\em If trigger is fired, set its value to true and perform check if the whole \hyperlink{classPredicate}{Predicate} is now true. \end{DoxyCompactList}\item 
+void \hyperlink{classPredicate_a13fcab312663a3353bba777d497cf407}{deactivate} (const \hyperlink{structTriggerType}{Trigger\+Type} \&trigger\+Type)\hypertarget{classPredicate_a13fcab312663a3353bba777d497cf407}{}\label{classPredicate_a13fcab312663a3353bba777d497cf407}
+
+\begin{DoxyCompactList}\small\item\em Sets trigger\textquotesingle{}s value to false. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::unordered\+\_\+map$<$ \hyperlink{structTriggerType}{Trigger\+Type}, bool $>$ {\bfseries trigger\+State}\hypertarget{classPredicate_a1f37ffeb415ab0da04cca609f8696d93}{}\label{classPredicate_a1f37ffeb415ab0da04cca609f8696d93}
+
+\item 
+std\+::function$<$ void()$>$ {\bfseries callback}\hypertarget{classPredicate_a615ec91d46fc24596c16390dddf728fb}{}\label{classPredicate_a615ec91d46fc24596c16390dddf728fb}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Abstract interface for \hyperlink{classPredicate}{Predicate} computations. If the derivative class\textquotesingle{} \hyperlink{classPredicate_a5734faf53a034e3521f6305c1b3c02d1}{is\+Predicate\+Satisfied()} become true, it fire the callback function. 
+
+\subsection{Constructor \& Destructor Documentation}
+\index{Predicate@{Predicate}!Predicate@{Predicate}}
+\index{Predicate@{Predicate}!Predicate@{Predicate}}
+\subsubsection[{\texorpdfstring{Predicate(std\+::function$<$ void()$>$ \&callback)}{Predicate(std::function< void()> &callback)}}]{\setlength{\rightskip}{0pt plus 5cm}Predicate\+::\+Predicate (
+\begin{DoxyParamCaption}
+\item[{std\+::function$<$ void()$>$ \&}]{callback}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [explicit]}}\hypertarget{classPredicate_ab6f0b27135d9f08f97bf79649e26f9c4}{}\label{classPredicate_ab6f0b27135d9f08f97bf79649e26f9c4}
+Constructor of the \hyperlink{classPredicate}{Predicate} body. Takes function to call after the predicate met. 
+
+\subsection{Member Function Documentation}
+\index{Predicate@{Predicate}!get\+Predicate\+Operands@{get\+Predicate\+Operands}}
+\index{get\+Predicate\+Operands@{get\+Predicate\+Operands}!Predicate@{Predicate}}
+\subsubsection[{\texorpdfstring{get\+Predicate\+Operands() const =0}{getPredicateOperands() const =0}}]{\setlength{\rightskip}{0pt plus 5cm}virtual std\+::vector$<${\bf Trigger\+Type}$>$ Predicate\+::get\+Predicate\+Operands (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}\hypertarget{classPredicate_ae7e2eb0f72d66030168a0995fa9f05a0}{}\label{classPredicate_ae7e2eb0f72d66030168a0995fa9f05a0}
+Returns vector of \hyperlink{structTriggerType}{Trigger\+Type} used in particular \hyperlink{classPredicate}{Predicate}. Used in \hyperlink{classPredicateEngine}{Predicate\+Engine}. 
+
+Implemented in \hyperlink{classPredicate__1element_a1a06f5afce703b5f9f08947d7ba4864d}{Predicate\+\_\+1element}, \hyperlink{classPredicate__1and2_ab9c037b965689cf9d06448632bee3cb1}{Predicate\+\_\+1and2}, and \hyperlink{classPredicate__1or2and3_ada2177d1a46e192c2ba2429bcb7ed8e5}{Predicate\+\_\+1or2and3}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/Predicate.\+hpp\item 
+src/library\+\_\+src/Predicate.\+cpp\end{DoxyCompactItemize}

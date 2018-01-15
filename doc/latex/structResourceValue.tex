@@ -1,0 +1,43 @@
+\hypertarget{structResourceValue}{}\section{Resource\+Value Struct Reference}
+\label{structResourceValue}\index{Resource\+Value@{Resource\+Value}}
+
+
+{\ttfamily \#include $<$configrawdata.\+hpp$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum {\bfseries Resource\+Unit} \{ {\bfseries P\+E\+R\+C\+E\+NT}, 
+{\bfseries MB}, 
+{\bfseries GB}
+ \}\hypertarget{structResourceValue_a00678b22544eff855517fd5581a297e4}{}\label{structResourceValue_a00678b22544eff855517fd5581a297e4}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{structResourceValue_aafbfea4233908d8af735277733c77d8a}{operator==} (const \hyperlink{structResourceValue}{Resource\+Value} \&other) const \hypertarget{structResourceValue_aafbfea4233908d8af735277733c77d8a}{}\label{structResourceValue_aafbfea4233908d8af735277733c77d8a}
+
+\begin{DoxyCompactList}\small\item\em Operator equals used in hash maps. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+Resource\+Unit \hyperlink{structResourceValue_a983137c0fb106819f0aefa6234e3b215}{unit\+Type}\hypertarget{structResourceValue_a983137c0fb106819f0aefa6234e3b215}{}\label{structResourceValue_a983137c0fb106819f0aefa6234e3b215}
+
+\begin{DoxyCompactList}\small\item\em Resource unit -\/ percent, MB or GB. \end{DoxyCompactList}\item 
+long \hyperlink{structResourceValue_ae99ce89cc98c9032fdf5bccd9320ed2f}{value}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Structure describing resource value of particular trigger. Eg. memory over \{70\%, 200\+MB\} 
+
+\subsection{Member Data Documentation}
+\index{Resource\+Value@{Resource\+Value}!value@{value}}
+\index{value@{value}!Resource\+Value@{Resource\+Value}}
+\subsubsection[{\texorpdfstring{value}{value}}]{\setlength{\rightskip}{0pt plus 5cm}long Resource\+Value\+::value}\hypertarget{structResourceValue_ae99ce89cc98c9032fdf5bccd9320ed2f}{}\label{structResourceValue_ae99ce89cc98c9032fdf5bccd9320ed2f}
+Value of resource -\/ may be percent/size/speed distinction between size/speed is being made by context Disk has speed, memory has size Speed is being implicit interpreted as U\+N\+I\+T\+\_\+\+T\+Y\+PE per seconds 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/configrawdata.\+hpp\end{DoxyCompactItemize}

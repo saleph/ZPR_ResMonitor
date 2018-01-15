@@ -1,0 +1,7 @@
+digraph "Graphical Class Hierarchy"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="RamState",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classRamState.html",tooltip="Class RamState represents state of the RAM memory. Contains information about total, used and used by this application RAM bytes in [MB]. "];
+}
