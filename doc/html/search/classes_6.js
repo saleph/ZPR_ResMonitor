@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['samplermanagermock',['SamplerManagerMock',['../classSamplerManagerMock.html',1,'']]],
-  ['samplingmanager',['SamplingManager',['../classSamplingManager.html',1,'']]]
+  ['querystring',['QueryString',['../classSimpleWeb_1_1QueryString.html',1,'SimpleWeb']]]
 ];

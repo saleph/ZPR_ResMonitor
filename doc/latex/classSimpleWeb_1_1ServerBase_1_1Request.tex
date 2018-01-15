@@ -1,0 +1,65 @@
+\hypertarget{classSimpleWeb_1_1ServerBase_1_1Request}{}\section{Simple\+Web\+:\+:Server\+Base$<$ socket\+\_\+type $>$\+:\+:Request Class Reference}
+\label{classSimpleWeb_1_1ServerBase_1_1Request}\index{Simple\+Web\+::\+Server\+Base$<$ socket\+\_\+type $>$\+::\+Request@{Simple\+Web\+::\+Server\+Base$<$ socket\+\_\+type $>$\+::\+Request}}
+
+
+Collaboration diagram for Simple\+Web\+:\+:Server\+Base$<$ socket\+\_\+type $>$\+:\+:Request\+:
+% FIG 0
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::string {\bfseries remote\+\_\+endpoint\+\_\+address} ()\hypertarget{classSimpleWeb_1_1ServerBase_1_1Request_a0a6fbd6d33f7914fb1210505b4d49636}{}\label{classSimpleWeb_1_1ServerBase_1_1Request_a0a6fbd6d33f7914fb1210505b4d49636}
+
+\item 
+unsigned short {\bfseries remote\+\_\+endpoint\+\_\+port} ()\hypertarget{classSimpleWeb_1_1ServerBase_1_1Request_ae52197504bc13e987986b039b8343bf1}{}\label{classSimpleWeb_1_1ServerBase_1_1Request_ae52197504bc13e987986b039b8343bf1}
+
+\item 
+Case\+Insensitive\+Multimap \hyperlink{classSimpleWeb_1_1ServerBase_1_1Request_a164d86f876942bd99f6f15ba299e3040}{parse\+\_\+query\+\_\+string} ()\hypertarget{classSimpleWeb_1_1ServerBase_1_1Request_a164d86f876942bd99f6f15ba299e3040}{}\label{classSimpleWeb_1_1ServerBase_1_1Request_a164d86f876942bd99f6f15ba299e3040}
+
+\begin{DoxyCompactList}\small\item\em Returns query keys with percent-\/decoded values. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::string {\bfseries method}\hypertarget{classSimpleWeb_1_1ServerBase_1_1Request_a1fb7883b8e0e3a660117252f510f373c}{}\label{classSimpleWeb_1_1ServerBase_1_1Request_a1fb7883b8e0e3a660117252f510f373c}
+
+\item 
+std\+::string {\bfseries path}\hypertarget{classSimpleWeb_1_1ServerBase_1_1Request_aeb74bfe9b28c61dbf439f71ba752b0f7}{}\label{classSimpleWeb_1_1ServerBase_1_1Request_aeb74bfe9b28c61dbf439f71ba752b0f7}
+
+\item 
+std\+::string {\bfseries query\+\_\+string}\hypertarget{classSimpleWeb_1_1ServerBase_1_1Request_aac8edf618de88a2dc3edf5fafb351ab1}{}\label{classSimpleWeb_1_1ServerBase_1_1Request_aac8edf618de88a2dc3edf5fafb351ab1}
+
+\item 
+std\+::string {\bfseries http\+\_\+version}\hypertarget{classSimpleWeb_1_1ServerBase_1_1Request_a09d25275bf1442fb384bad9be714e6ba}{}\label{classSimpleWeb_1_1ServerBase_1_1Request_a09d25275bf1442fb384bad9be714e6ba}
+
+\item 
+\hyperlink{classSimpleWeb_1_1ServerBase_1_1Content}{Content} {\bfseries content}\hypertarget{classSimpleWeb_1_1ServerBase_1_1Request_aa62ad9907bb75bb1da861167134f772e}{}\label{classSimpleWeb_1_1ServerBase_1_1Request_aa62ad9907bb75bb1da861167134f772e}
+
+\item 
+Case\+Insensitive\+Multimap {\bfseries header}\hypertarget{classSimpleWeb_1_1ServerBase_1_1Request_a15c262f2775362b45f000ede9b7b16cb}{}\label{classSimpleWeb_1_1ServerBase_1_1Request_a15c262f2775362b45f000ede9b7b16cb}
+
+\item 
+regex\+::smatch {\bfseries path\+\_\+match}\hypertarget{classSimpleWeb_1_1ServerBase_1_1Request_acb4f07bffa4a0b92ebb451617c0c4752}{}\label{classSimpleWeb_1_1ServerBase_1_1Request_acb4f07bffa4a0b92ebb451617c0c4752}
+
+\item 
+std\+::shared\+\_\+ptr$<$ asio\+::ip\+::tcp\+::endpoint $>$ {\bfseries remote\+\_\+endpoint}\hypertarget{classSimpleWeb_1_1ServerBase_1_1Request_af917db214fc8f6c758aaaff50daff3ac}{}\label{classSimpleWeb_1_1ServerBase_1_1Request_af917db214fc8f6c758aaaff50daff3ac}
+
+\item 
+std\+::chrono\+::system\+\_\+clock\+::time\+\_\+point \hyperlink{classSimpleWeb_1_1ServerBase_1_1Request_afca51d73b0130bcb6cf5455807c59b4d}{header\+\_\+read\+\_\+time}\hypertarget{classSimpleWeb_1_1ServerBase_1_1Request_afca51d73b0130bcb6cf5455807c59b4d}{}\label{classSimpleWeb_1_1ServerBase_1_1Request_afca51d73b0130bcb6cf5455807c59b4d}
+
+\begin{DoxyCompactList}\small\item\em The time point when the request header was fully read. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+class {\bfseries Server\+Base$<$ socket\+\_\+type $>$}\hypertarget{classSimpleWeb_1_1ServerBase_1_1Request_a01d54a7e16ca437c98ec571deca98dfc}{}\label{classSimpleWeb_1_1ServerBase_1_1Request_a01d54a7e16ca437c98ec571deca98dfc}
+
+\item 
+class {\bfseries Server$<$ socket\+\_\+type $>$}\hypertarget{classSimpleWeb_1_1ServerBase_1_1Request_a3f155064c0074d68a408aa3193ca1666}{}\label{classSimpleWeb_1_1ServerBase_1_1Request_a3f155064c0074d68a408aa3193ca1666}
+
+\item 
+class {\bfseries Session}\hypertarget{classSimpleWeb_1_1ServerBase_1_1Request_afbdd63a566878ce30072e785ca7e7740}{}\label{classSimpleWeb_1_1ServerBase_1_1Request_afbdd63a566878ce30072e785ca7e7740}
+
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/server\+\_\+http.\+hpp\end{DoxyCompactItemize}

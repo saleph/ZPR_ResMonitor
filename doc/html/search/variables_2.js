@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['resolution',['resolution',['../structLogType.html#a25a9ccb6fc2e31491543fd08ccb31f37',1,'LogType']]],
-  ['resource',['resource',['../structTriggerType.html#a1745935dd37baba0320cdac856a9aa6d',1,'TriggerType::resource()'],['../structLogType.html#a087631944f7ecf0e053174020f3bb901',1,'LogType::resource()']]]
+  ['duration',['duration',['../structTriggerType.html#ac5a050ba31cde59487b91e3ac16079ff',1,'TriggerType::duration()'],['../structLogType.html#abcb4df4d9f3d88cace362fd6734ad532',1,'LogType::duration()']]]
 ];

@@ -12,21 +12,27 @@ Class that represents state of the C\+PU usage. Contains information about perce
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-{\bfseries Cpu\+State} (double \+\_\+cpu\+In\+Use\+Percentage, double \+\_\+monitor\+Cpu\+In\+Use\+Percentage)\hypertarget{classCpuState_a3b167aab35c977484af7a1288868538a}{}\label{classCpuState_a3b167aab35c977484af7a1288868538a}
+\hyperlink{classCpuState_a79069c42dd6978393a04821bcfc14944}{Cpu\+State} ()\hypertarget{classCpuState_a79069c42dd6978393a04821bcfc14944}{}\label{classCpuState_a79069c42dd6978393a04821bcfc14944}
 
-\item 
-double {\bfseries curr\+Percentage\+Used} (void)\hypertarget{classCpuState_a37925c37362e0857655eb02bea295af6}{}\label{classCpuState_a37925c37362e0857655eb02bea295af6}
+\begin{DoxyCompactList}\small\item\em Construct new \hyperlink{classCpuState}{Cpu\+State} object with all usage values set to 0.\+0. \end{DoxyCompactList}\item 
+\hyperlink{classCpuState_a3b167aab35c977484af7a1288868538a}{Cpu\+State} (double \+\_\+cpu\+In\+Use\+Percentage, double \+\_\+monitor\+Cpu\+In\+Use\+Percentage)\hypertarget{classCpuState_a3b167aab35c977484af7a1288868538a}{}\label{classCpuState_a3b167aab35c977484af7a1288868538a}
 
-\item 
-double {\bfseries curr\+Monitor\+Percentage\+Used} (void)\hypertarget{classCpuState_a3b65b3dd5bb67181f0fa643ef9f3c25a}{}\label{classCpuState_a3b65b3dd5bb67181f0fa643ef9f3c25a}
+\begin{DoxyCompactList}\small\item\em Constructs new \hyperlink{classCpuState}{Cpu\+State} object with particular C\+PU usage given as arguments. \end{DoxyCompactList}\item 
+virtual \hyperlink{classCpuState_ab8d5207b7ae36102136887d06bf30f5e}{$\sim$\+Cpu\+State} ()\hypertarget{classCpuState_ab8d5207b7ae36102136887d06bf30f5e}{}\label{classCpuState_ab8d5207b7ae36102136887d06bf30f5e}
 
-\item 
-void {\bfseries set\+Percentage\+Used} (double \+\_\+cpu\+In\+Use\+Percentage)\hypertarget{classCpuState_a6d3715f1b8f189af792b675a2dc7f0c7}{}\label{classCpuState_a6d3715f1b8f189af792b675a2dc7f0c7}
+\begin{DoxyCompactList}\small\item\em Destructor of the \hyperlink{classCpuState}{Cpu\+State} object. \end{DoxyCompactList}\item 
+double \hyperlink{classCpuState_a37925c37362e0857655eb02bea295af6}{curr\+Percentage\+Used} (void)\hypertarget{classCpuState_a37925c37362e0857655eb02bea295af6}{}\label{classCpuState_a37925c37362e0857655eb02bea295af6}
 
-\item 
-void {\bfseries set\+Monitor\+Percentage\+Used} (double \+\_\+monitor\+Cpu\+In\+Use\+Percentage)\hypertarget{classCpuState_a1c42ccd8a57dd00ef2b15f963c9fd57e}{}\label{classCpuState_a1c42ccd8a57dd00ef2b15f963c9fd57e}
+\begin{DoxyCompactList}\small\item\em Returns percentage of C\+PU used by the system. \end{DoxyCompactList}\item 
+double \hyperlink{classCpuState_a3b65b3dd5bb67181f0fa643ef9f3c25a}{curr\+Monitor\+Percentage\+Used} (void)\hypertarget{classCpuState_a3b65b3dd5bb67181f0fa643ef9f3c25a}{}\label{classCpuState_a3b65b3dd5bb67181f0fa643ef9f3c25a}
 
-\item 
+\begin{DoxyCompactList}\small\item\em Returns percentage of C\+PU used by this process. \end{DoxyCompactList}\item 
+void \hyperlink{classCpuState_a6d3715f1b8f189af792b675a2dc7f0c7}{set\+Percentage\+Used} (double \+\_\+cpu\+In\+Use\+Percentage)\hypertarget{classCpuState_a6d3715f1b8f189af792b675a2dc7f0c7}{}\label{classCpuState_a6d3715f1b8f189af792b675a2dc7f0c7}
+
+\begin{DoxyCompactList}\small\item\em Sets percentage of C\+PU used by system. \end{DoxyCompactList}\item 
+void \hyperlink{classCpuState_a1c42ccd8a57dd00ef2b15f963c9fd57e}{set\+Monitor\+Percentage\+Used} (double \+\_\+monitor\+Cpu\+In\+Use\+Percentage)\hypertarget{classCpuState_a1c42ccd8a57dd00ef2b15f963c9fd57e}{}\label{classCpuState_a1c42ccd8a57dd00ef2b15f963c9fd57e}
+
+\begin{DoxyCompactList}\small\item\em Sets percentage of C\+PU used by this process. \end{DoxyCompactList}\item 
 bool {\bfseries operator$>$} (const \hyperlink{structTriggerType}{Trigger\+Type} \&trigger\+Type) const \hypertarget{classCpuState_ad916c435388bfa5588db267b374dea00}{}\label{classCpuState_ad916c435388bfa5588db267b374dea00}
 
 \item 
@@ -36,6 +42,12 @@ bool {\bfseries operator$>$} (const \hyperlink{structTriggerType}{Trigger\+Type}
 \hyperlink{classCpuState}{Cpu\+State} \& \hyperlink{classCpuState_a3e436b173911d6ac8bed63cb2d6b3566}{operator/=} (double val)\hypertarget{classCpuState_a3e436b173911d6ac8bed63cb2d6b3566}{}\label{classCpuState_a3e436b173911d6ac8bed63cb2d6b3566}
 
 \begin{DoxyCompactList}\small\item\em Divide operator. Used in mean computing. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+std\+::ostream \& {\bfseries operator$<$$<$} (std\+::ostream \&stream, const \hyperlink{classCpuState}{Cpu\+State} \&cpu\+State)\hypertarget{classCpuState_afe947a5dc264b0bcbcd1fff64a9159ca}{}\label{classCpuState_afe947a5dc264b0bcbcd1fff64a9159ca}
+
+\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}

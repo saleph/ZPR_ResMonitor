@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['operator_2b_3d',['operator+=',['../classCpuState.html#a809a06f39eb017c89b6d9e025fa19e20',1,'CpuState::operator+=()'],['../classHddState.html#a19295031a2c076b9f02c40c3a3ae2319',1,'HddState::operator+=()'],['../classRamState.html#a0e5831d3cf8bc8c87d325b04459ddfcf',1,'RamState::operator+=()']]],
-  ['operator_2f_3d',['operator/=',['../classCpuState.html#a3e436b173911d6ac8bed63cb2d6b3566',1,'CpuState::operator/=()'],['../classHddState.html#af2c42584f8d88f34860677da7b73a460',1,'HddState::operator/=()'],['../classRamState.html#a89fc47688808511c00150963fcb70494',1,'RamState::operator/=()']]],
-  ['operator_3d_3d',['operator==',['../structResourceValue.html#aafbfea4233908d8af735277733c77d8a',1,'ResourceValue::operator==()'],['../structTriggerType.html#aec3b8c200c49716be8bc21f11dad519f',1,'TriggerType::operator==()'],['../structLogType.html#a19312744ae4df2559e3b548fff00e686',1,'LogType::operator==()']]]
+  ['io_5fservice',['io_service',['../classSimpleWeb_1_1ClientBase.html#a751ea45ccc44ab9c4afaa0738bd305ea',1,'SimpleWeb::ClientBase::io_service()'],['../classSimpleWeb_1_1ServerBase.html#a215ecd56e2772085a1447337293abc48',1,'SimpleWeb::ServerBase::io_service()']]],
+  ['ispredicatesatisfied',['isPredicateSatisfied',['../classPredicate.html#a5734faf53a034e3521f6305c1b3c02d1',1,'Predicate::isPredicateSatisfied()'],['../classPredicate__1or2and3.html#aae17c4d95f403c995a56c11e8a31bfb8',1,'Predicate_1or2and3::isPredicateSatisfied()'],['../classPredicate__1and2.html#a40454b823fe2c0d9dce1501b85050cef',1,'Predicate_1and2::isPredicateSatisfied()'],['../classPredicate__1element.html#ac21e22eb6043ef9137adb8bcb1096e6b',1,'Predicate_1element::isPredicateSatisfied()']]]
 ];

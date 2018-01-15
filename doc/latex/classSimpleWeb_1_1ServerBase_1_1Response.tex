@@ -1,0 +1,67 @@
+\hypertarget{classSimpleWeb_1_1ServerBase_1_1Response}{}\section{Simple\+Web\+:\+:Server\+Base$<$ socket\+\_\+type $>$\+:\+:Response Class Reference}
+\label{classSimpleWeb_1_1ServerBase_1_1Response}\index{Simple\+Web\+::\+Server\+Base$<$ socket\+\_\+type $>$\+::\+Response@{Simple\+Web\+::\+Server\+Base$<$ socket\+\_\+type $>$\+::\+Response}}
+
+
+Inheritance diagram for Simple\+Web\+:\+:Server\+Base$<$ socket\+\_\+type $>$\+:\+:Response\+:
+% FIG 0
+
+
+Collaboration diagram for Simple\+Web\+:\+:Server\+Base$<$ socket\+\_\+type $>$\+:\+:Response\+:
+% FIG 1
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::size\+\_\+t {\bfseries size} ()\hypertarget{classSimpleWeb_1_1ServerBase_1_1Response_a59077fdc6aa32e6539646a1e710ddd32}{}\label{classSimpleWeb_1_1ServerBase_1_1Response_a59077fdc6aa32e6539646a1e710ddd32}
+
+\item 
+void \hyperlink{classSimpleWeb_1_1ServerBase_1_1Response_ae57c15847f6d868c03b3594b4dcf69d1}{send} (const std\+::function$<$ void(const error\+\_\+code \&)$>$ \&callback=nullptr)\hypertarget{classSimpleWeb_1_1ServerBase_1_1Response_ae57c15847f6d868c03b3594b4dcf69d1}{}\label{classSimpleWeb_1_1ServerBase_1_1Response_ae57c15847f6d868c03b3594b4dcf69d1}
+
+\begin{DoxyCompactList}\small\item\em Use this function if you need to recursively send parts of a longer message. \end{DoxyCompactList}\item 
+void \hyperlink{classSimpleWeb_1_1ServerBase_1_1Response_af08a09fa9e147009e4e6401f648a8234}{write} (const char\+\_\+type $\ast$ptr, std\+::streamsize n)\hypertarget{classSimpleWeb_1_1ServerBase_1_1Response_af08a09fa9e147009e4e6401f648a8234}{}\label{classSimpleWeb_1_1ServerBase_1_1Response_af08a09fa9e147009e4e6401f648a8234}
+
+\begin{DoxyCompactList}\small\item\em Write directly to stream buffer using std\+::ostream\+::write. \end{DoxyCompactList}\item 
+void \hyperlink{classSimpleWeb_1_1ServerBase_1_1Response_a60bde9142236954b363ac09af52b3f3e}{write} (Status\+Code status\+\_\+code=Status\+Code\+::success\+\_\+ok, const Case\+Insensitive\+Multimap \&header=Case\+Insensitive\+Multimap())\hypertarget{classSimpleWeb_1_1ServerBase_1_1Response_a60bde9142236954b363ac09af52b3f3e}{}\label{classSimpleWeb_1_1ServerBase_1_1Response_a60bde9142236954b363ac09af52b3f3e}
+
+\begin{DoxyCompactList}\small\item\em Convenience function for writing status line, potential header fields, and empty content. \end{DoxyCompactList}\item 
+void \hyperlink{classSimpleWeb_1_1ServerBase_1_1Response_a65278ffe2f4a75c068db5a9fe453478a}{write} (Status\+Code status\+\_\+code, const std\+::string \&content, const Case\+Insensitive\+Multimap \&header=Case\+Insensitive\+Multimap())\hypertarget{classSimpleWeb_1_1ServerBase_1_1Response_a65278ffe2f4a75c068db5a9fe453478a}{}\label{classSimpleWeb_1_1ServerBase_1_1Response_a65278ffe2f4a75c068db5a9fe453478a}
+
+\begin{DoxyCompactList}\small\item\em Convenience function for writing status line, header fields, and content. \end{DoxyCompactList}\item 
+void \hyperlink{classSimpleWeb_1_1ServerBase_1_1Response_ab55da7f0f55399c976a96bcb696ac143}{write} (Status\+Code status\+\_\+code, std\+::istream \&content, const Case\+Insensitive\+Multimap \&header=Case\+Insensitive\+Multimap())\hypertarget{classSimpleWeb_1_1ServerBase_1_1Response_ab55da7f0f55399c976a96bcb696ac143}{}\label{classSimpleWeb_1_1ServerBase_1_1Response_ab55da7f0f55399c976a96bcb696ac143}
+
+\begin{DoxyCompactList}\small\item\em Convenience function for writing status line, header fields, and content. \end{DoxyCompactList}\item 
+void \hyperlink{classSimpleWeb_1_1ServerBase_1_1Response_a95d7e63f84fe03b2026836a3e37721bf}{write} (const std\+::string \&content, const Case\+Insensitive\+Multimap \&header=Case\+Insensitive\+Multimap())\hypertarget{classSimpleWeb_1_1ServerBase_1_1Response_a95d7e63f84fe03b2026836a3e37721bf}{}\label{classSimpleWeb_1_1ServerBase_1_1Response_a95d7e63f84fe03b2026836a3e37721bf}
+
+\begin{DoxyCompactList}\small\item\em Convenience function for writing success status line, header fields, and content. \end{DoxyCompactList}\item 
+void \hyperlink{classSimpleWeb_1_1ServerBase_1_1Response_a044ab0ea2f5eb3ed3c7491267fced720}{write} (std\+::istream \&content, const Case\+Insensitive\+Multimap \&header=Case\+Insensitive\+Multimap())\hypertarget{classSimpleWeb_1_1ServerBase_1_1Response_a044ab0ea2f5eb3ed3c7491267fced720}{}\label{classSimpleWeb_1_1ServerBase_1_1Response_a044ab0ea2f5eb3ed3c7491267fced720}
+
+\begin{DoxyCompactList}\small\item\em Convenience function for writing success status line, header fields, and content. \end{DoxyCompactList}\item 
+void \hyperlink{classSimpleWeb_1_1ServerBase_1_1Response_ab22168a8b35507acfccb57bd6b95bcd5}{write} (const Case\+Insensitive\+Multimap \&header)\hypertarget{classSimpleWeb_1_1ServerBase_1_1Response_ab22168a8b35507acfccb57bd6b95bcd5}{}\label{classSimpleWeb_1_1ServerBase_1_1Response_ab22168a8b35507acfccb57bd6b95bcd5}
+
+\begin{DoxyCompactList}\small\item\em Convenience function for writing success status line, and header fields. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{classSimpleWeb_1_1ServerBase_1_1Response_a2818b4f3c577ff1f4067bb1c62640c15}{close\+\_\+connection\+\_\+after\+\_\+response} = false
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+class {\bfseries Server\+Base$<$ socket\+\_\+type $>$}\hypertarget{classSimpleWeb_1_1ServerBase_1_1Response_a01d54a7e16ca437c98ec571deca98dfc}{}\label{classSimpleWeb_1_1ServerBase_1_1Response_a01d54a7e16ca437c98ec571deca98dfc}
+
+\item 
+class {\bfseries Server$<$ socket\+\_\+type $>$}\hypertarget{classSimpleWeb_1_1ServerBase_1_1Response_a3f155064c0074d68a408aa3193ca1666}{}\label{classSimpleWeb_1_1ServerBase_1_1Response_a3f155064c0074d68a408aa3193ca1666}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Data Documentation}
+\index{Simple\+Web\+::\+Server\+Base\+::\+Response@{Simple\+Web\+::\+Server\+Base\+::\+Response}!close\+\_\+connection\+\_\+after\+\_\+response@{close\+\_\+connection\+\_\+after\+\_\+response}}
+\index{close\+\_\+connection\+\_\+after\+\_\+response@{close\+\_\+connection\+\_\+after\+\_\+response}!Simple\+Web\+::\+Server\+Base\+::\+Response@{Simple\+Web\+::\+Server\+Base\+::\+Response}}
+\subsubsection[{\texorpdfstring{close\+\_\+connection\+\_\+after\+\_\+response}{close_connection_after_response}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class socket\+\_\+type$>$ bool {\bf Simple\+Web\+::\+Server\+Base}$<$ socket\+\_\+type $>$\+::Response\+::close\+\_\+connection\+\_\+after\+\_\+response = false}\hypertarget{classSimpleWeb_1_1ServerBase_1_1Response_a2818b4f3c577ff1f4067bb1c62640c15}{}\label{classSimpleWeb_1_1ServerBase_1_1Response_a2818b4f3c577ff1f4067bb1c62640c15}
+If true, force server to close the connection after the response have been sent.
+
+This is useful when implementing a H\+T\+T\+P/1.\+0-\/server sending content without specifying the content length. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/server\+\_\+http.\+hpp\end{DoxyCompactItemize}

@@ -28,7 +28,13 @@ void \hyperlink{classPredicate_a8ff5d1b869af329aec0976512141ac45}{activate} (con
 \begin{DoxyCompactList}\small\item\em If trigger is fired, set its value to true and perform check if the whole \hyperlink{classPredicate}{Predicate} is now true. \end{DoxyCompactList}\item 
 void \hyperlink{classPredicate_a13fcab312663a3353bba777d497cf407}{deactivate} (const \hyperlink{structTriggerType}{Trigger\+Type} \&trigger\+Type)\hypertarget{classPredicate_a13fcab312663a3353bba777d497cf407}{}\label{classPredicate_a13fcab312663a3353bba777d497cf407}
 
-\begin{DoxyCompactList}\small\item\em Sets trigger\textquotesingle{}s value to false. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Sets trigger\textquotesingle{}s value to false. \end{DoxyCompactList}\item 
+void \hyperlink{classPredicate_a547aeb6a59cff25e6040a742bda86f66}{set\+Callback} (std\+::function$<$ void()$>$ clbck)\hypertarget{classPredicate_a547aeb6a59cff25e6040a742bda86f66}{}\label{classPredicate_a547aeb6a59cff25e6040a742bda86f66}
+
+\begin{DoxyCompactList}\small\item\em Sets callback function for this predicate. \end{DoxyCompactList}\item 
+virtual std\+::ostream \& \hyperlink{classPredicate_ad7c534404b8b03573287bc8f7e7d5f82}{print} (std\+::ostream \&stream) const \hypertarget{classPredicate_ad7c534404b8b03573287bc8f7e7d5f82}{}\label{classPredicate_ad7c534404b8b03573287bc8f7e7d5f82}
+
+\begin{DoxyCompactList}\small\item\em Virtual print method for predicate print (operator$<$$<$ helper method) \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Protected Attributes}
 \begin{DoxyCompactItemize}
 \item 

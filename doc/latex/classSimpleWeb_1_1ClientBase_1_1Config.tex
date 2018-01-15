@@ -1,0 +1,33 @@
+\hypertarget{classSimpleWeb_1_1ClientBase_1_1Config}{}\section{Simple\+Web\+:\+:Client\+Base$<$ socket\+\_\+type $>$\+:\+:Config Class Reference}
+\label{classSimpleWeb_1_1ClientBase_1_1Config}\index{Simple\+Web\+::\+Client\+Base$<$ socket\+\_\+type $>$\+::\+Config@{Simple\+Web\+::\+Client\+Base$<$ socket\+\_\+type $>$\+::\+Config}}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+long \hyperlink{classSimpleWeb_1_1ClientBase_1_1Config_a5159d60e8bbffaf581bc259cde5c5a5a}{timeout} = 0\hypertarget{classSimpleWeb_1_1ClientBase_1_1Config_a5159d60e8bbffaf581bc259cde5c5a5a}{}\label{classSimpleWeb_1_1ClientBase_1_1Config_a5159d60e8bbffaf581bc259cde5c5a5a}
+
+\begin{DoxyCompactList}\small\item\em Set timeout on requests in seconds. Default value\+: 0 (no timeout). \end{DoxyCompactList}\item 
+long \hyperlink{classSimpleWeb_1_1ClientBase_1_1Config_a5528ac783a5b53328ae54a315f2cf0b5}{timeout\+\_\+connect} = 0\hypertarget{classSimpleWeb_1_1ClientBase_1_1Config_a5528ac783a5b53328ae54a315f2cf0b5}{}\label{classSimpleWeb_1_1ClientBase_1_1Config_a5528ac783a5b53328ae54a315f2cf0b5}
+
+\begin{DoxyCompactList}\small\item\em Set connect timeout in seconds. Default value\+: 0 (\hyperlink{classSimpleWeb_1_1ClientBase_1_1Config_a5159d60e8bbffaf581bc259cde5c5a5a}{Config\+::timeout} is then used instead). \end{DoxyCompactList}\item 
+std\+::size\+\_\+t \hyperlink{classSimpleWeb_1_1ClientBase_1_1Config_a9858f6441a88cb6307584da4509681cb}{max\+\_\+response\+\_\+streambuf\+\_\+size} = std\+::numeric\+\_\+limits$<$std\+::size\+\_\+t$>$\+::max()
+\item 
+std\+::string \hyperlink{classSimpleWeb_1_1ClientBase_1_1Config_a6eb0382dccf50e9e8bdc541d3f06f9d5}{proxy\+\_\+server}\hypertarget{classSimpleWeb_1_1ClientBase_1_1Config_a6eb0382dccf50e9e8bdc541d3f06f9d5}{}\label{classSimpleWeb_1_1ClientBase_1_1Config_a6eb0382dccf50e9e8bdc541d3f06f9d5}
+
+\begin{DoxyCompactList}\small\item\em Set proxy server (server\+:port) \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+class {\bfseries Client\+Base$<$ socket\+\_\+type $>$}\hypertarget{classSimpleWeb_1_1ClientBase_1_1Config_aee5298660229dd276c7169cf7ef3d387}{}\label{classSimpleWeb_1_1ClientBase_1_1Config_aee5298660229dd276c7169cf7ef3d387}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Data Documentation}
+\index{Simple\+Web\+::\+Client\+Base\+::\+Config@{Simple\+Web\+::\+Client\+Base\+::\+Config}!max\+\_\+response\+\_\+streambuf\+\_\+size@{max\+\_\+response\+\_\+streambuf\+\_\+size}}
+\index{max\+\_\+response\+\_\+streambuf\+\_\+size@{max\+\_\+response\+\_\+streambuf\+\_\+size}!Simple\+Web\+::\+Client\+Base\+::\+Config@{Simple\+Web\+::\+Client\+Base\+::\+Config}}
+\subsubsection[{\texorpdfstring{max\+\_\+response\+\_\+streambuf\+\_\+size}{max_response_streambuf_size}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class socket\+\_\+type$>$ std\+::size\+\_\+t {\bf Simple\+Web\+::\+Client\+Base}$<$ socket\+\_\+type $>$\+::Config\+::max\+\_\+response\+\_\+streambuf\+\_\+size = std\+::numeric\+\_\+limits$<$std\+::size\+\_\+t$>$\+::max()}\hypertarget{classSimpleWeb_1_1ClientBase_1_1Config_a9858f6441a88cb6307584da4509681cb}{}\label{classSimpleWeb_1_1ClientBase_1_1Config_a9858f6441a88cb6307584da4509681cb}
+Maximum size of response stream buffer. Defaults to architecture maximum. Reaching this limit will result in a message\+\_\+size error code. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/client\+\_\+http.\+hpp\end{DoxyCompactItemize}

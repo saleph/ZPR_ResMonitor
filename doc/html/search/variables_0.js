@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['duration',['duration',['../structTriggerType.html#ac5a050ba31cde59487b91e3ac16079ff',1,'TriggerType::duration()'],['../structLogType.html#abcb4df4d9f3d88cace362fd6734ad532',1,'LogType::duration()']]]
+  ['address',['address',['../classSimpleWeb_1_1ServerBase_1_1Config.html#add7a705aca3533bf0371708b19bb691c',1,'SimpleWeb::ServerBase::Config']]]
 ];
