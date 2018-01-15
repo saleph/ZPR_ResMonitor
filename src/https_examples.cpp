@@ -165,9 +165,9 @@ void exampleHttpsServerExecution(std::shared_ptr<ConfigurationParser> confParser
 	    	resp = "Wrong data!";
 
 	    if(pred != nullptr){
-	    	stream.str("");
-	    	stream << *pred;
-	    	auxString = stream.str();
+	    	stringstream ss;
+	    	ss << *pred;
+	    	auxString = ss.str();
 	    }
 		std::function<void()> sendMailFunction = [userName, userEmail, auxString](){
 			SMTPClient mailc("smtp.wp.pl", 25, "zpr_resmonitor@wp.pl",

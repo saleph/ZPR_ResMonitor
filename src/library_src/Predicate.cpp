@@ -23,4 +23,8 @@ void Predicate::setCallback(std::function<void()> clbck){
 	this->callback = clbck;
 }
 
-std::ostream & operator<<(std::ostream & stream, const Predicate & pred) {return stream << "Trolololo";};
+std::ostream & operator<<(std::ostream & stream, const Predicate & pred)
+{
+	return pred.print(stream);
+}
+

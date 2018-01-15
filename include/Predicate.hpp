@@ -35,6 +35,8 @@ public:
     /// Sets callback function for this predicate.
     void setCallback(std::function<void()> clbck);
 
+    /// Virtual print method for predicate print (operator<< helper method)
+    virtual std::ostream & print(std::ostream & stream) const { return stream;};
 protected:
     std::unordered_map<TriggerType, bool> triggerState;
     std::function<void()> callback;
