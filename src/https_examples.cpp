@@ -76,6 +76,7 @@ void exampleHttpsServerExecution(std::shared_ptr<ConfigurationParser> confParser
 
 	  std::string userName;
 	  std::string userEmail;
+	  std::vector<std::shared_ptr<Predicate>> predicates;
 
 	  // Add resources using path-regex and method-string, and an anonymous function
 	  // POST-example for the path /string, responds the posted string
@@ -130,17 +131,20 @@ void exampleHttpsServerExecution(std::shared_ptr<ConfigurationParser> confParser
 	    			confParser->getTriggerTypes().at(std::stoi(seglist.at(5))),
 					confParser->getTriggerTypes().at(std::stoi(seglist.at(3))),
 					confParser->getTriggerTypes().at(std::stoi(seglist.at(1))));
+	    	predicates.push_back(pred);
 	    	predEngine->addPredicate(pred);
 	    }
 	    else if(query_fields.size() == 2){
 	    	pred = std::make_shared<Predicate_1and2>(pf,
 	    			confParser->getTriggerTypes().at(std::stoi(seglist.at(3))),
 					confParser->getTriggerTypes().at(std::stoi(seglist.at(1))));
+	    	predicates.push_back(pred);
 	    	predEngine->addPredicate(pred);
 	    }
 	    else if(query_fields.size() == 1){
 	    	pred = std::make_shared<Predicate_1element>(pf,
 					confParser->getTriggerTypes().at(std::stoi(seglist.at(1))));
+	    	predicates.push_back(pred);
 	    	predEngine->addPredicate(pred);
 	    }
 	    else
