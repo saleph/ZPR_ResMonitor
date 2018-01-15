@@ -19,14 +19,40 @@ using namespace std::chrono;
 
 /**
  * 	Class that provides states of resources in Linux system
- * 	(CPU, RAM and Hard Drive).
+ * 	(CPU, RAM and Hard Drive). Can be only used on Linux systems.
+ * 	Corresponding resource provider class for windows is WindowsResProvider.
  */
 class LinuxResProvider : public ResUsageProvider
 {
 public:
+	/**
+	 *	@brief	Default constructor for LinuxResProvider.
+	 *	Initializes first CPU and Hdd usage measurements.
+	 */
 	LinuxResProvider();
+
+	/**
+	 * 	@brief	Method that provides CpuState object in Linux system
+	 * 	according to current CPU state.
+	 *
+	 * 	@return	CpuState object with current CPU usage state.
+	 */
 	CpuState getCpuState(void);
+
+	/**
+	 * 	@brief	Method that provides RamState object in Linux system
+	 * 	according to current RAM memory state.
+	 *
+	 * 	@return	RamState object with current RAM memory usage state.
+	 */
 	RamState getRamState(void);
+
+	/**
+	 * 	@brief	Method that provides HddState object in Linux system
+	 * 	according to current hard drive bandwidth usage state.
+	 *
+	 * 	@return	HddState object with current hard drive bandwidth usage state.
+	 */
 	HddState getHddState(void);
 
 private:

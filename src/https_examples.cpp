@@ -10,11 +10,7 @@
 // Added for the json-example
 #define BOOST_SPIRIT_THREADSAFE
 
-#include <boost/property_tree/json_parser.hpp>
-#include <boost/property_tree/ptree.hpp>
-
 // Added for the default_resource example
-#include "crypto.hpp"
 #include <algorithm>
 #include <boost/filesystem.hpp>
 #include <fstream>
@@ -35,6 +31,9 @@ using namespace std;
 
 using HttpServer = SimpleWeb::Server<SimpleWeb::HTTP>;
 
+/**
+ * 	This function return main ZPRMonitor web-page by getting html into given string.
+ */
 void writeHtmlToString(std::shared_ptr<ConfigurationParser> confParser, std::string & resp){
 	std::stringstream html, triggerSelections, logSelections;
 	int i = 0;
@@ -82,7 +81,10 @@ void writeHtmlToString(std::shared_ptr<ConfigurationParser> confParser, std::str
 	resp = html.str();
 }
 
-void exampleHttpsServerExecution(std::shared_ptr<ConfigurationParser> confParser,
+/**
+ * 	Server main thread of execution
+ */
+void zprmonitorHttpsServerExecution(std::shared_ptr<ConfigurationParser> confParser,
 		std::shared_ptr<PredicateEngine> predEngine, std::shared_ptr<SamplingManager> samplingManager) {
 	  // HTTP-server at port 8080 using 1 thread
 	  // Unless you do more heavy non-threaded processing in the resources,
@@ -94,7 +96,10 @@ void exampleHttpsServerExecution(std::shared_ptr<ConfigurationParser> confParser
 	  std::string userEmail;
 	  std::vector<std::shared_ptr<Predicate>> predicates;
 
-	  server.resource["^/getlogs$"]["GET"] = [&confParser, &samplingManager](shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request) {
+	  // Respond with the log list requested by the web-page user
+	  server.resource["^/getlogs$"]["GET"] =
+			  [&confParser, &samplingManager]
+				  (shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request) {
 		  	std::string resp;
 			stringstream stream;
 			auto query_fields = request->parse_query_string();
@@ -109,6 +114,7 @@ void exampleHttpsServerExecution(std::shared_ptr<ConfigurationParser> confParser
 			stringstream newStream;
 			unsigned logNumber = std::stoi(seglist.at(1));
 			const LogType selectedLogType = confParser->getLogTypes().at(logNumber);
+			// Get logs depending on its type
 			if(selectedLogType.resource == LogType::Resource::CPU){
 				for(auto && cpuLog : *(samplingManager->getCpuLog(selectedLogType))){
 					newStream << cpuLog << "\n";
@@ -130,7 +136,9 @@ void exampleHttpsServerExecution(std::shared_ptr<ConfigurationParser> confParser
 				  << resp;
 	  };
 
-	  server.resource["^/trigger_choose$"]["GET"] = [&](shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request) {
+	  // Respond on user trigger selection - register trigger and subscribe user for email notification
+	  server.resource["^/trigger_choose$"]["GET"] =
+			  [&](shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request) {
 		std::string resp("Your subscription has been saved!");
 	    stringstream stream;
 	    auto query_fields = request->parse_query_string();
@@ -185,7 +193,7 @@ void exampleHttpsServerExecution(std::shared_ptr<ConfigurationParser> confParser
 				  << resp;
 	  };
 
-
+	  // Set user name and email address given in request message
 	  server.resource["^/set_email"]["GET"] = [&](shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request) {
 		std::string resp;
 		stringstream stream;
@@ -215,25 +223,7 @@ void exampleHttpsServerExecution(std::shared_ptr<ConfigurationParser> confParser
 				  << resp;
 	  };
 
-	  // GET-example for the path /match/[number], responds with the matched string in path (number)
-	  // For instance a request GET /match/123 will receive: 123
-	  server.resource["^/match/([0-9]+)$"]["GET"] = [](shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request) {
-	    response->write(request->path_match[1]);
-	  };
-
-	  // GET-example simulating heavy work in a separate thread
-	  server.resource["^/work$"]["GET"] = [](shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> /*request*/) {
-	    thread work_thread([response] {
-	      this_thread::sleep_for(chrono::seconds(5));
-	      response->write("Work done");
-	    });
-	    work_thread.detach();
-	  };
-
-	  // Default GET-example. If no other matches, this anonymous function will be called.
-	  // Will respond with content in the web/-directory, and its subdirectories.
-	  // Default file: index.html
-	  // Can for instance be used to retrieve an HTML 5 client that uses REST-resources on this server
+	  // Default GET-example. Reutrn main http page
 	  server.default_resource["GET"] = [&confParser](shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request) {
 		  std::string resp;
 		  writeHtmlToString(confParser, resp);
@@ -281,6 +271,6 @@ int main() {
 		samplingManager->startSampling();
 		samplingManager->connectPredicateEngine(*engine);
 
-		exampleHttpsServerExecution(parser, engine, samplingManager);
+		zprmonitorHttpsServerExecution(parser, engine, samplingManager);
 	}
 }

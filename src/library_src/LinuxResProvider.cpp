@@ -11,6 +11,7 @@ LinuxResProvider::LinuxResProvider()
 	initSystemCpuUsage();
 	initSelfCpuUsage();
 	initHddUsage();
+	getCpuState();
 }
 
 /**
