@@ -79,6 +79,8 @@ std::ostream& operator<< (std::ostream& stream, const TriggerType::Resource& res
 std::ostream& operator<< (std::ostream& stream, const TriggerType& triggerType);
 std::ostream& operator<< (std::ostream& stream, const ResourceValue::ResourceUnit& unit);
 std::ostream& operator<< (std::ostream& stream, const ResourceValue& resource);
+std::ostream &operator<<(std::ostream &stream, const LogType::Resource &resource);
+std::ostream& operator<< (std::ostream& stream, const LogType& logType);
 
 namespace std {
     template <>

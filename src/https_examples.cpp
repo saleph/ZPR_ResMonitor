@@ -18,7 +18,11 @@
 
 #include "ConfigurationParser.hpp"
 #include "SamplingManager.hpp"
+#ifdef __linux__
 #include "LinuxResProvider.hpp"
+#elif _WIN32
+#include "WindowsResProvider.hpp"
+#endif
 #include "configrawdata.hpp"
 #include "PredicateTypes.hpp"
 
@@ -31,11 +35,16 @@ using HttpServer = SimpleWeb::Server<SimpleWeb::HTTP>;
 using HttpClient = SimpleWeb::Client<SimpleWeb::HTTP>;
 
 void writeHtmlToString(std::shared_ptr<ConfigurationParser> confParser, std::string & resp){
-	std::stringstream html, selections;
+	std::stringstream html, triggerSelections, logSelections;
 	int i = 0;
 	for(auto && triggType : confParser->getTriggerTypes())
 	{
-		selections << "<option value=\"" << std::to_string(i++) << "\">" << triggType << "</option>\n";
+		triggerSelections << "<option value=\"" << std::to_string(i++) << "\">" << triggType << "</option>\n";
+	}
+	i = 0;
+	for(auto && logType : confParser->getLogTypes())
+	{
+		logSelections << "<option value=\"" << std::to_string(i++) << "\">" << logType << "</option>\n";
 	}
 
 	html << "<html>\n<head>\n<title>Simple-Web-Server html-file</title>\n</head>\n<body>"
@@ -46,28 +55,34 @@ void writeHtmlToString(std::shared_ptr<ConfigurationParser> confParser, std::str
 	   "<input type = \"submit\" value = \"Apply\" />\n"
 	"</form>\n<form method=\"GET\" action=\"/trigger_choose\">\n"
 	"<select name=\"trigger0\" required>";
-	html << selections.str();
+	html << triggerSelections.str();
 	html << " </select>OR<select name=\"trigger1\" required>\n";
-	html << selections.str();
+	html << triggerSelections.str();
 	html << " </select>AND<select name=\"trigger2\" required>\n";
-	html << selections.str();;
+	html << triggerSelections.str();
 	html << "</select>\n<input type=\"submit\" value=\"Submit\">\n"
 		"</form>\n<form method=\"GET\" action=\"/trigger_choose\">\n"
 	  "<select name=\"trigger0\" required>";
-	html << selections.str();;
+	html << triggerSelections.str();;
 	html << " </select>AND<select name=\"trigger1\" required>\n";
-	html << selections.str();;
+	html << triggerSelections.str();;
 	html << "</select>\n<input type=\"submit\" value=\"Submit\">\n"
 				"</form>\n<form method=\"GET\" action=\"/trigger_choose\">\n"
 			  "<select name=\"trigger0\" required>";
-	html << selections.str();;
+	html << triggerSelections.str();;
 	html << "</select>\n<input type=\"submit\" value=\"Submit\">\n"
-						"</form>\n</body>\n</html>";
+			"</form>\n<form method=\"GET\" action=\"/getlogs\">\n"
+				"Show logs of type\n"
+			  "<select name=\"trigger\" required>\n";
+	html << logSelections.str();
+	html << "</select>\n"
+			"<input type=\"submit\" value=\"Submit\">\n"
+			"</form>\n</body>\n</html>";
 	resp = html.str();
 }
 
 void exampleHttpsServerExecution(std::shared_ptr<ConfigurationParser> confParser,
-		std::shared_ptr<PredicateEngine> predEngine) {
+		std::shared_ptr<PredicateEngine> predEngine, std::shared_ptr<SamplingManager> samplingManager) {
 	// HTTP-server at port 8080 using 1 thread
 	  // Unless you do more heavy non-threaded processing in the resources,
 	  // 1 thread is usually faster than several threads
@@ -96,9 +111,37 @@ void exampleHttpsServerExecution(std::shared_ptr<ConfigurationParser> confParser
 	    // response->write(content);
 	  };
 
-	  server.resource["^/gettriggers$"]["GET"] = [&confParser](shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request) {
-		  std::string resp;
-		  writeHtmlToString(confParser, resp);
+	  server.resource["^/getlogs$"]["GET"] = [&confParser, &samplingManager](shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request) {
+		  	std::string resp;
+			stringstream stream;
+			auto query_fields = request->parse_query_string();
+			for(auto &field : query_fields)
+				stream << field.first << ": " << field.second << ":";
+			std::string segment;
+			std::vector<std::string> seglist;
+			while(std::getline(stream, segment, ':'))
+			{
+				seglist.push_back(segment);
+			}
+			unsigned logNumber = std::stoi(seglist.at(1));
+			const LogType selectedLogType = confParser->getLogTypes().at(logNumber);
+			if(selectedLogType.resource == LogType::Resource::CPU){
+				for(auto && cpuLog : *(samplingManager->getCpuLog(selectedLogType))){
+					stream << cpuLog << "\n";
+				}
+			}
+			else if(selectedLogType.resource == LogType::Resource::MEMORY){
+				for(auto && ramLog : *(samplingManager->getRamLog(selectedLogType))){
+					stream << ramLog << "\n";
+				}
+			}
+			else if(selectedLogType.resource == LogType::Resource::DISK){
+				for(auto && hddLog : *(samplingManager->getHddLog(selectedLogType))){
+					stream << hddLog << "\n";
+				}
+			}
+
+		  resp = stream.str();
 		  *response << "HTTP/1.1 200 OK\r\nContent-Length: " << resp.length() << "\r\n\r\n"
 				  << resp;
 	  };
@@ -329,14 +372,17 @@ int main() {
 		std::shared_ptr<ConfigurationParser> parser = std::make_shared<ConfigurationParser>(stream);
 		parser->run();
 
-
+		#ifdef __linux__
 		std::shared_ptr<ResUsageProvider> provider = std::make_shared<LinuxResProvider>();
+		#elif _WIN32
+		std::shared_ptr<ResUsageProvider> provider = std::make_shared<WindowsResProvider>();
+		#endif
 
 		std::shared_ptr<PredicateEngine> engine = std::make_shared<PredicateEngine>();
 
 		// samplerManagerMock is set to take only 10 samples
 		// (as 10 samples in 10 second, but without any delay between them)
-		std::unique_ptr<SamplingManager> samplingManager =
+		std::shared_ptr<SamplingManager> samplingManager =
 				std::make_unique<SamplingManager>(
 						provider, parser->getLogTypes(), parser->getTriggerTypes(),
 						[](const TriggerType & t){std::cout<<"Callback triggered\n"<<std::endl;}//<<t.resource<<", "<<t.fluctuationType<<", "<<t.triggerValue
@@ -344,6 +390,6 @@ int main() {
 		samplingManager->startSampling();
 		samplingManager->connectPredicateEngine(*engine);
 
-		exampleHttpsServerExecution(parser, engine);
+		exampleHttpsServerExecution(parser, engine, samplingManager);
 	}
 }

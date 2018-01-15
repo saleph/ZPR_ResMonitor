@@ -34,9 +34,13 @@ public:
         monitorCpuInUsePercentage /= val;
 		return *this;
     }
+
+    friend std::ostream & operator<<(std::ostream & stream, const CpuState & cpuState);
 private:
 	double cpuInUsePercentage;
 	double monitorCpuInUsePercentage;
 };
+
+std::ostream & operator<<(std::ostream & stream, const CpuState & cpuState);
 
 #endif /* SRC_LIBRARY_SRC_CPUSTATE_H_ */

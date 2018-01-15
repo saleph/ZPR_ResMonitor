@@ -45,3 +45,10 @@ bool CpuState::operator>(const TriggerType &triggerType) const {
 
 	return out;
 }
+
+std::ostream & operator<<(std::ostream & stream, const CpuState & cpuState)
+{
+	stream << "CPU (system) [%]: "<< cpuState.cpuInUsePercentage
+			<< ", CPU (monitor) [%]: " << cpuState.monitorCpuInUsePercentage;
+	return stream;
+}
