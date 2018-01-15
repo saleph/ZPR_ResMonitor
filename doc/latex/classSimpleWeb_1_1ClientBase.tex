@@ -1,0 +1,175 @@
+\hypertarget{classSimpleWeb_1_1ClientBase}{}\section{Simple\+Web\+:\+:Client\+Base$<$ socket\+\_\+type $>$ Class Template Reference}
+\label{classSimpleWeb_1_1ClientBase}\index{Simple\+Web\+::\+Client\+Base$<$ socket\+\_\+type $>$@{Simple\+Web\+::\+Client\+Base$<$ socket\+\_\+type $>$}}
+
+
+Inheritance diagram for Simple\+Web\+:\+:Client\+Base$<$ socket\+\_\+type $>$\+:
+% FIG 0
+
+
+Collaboration diagram for Simple\+Web\+:\+:Client\+Base$<$ socket\+\_\+type $>$\+:
+% FIG 1
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classSimpleWeb_1_1ClientBase_1_1Config}{Config}
+\item 
+class \hyperlink{classSimpleWeb_1_1ClientBase_1_1Connection}{Connection}
+\item 
+class \hyperlink{classSimpleWeb_1_1ClientBase_1_1Content}{Content}
+\item 
+class \hyperlink{classSimpleWeb_1_1ClientBase_1_1Response}{Response}
+\item 
+class \hyperlink{classSimpleWeb_1_1ClientBase_1_1Session}{Session}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::shared\+\_\+ptr$<$ \hyperlink{classSimpleWeb_1_1ClientBase_1_1Response}{Response} $>$ \hyperlink{classSimpleWeb_1_1ClientBase_a3f771b7ba1fda0f30dd6558b7a2f98c7}{request} (const std\+::string \&method, const std\+::string \&path=std\+::string(\char`\"{}/\char`\"{}), string\+\_\+view content=\char`\"{}\char`\"{}, const Case\+Insensitive\+Multimap \&header=Case\+Insensitive\+Multimap())
+\item 
+std\+::shared\+\_\+ptr$<$ \hyperlink{classSimpleWeb_1_1ClientBase_1_1Response}{Response} $>$ \hyperlink{classSimpleWeb_1_1ClientBase_ae75f536430b6b5035a3d1616002f2339}{request} (const std\+::string \&method, const std\+::string \&path, std\+::istream \&content, const Case\+Insensitive\+Multimap \&header=Case\+Insensitive\+Multimap())
+\item 
+void \hyperlink{classSimpleWeb_1_1ClientBase_a83c168ba1c95f3953088c4742f492210}{request} (const std\+::string \&method, const std\+::string \&path, string\+\_\+view content, const Case\+Insensitive\+Multimap \&header, std\+::function$<$ void(std\+::shared\+\_\+ptr$<$ \hyperlink{classSimpleWeb_1_1ClientBase_1_1Response}{Response} $>$, const error\+\_\+code \&)$>$ \&\&request\+\_\+callback\+\_\+)
+\item 
+void \hyperlink{classSimpleWeb_1_1ClientBase_aa269693c14f369c8134b0548a0427459}{request} (const std\+::string \&method, const std\+::string \&path, string\+\_\+view content, std\+::function$<$ void(std\+::shared\+\_\+ptr$<$ \hyperlink{classSimpleWeb_1_1ClientBase_1_1Response}{Response} $>$, const error\+\_\+code \&)$>$ \&\&request\+\_\+callback)
+\item 
+void \hyperlink{classSimpleWeb_1_1ClientBase_a6a4abeab44198640492d8d4f66ab56f4}{request} (const std\+::string \&method, const std\+::string \&path, std\+::function$<$ void(std\+::shared\+\_\+ptr$<$ \hyperlink{classSimpleWeb_1_1ClientBase_1_1Response}{Response} $>$, const error\+\_\+code \&)$>$ \&\&request\+\_\+callback)\hypertarget{classSimpleWeb_1_1ClientBase_a6a4abeab44198640492d8d4f66ab56f4}{}\label{classSimpleWeb_1_1ClientBase_a6a4abeab44198640492d8d4f66ab56f4}
+
+\begin{DoxyCompactList}\small\item\em Asynchronous request where setting and/or running \hyperlink{classSimpleWeb_1_1Client}{Client}\textquotesingle{}s io\+\_\+service is required. \end{DoxyCompactList}\item 
+void \hyperlink{classSimpleWeb_1_1ClientBase_a982722988d4ec991cdbe0c298733d332}{request} (const std\+::string \&method, std\+::function$<$ void(std\+::shared\+\_\+ptr$<$ \hyperlink{classSimpleWeb_1_1ClientBase_1_1Response}{Response} $>$, const error\+\_\+code \&)$>$ \&\&request\+\_\+callback)\hypertarget{classSimpleWeb_1_1ClientBase_a982722988d4ec991cdbe0c298733d332}{}\label{classSimpleWeb_1_1ClientBase_a982722988d4ec991cdbe0c298733d332}
+
+\begin{DoxyCompactList}\small\item\em Asynchronous request where setting and/or running \hyperlink{classSimpleWeb_1_1Client}{Client}\textquotesingle{}s io\+\_\+service is required. \end{DoxyCompactList}\item 
+void \hyperlink{classSimpleWeb_1_1ClientBase_a0c7e54ee77ba770b530917f72b49165e}{request} (const std\+::string \&method, const std\+::string \&path, std\+::istream \&content, const Case\+Insensitive\+Multimap \&header, std\+::function$<$ void(std\+::shared\+\_\+ptr$<$ \hyperlink{classSimpleWeb_1_1ClientBase_1_1Response}{Response} $>$, const error\+\_\+code \&)$>$ \&\&request\+\_\+callback\+\_\+)\hypertarget{classSimpleWeb_1_1ClientBase_a0c7e54ee77ba770b530917f72b49165e}{}\label{classSimpleWeb_1_1ClientBase_a0c7e54ee77ba770b530917f72b49165e}
+
+\begin{DoxyCompactList}\small\item\em Asynchronous request where setting and/or running \hyperlink{classSimpleWeb_1_1Client}{Client}\textquotesingle{}s io\+\_\+service is required. \end{DoxyCompactList}\item 
+void \hyperlink{classSimpleWeb_1_1ClientBase_a54b976ca2d8c7bda9b839d8de288f5a9}{request} (const std\+::string \&method, const std\+::string \&path, std\+::istream \&content, std\+::function$<$ void(std\+::shared\+\_\+ptr$<$ \hyperlink{classSimpleWeb_1_1ClientBase_1_1Response}{Response} $>$, const error\+\_\+code \&)$>$ \&\&request\+\_\+callback)\hypertarget{classSimpleWeb_1_1ClientBase_a54b976ca2d8c7bda9b839d8de288f5a9}{}\label{classSimpleWeb_1_1ClientBase_a54b976ca2d8c7bda9b839d8de288f5a9}
+
+\begin{DoxyCompactList}\small\item\em Asynchronous request where setting and/or running \hyperlink{classSimpleWeb_1_1Client}{Client}\textquotesingle{}s io\+\_\+service is required. \end{DoxyCompactList}\item 
+void \hyperlink{classSimpleWeb_1_1ClientBase_a820c98fa3dd368e9fa09cebdd79b2d61}{stop} ()\hypertarget{classSimpleWeb_1_1ClientBase_a820c98fa3dd368e9fa09cebdd79b2d61}{}\label{classSimpleWeb_1_1ClientBase_a820c98fa3dd368e9fa09cebdd79b2d61}
+
+\begin{DoxyCompactList}\small\item\em Close connections. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classSimpleWeb_1_1ClientBase_1_1Config}{Config} \hyperlink{classSimpleWeb_1_1ClientBase_af17ddd25319c4f9029969441dfd54eff}{config}\hypertarget{classSimpleWeb_1_1ClientBase_af17ddd25319c4f9029969441dfd54eff}{}\label{classSimpleWeb_1_1ClientBase_af17ddd25319c4f9029969441dfd54eff}
+
+\begin{DoxyCompactList}\small\item\em Set before calling request. \end{DoxyCompactList}\item 
+std\+::shared\+\_\+ptr$<$ asio\+::io\+\_\+service $>$ \hyperlink{classSimpleWeb_1_1ClientBase_a751ea45ccc44ab9c4afaa0738bd305ea}{io\+\_\+service}
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries Client\+Base} (const std\+::string \&host\+\_\+port, unsigned short default\+\_\+port)\hypertarget{classSimpleWeb_1_1ClientBase_a4a74d44c9df44d0d469ad453bdac43bf}{}\label{classSimpleWeb_1_1ClientBase_a4a74d44c9df44d0d469ad453bdac43bf}
+
+\item 
+std\+::shared\+\_\+ptr$<$ \hyperlink{classSimpleWeb_1_1ClientBase_1_1Connection}{Connection} $>$ {\bfseries get\+\_\+connection} ()\hypertarget{classSimpleWeb_1_1ClientBase_af69804b6da3fbd083be6c1fc8b8b72e7}{}\label{classSimpleWeb_1_1ClientBase_af69804b6da3fbd083be6c1fc8b8b72e7}
+
+\item 
+virtual std\+::shared\+\_\+ptr$<$ \hyperlink{classSimpleWeb_1_1ClientBase_1_1Connection}{Connection} $>$ {\bfseries create\+\_\+connection} ()=0\hypertarget{classSimpleWeb_1_1ClientBase_aad37706d6aff9f53cb34c129c27a9fdb}{}\label{classSimpleWeb_1_1ClientBase_aad37706d6aff9f53cb34c129c27a9fdb}
+
+\item 
+virtual void {\bfseries connect} (const std\+::shared\+\_\+ptr$<$ \hyperlink{classSimpleWeb_1_1ClientBase_1_1Session}{Session} $>$ \&)=0\hypertarget{classSimpleWeb_1_1ClientBase_aaced51a42dc673214f323b7edcc304b6}{}\label{classSimpleWeb_1_1ClientBase_aaced51a42dc673214f323b7edcc304b6}
+
+\item 
+std\+::unique\+\_\+ptr$<$ asio\+::streambuf $>$ {\bfseries create\+\_\+request\+\_\+header} (const std\+::string \&method, const std\+::string \&path, const Case\+Insensitive\+Multimap \&header) const \hypertarget{classSimpleWeb_1_1ClientBase_ab0952dbc345306de997e4432a0d9157a}{}\label{classSimpleWeb_1_1ClientBase_ab0952dbc345306de997e4432a0d9157a}
+
+\item 
+std\+::pair$<$ std\+::string, unsigned short $>$ {\bfseries parse\+\_\+host\+\_\+port} (const std\+::string \&host\+\_\+port, unsigned short default\+\_\+port) const \hypertarget{classSimpleWeb_1_1ClientBase_aa5400b1c44ab37287863ff330975c94f}{}\label{classSimpleWeb_1_1ClientBase_aa5400b1c44ab37287863ff330975c94f}
+
+\item 
+void {\bfseries write} (const std\+::shared\+\_\+ptr$<$ \hyperlink{classSimpleWeb_1_1ClientBase_1_1Session}{Session} $>$ \&session)\hypertarget{classSimpleWeb_1_1ClientBase_a2d84713eb83ab8b77a1663f57f692b02}{}\label{classSimpleWeb_1_1ClientBase_a2d84713eb83ab8b77a1663f57f692b02}
+
+\item 
+void {\bfseries read} (const std\+::shared\+\_\+ptr$<$ \hyperlink{classSimpleWeb_1_1ClientBase_1_1Session}{Session} $>$ \&session)\hypertarget{classSimpleWeb_1_1ClientBase_a16f3a8845be4c7a0ff2a5c67f6e76ab8}{}\label{classSimpleWeb_1_1ClientBase_a16f3a8845be4c7a0ff2a5c67f6e76ab8}
+
+\item 
+void {\bfseries read\+\_\+chunked\+\_\+transfer\+\_\+encoded} (const std\+::shared\+\_\+ptr$<$ \hyperlink{classSimpleWeb_1_1ClientBase_1_1Session}{Session} $>$ \&session, const std\+::shared\+\_\+ptr$<$ asio\+::streambuf $>$ \&chunks\+\_\+streambuf)\hypertarget{classSimpleWeb_1_1ClientBase_a23812e2e3ac267b4d3adaa25abc28068}{}\label{classSimpleWeb_1_1ClientBase_a23812e2e3ac267b4d3adaa25abc28068}
+
+\item 
+void {\bfseries read\+\_\+chunked\+\_\+transfer\+\_\+encoded\+\_\+chunk} (const std\+::shared\+\_\+ptr$<$ \hyperlink{classSimpleWeb_1_1ClientBase_1_1Session}{Session} $>$ \&session, const std\+::shared\+\_\+ptr$<$ asio\+::streambuf $>$ \&chunks\+\_\+streambuf, unsigned long length)\hypertarget{classSimpleWeb_1_1ClientBase_a99fd2afcea8880542bceacc07de42c5a}{}\label{classSimpleWeb_1_1ClientBase_a99fd2afcea8880542bceacc07de42c5a}
+
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+bool {\bfseries internal\+\_\+io\+\_\+service} = false\hypertarget{classSimpleWeb_1_1ClientBase_a180f9536bdb0559518c47bc7382e3b8e}{}\label{classSimpleWeb_1_1ClientBase_a180f9536bdb0559518c47bc7382e3b8e}
+
+\item 
+std\+::string {\bfseries host}\hypertarget{classSimpleWeb_1_1ClientBase_a4436f29ffdce0b29b210cbecd972ffef}{}\label{classSimpleWeb_1_1ClientBase_a4436f29ffdce0b29b210cbecd972ffef}
+
+\item 
+unsigned short {\bfseries port}\hypertarget{classSimpleWeb_1_1ClientBase_aadd3336b64a1f8d559af656554ddd0e9}{}\label{classSimpleWeb_1_1ClientBase_aadd3336b64a1f8d559af656554ddd0e9}
+
+\item 
+std\+::unique\+\_\+ptr$<$ asio\+::ip\+::tcp\+::resolver\+::query $>$ {\bfseries query}\hypertarget{classSimpleWeb_1_1ClientBase_a5af8c922595244bf0805221a0ca5d170}{}\label{classSimpleWeb_1_1ClientBase_a5af8c922595244bf0805221a0ca5d170}
+
+\item 
+std\+::unordered\+\_\+set$<$ std\+::shared\+\_\+ptr$<$ \hyperlink{classSimpleWeb_1_1ClientBase_1_1Connection}{Connection} $>$ $>$ {\bfseries connections}\hypertarget{classSimpleWeb_1_1ClientBase_a5bce127c1c076ca387d267493b332699}{}\label{classSimpleWeb_1_1ClientBase_a5bce127c1c076ca387d267493b332699}
+
+\item 
+std\+::mutex {\bfseries connections\+\_\+mutex}\hypertarget{classSimpleWeb_1_1ClientBase_a7a0ce858201c549db475d423f6b0840d}{}\label{classSimpleWeb_1_1ClientBase_a7a0ce858201c549db475d423f6b0840d}
+
+\item 
+std\+::shared\+\_\+ptr$<$ \hyperlink{classSimpleWeb_1_1ScopeRunner}{Scope\+Runner} $>$ {\bfseries handler\+\_\+runner}\hypertarget{classSimpleWeb_1_1ClientBase_a6be61066a0d702adc659c3f66c8110b5}{}\label{classSimpleWeb_1_1ClientBase_a6be61066a0d702adc659c3f66c8110b5}
+
+\item 
+std\+::size\+\_\+t {\bfseries concurrent\+\_\+synchronous\+\_\+requests} = 0\hypertarget{classSimpleWeb_1_1ClientBase_af9da5f0f07b25ffb320c4cfb7f0af55f}{}\label{classSimpleWeb_1_1ClientBase_af9da5f0f07b25ffb320c4cfb7f0af55f}
+
+\item 
+std\+::mutex {\bfseries concurrent\+\_\+synchronous\+\_\+requests\+\_\+mutex}\hypertarget{classSimpleWeb_1_1ClientBase_a4b7ecf293ab618042f99a3ac2d6bf2c6}{}\label{classSimpleWeb_1_1ClientBase_a4b7ecf293ab618042f99a3ac2d6bf2c6}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\index{Simple\+Web\+::\+Client\+Base@{Simple\+Web\+::\+Client\+Base}!request@{request}}
+\index{request@{request}!Simple\+Web\+::\+Client\+Base@{Simple\+Web\+::\+Client\+Base}}
+\subsubsection[{\texorpdfstring{request(const std\+::string \&method, const std\+::string \&path=std\+::string(""/""), string\+\_\+view content="""", const Case\+Insensitive\+Multimap \&header=\+Case\+Insensitive\+Multimap())}{request(const std::string &method, const std::string &path=std::string("/"), string_view content="", const CaseInsensitiveMultimap &header=CaseInsensitiveMultimap())}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class socket\+\_\+type$>$ std\+::shared\+\_\+ptr$<${\bf Response}$>$ {\bf Simple\+Web\+::\+Client\+Base}$<$ socket\+\_\+type $>$\+::request (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{method, }
+\item[{const std\+::string \&}]{path = {\ttfamily std\+:\+:string(\char`\"{}/\char`\"{})}, }
+\item[{string\+\_\+view}]{content = {\ttfamily \char`\"{}\char`\"{}}, }
+\item[{const Case\+Insensitive\+Multimap \&}]{header = {\ttfamily CaseInsensitiveMultimap()}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classSimpleWeb_1_1ClientBase_a3f771b7ba1fda0f30dd6558b7a2f98c7}{}\label{classSimpleWeb_1_1ClientBase_a3f771b7ba1fda0f30dd6558b7a2f98c7}
+Convenience function to perform synchronous request. The io\+\_\+service is run within this function. If reusing the io\+\_\+service for other tasks, use the asynchronous request functions instead. Do not use concurrently with the asynchronous request functions. \index{Simple\+Web\+::\+Client\+Base@{Simple\+Web\+::\+Client\+Base}!request@{request}}
+\index{request@{request}!Simple\+Web\+::\+Client\+Base@{Simple\+Web\+::\+Client\+Base}}
+\subsubsection[{\texorpdfstring{request(const std\+::string \&method, const std\+::string \&path, std\+::istream \&content, const Case\+Insensitive\+Multimap \&header=\+Case\+Insensitive\+Multimap())}{request(const std::string &method, const std::string &path, std::istream &content, const CaseInsensitiveMultimap &header=CaseInsensitiveMultimap())}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class socket\+\_\+type$>$ std\+::shared\+\_\+ptr$<${\bf Response}$>$ {\bf Simple\+Web\+::\+Client\+Base}$<$ socket\+\_\+type $>$\+::request (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{method, }
+\item[{const std\+::string \&}]{path, }
+\item[{std\+::istream \&}]{content, }
+\item[{const Case\+Insensitive\+Multimap \&}]{header = {\ttfamily CaseInsensitiveMultimap()}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classSimpleWeb_1_1ClientBase_ae75f536430b6b5035a3d1616002f2339}{}\label{classSimpleWeb_1_1ClientBase_ae75f536430b6b5035a3d1616002f2339}
+Convenience function to perform synchronous request. The io\+\_\+service is run within this function. If reusing the io\+\_\+service for other tasks, use the asynchronous request functions instead. Do not use concurrently with the asynchronous request functions. \index{Simple\+Web\+::\+Client\+Base@{Simple\+Web\+::\+Client\+Base}!request@{request}}
+\index{request@{request}!Simple\+Web\+::\+Client\+Base@{Simple\+Web\+::\+Client\+Base}}
+\subsubsection[{\texorpdfstring{request(const std\+::string \&method, const std\+::string \&path, string\+\_\+view content, const Case\+Insensitive\+Multimap \&header, std\+::function$<$ void(std\+::shared\+\_\+ptr$<$ Response $>$, const error\+\_\+code \&)$>$ \&\&request\+\_\+callback\+\_\+)}{request(const std::string &method, const std::string &path, string_view content, const CaseInsensitiveMultimap &header, std::function< void(std::shared_ptr< Response >, const error_code &)> &&request_callback_)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class socket\+\_\+type$>$ void {\bf Simple\+Web\+::\+Client\+Base}$<$ socket\+\_\+type $>$\+::request (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{method, }
+\item[{const std\+::string \&}]{path, }
+\item[{string\+\_\+view}]{content, }
+\item[{const Case\+Insensitive\+Multimap \&}]{header, }
+\item[{std\+::function$<$ void(std\+::shared\+\_\+ptr$<$ {\bf Response} $>$, const error\+\_\+code \&)$>$ \&\&}]{request\+\_\+callback\+\_\+}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classSimpleWeb_1_1ClientBase_a83c168ba1c95f3953088c4742f492210}{}\label{classSimpleWeb_1_1ClientBase_a83c168ba1c95f3953088c4742f492210}
+Asynchronous request where setting and/or running \hyperlink{classSimpleWeb_1_1Client}{Client}\textquotesingle{}s io\+\_\+service is required. Do not use concurrently with the synchronous request functions. \index{Simple\+Web\+::\+Client\+Base@{Simple\+Web\+::\+Client\+Base}!request@{request}}
+\index{request@{request}!Simple\+Web\+::\+Client\+Base@{Simple\+Web\+::\+Client\+Base}}
+\subsubsection[{\texorpdfstring{request(const std\+::string \&method, const std\+::string \&path, string\+\_\+view content, std\+::function$<$ void(std\+::shared\+\_\+ptr$<$ Response $>$, const error\+\_\+code \&)$>$ \&\&request\+\_\+callback)}{request(const std::string &method, const std::string &path, string_view content, std::function< void(std::shared_ptr< Response >, const error_code &)> &&request_callback)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class socket\+\_\+type$>$ void {\bf Simple\+Web\+::\+Client\+Base}$<$ socket\+\_\+type $>$\+::request (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{method, }
+\item[{const std\+::string \&}]{path, }
+\item[{string\+\_\+view}]{content, }
+\item[{std\+::function$<$ void(std\+::shared\+\_\+ptr$<$ {\bf Response} $>$, const error\+\_\+code \&)$>$ \&\&}]{request\+\_\+callback}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classSimpleWeb_1_1ClientBase_aa269693c14f369c8134b0548a0427459}{}\label{classSimpleWeb_1_1ClientBase_aa269693c14f369c8134b0548a0427459}
+Asynchronous request where setting and/or running \hyperlink{classSimpleWeb_1_1Client}{Client}\textquotesingle{}s io\+\_\+service is required. Do not use concurrently with the synchronous request functions. 
+
+\subsection{Member Data Documentation}
+\index{Simple\+Web\+::\+Client\+Base@{Simple\+Web\+::\+Client\+Base}!io\+\_\+service@{io\+\_\+service}}
+\index{io\+\_\+service@{io\+\_\+service}!Simple\+Web\+::\+Client\+Base@{Simple\+Web\+::\+Client\+Base}}
+\subsubsection[{\texorpdfstring{io\+\_\+service}{io_service}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class socket\+\_\+type$>$ std\+::shared\+\_\+ptr$<$asio\+::io\+\_\+service$>$ {\bf Simple\+Web\+::\+Client\+Base}$<$ socket\+\_\+type $>$\+::io\+\_\+service}\hypertarget{classSimpleWeb_1_1ClientBase_a751ea45ccc44ab9c4afaa0738bd305ea}{}\label{classSimpleWeb_1_1ClientBase_a751ea45ccc44ab9c4afaa0738bd305ea}
+If you have your own asio\+::io\+\_\+service, store its pointer here before calling \hyperlink{classSimpleWeb_1_1ClientBase_a3f771b7ba1fda0f30dd6558b7a2f98c7}{request()}. When using asynchronous requests, running the io\+\_\+service is up to the programmer. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/client\+\_\+http.\+hpp\end{DoxyCompactItemize}

@@ -1,0 +1,48 @@
+\hypertarget{classSimpleWeb_1_1ServerBase_1_1Connection}{}\section{Simple\+Web\+:\+:Server\+Base$<$ socket\+\_\+type $>$\+:\+:Connection Class Reference}
+\label{classSimpleWeb_1_1ServerBase_1_1Connection}\index{Simple\+Web\+::\+Server\+Base$<$ socket\+\_\+type $>$\+::\+Connection@{Simple\+Web\+::\+Server\+Base$<$ socket\+\_\+type $>$\+::\+Connection}}
+
+
+Inheritance diagram for Simple\+Web\+:\+:Server\+Base$<$ socket\+\_\+type $>$\+:\+:Connection\+:
+% FIG 0
+
+
+Collaboration diagram for Simple\+Web\+:\+:Server\+Base$<$ socket\+\_\+type $>$\+:\+:Connection\+:
+% FIG 1
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename... Args$>$ }\\{\bfseries Connection} (std\+::shared\+\_\+ptr$<$ \hyperlink{classSimpleWeb_1_1ScopeRunner}{Scope\+Runner} $>$ handler\+\_\+runner, Args \&\&...args)\hypertarget{classSimpleWeb_1_1ServerBase_1_1Connection_a4e90e82c56d0ce9b54f879dcef0eee99}{}\label{classSimpleWeb_1_1ServerBase_1_1Connection_a4e90e82c56d0ce9b54f879dcef0eee99}
+
+\item 
+void {\bfseries close} ()\hypertarget{classSimpleWeb_1_1ServerBase_1_1Connection_a4ce156718fc82e52613a66a5de0a527f}{}\label{classSimpleWeb_1_1ServerBase_1_1Connection_a4ce156718fc82e52613a66a5de0a527f}
+
+\item 
+void {\bfseries set\+\_\+timeout} (long seconds)\hypertarget{classSimpleWeb_1_1ServerBase_1_1Connection_a877aa7e8b229b81d0a5f61d7584ba587}{}\label{classSimpleWeb_1_1ServerBase_1_1Connection_a877aa7e8b229b81d0a5f61d7584ba587}
+
+\item 
+void {\bfseries cancel\+\_\+timeout} ()\hypertarget{classSimpleWeb_1_1ServerBase_1_1Connection_a6ca0f2450663813c9a50eeba379bad6f}{}\label{classSimpleWeb_1_1ServerBase_1_1Connection_a6ca0f2450663813c9a50eeba379bad6f}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::shared\+\_\+ptr$<$ \hyperlink{classSimpleWeb_1_1ScopeRunner}{Scope\+Runner} $>$ {\bfseries handler\+\_\+runner}\hypertarget{classSimpleWeb_1_1ServerBase_1_1Connection_aa56211046c5bbe2dfb7a23520fa09a1e}{}\label{classSimpleWeb_1_1ServerBase_1_1Connection_aa56211046c5bbe2dfb7a23520fa09a1e}
+
+\item 
+std\+::unique\+\_\+ptr$<$ socket\+\_\+type $>$ {\bfseries socket}\hypertarget{classSimpleWeb_1_1ServerBase_1_1Connection_a3be524cda1ab1417547bed20f1cdf8b5}{}\label{classSimpleWeb_1_1ServerBase_1_1Connection_a3be524cda1ab1417547bed20f1cdf8b5}
+
+\item 
+std\+::mutex {\bfseries socket\+\_\+close\+\_\+mutex}\hypertarget{classSimpleWeb_1_1ServerBase_1_1Connection_a8ebe4acc8e396f908116e891206a1edb}{}\label{classSimpleWeb_1_1ServerBase_1_1Connection_a8ebe4acc8e396f908116e891206a1edb}
+
+\item 
+std\+::unique\+\_\+ptr$<$ asio\+::steady\+\_\+timer $>$ {\bfseries timer}\hypertarget{classSimpleWeb_1_1ServerBase_1_1Connection_af6dd071d190e354bec832843d08d31c5}{}\label{classSimpleWeb_1_1ServerBase_1_1Connection_af6dd071d190e354bec832843d08d31c5}
+
+\item 
+std\+::shared\+\_\+ptr$<$ asio\+::ip\+::tcp\+::endpoint $>$ {\bfseries remote\+\_\+endpoint}\hypertarget{classSimpleWeb_1_1ServerBase_1_1Connection_ae71f5a28753896a63688da963c7bc9ff}{}\label{classSimpleWeb_1_1ServerBase_1_1Connection_ae71f5a28753896a63688da963c7bc9ff}
+
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/server\+\_\+http.\+hpp\end{DoxyCompactItemize}

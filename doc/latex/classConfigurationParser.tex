@@ -1,0 +1,37 @@
+\hypertarget{classConfigurationParser}{}\section{Configuration\+Parser Class Reference}
+\label{classConfigurationParser}\index{Configuration\+Parser@{Configuration\+Parser}}
+
+
+Configuration files parser. Produces vectors of Trigger\+Types and Log\+Types from specified file/stream.  
+
+
+
+
+{\ttfamily \#include $<$Configuration\+Parser.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classConfigurationParser_a733451434951190d9af6cb51afed56cf}{Configuration\+Parser} (const std\+::string \&conf\+File)\hypertarget{classConfigurationParser_a733451434951190d9af6cb51afed56cf}{}\label{classConfigurationParser_a733451434951190d9af6cb51afed56cf}
+
+\begin{DoxyCompactList}\small\item\em Construct parser from file passed as filepath. \end{DoxyCompactList}\item 
+\hyperlink{classConfigurationParser_a8747f413fe8507a9900479d0d68d0c2c}{Configuration\+Parser} (std\+::istream \&stream)\hypertarget{classConfigurationParser_a8747f413fe8507a9900479d0d68d0c2c}{}\label{classConfigurationParser_a8747f413fe8507a9900479d0d68d0c2c}
+
+\begin{DoxyCompactList}\small\item\em Construct parser from common istream (stringstream for example). \end{DoxyCompactList}\item 
+void \hyperlink{classConfigurationParser_afe538cbe8fc07befb3c971bfdaf6f16e}{run} ()\hypertarget{classConfigurationParser_afe538cbe8fc07befb3c971bfdaf6f16e}{}\label{classConfigurationParser_afe538cbe8fc07befb3c971bfdaf6f16e}
+
+\begin{DoxyCompactList}\small\item\em Executes parser and prepares data vectors. \end{DoxyCompactList}\item 
+const std\+::vector$<$ \hyperlink{structTriggerType}{Trigger\+Type} $>$ \& {\bfseries get\+Trigger\+Types} ()\hypertarget{classConfigurationParser_abc1b068528b8d66630587acd3c74d1e2}{}\label{classConfigurationParser_abc1b068528b8d66630587acd3c74d1e2}
+
+\item 
+const std\+::vector$<$ \hyperlink{structLogType}{Log\+Type} $>$ \& {\bfseries get\+Log\+Types} ()\hypertarget{classConfigurationParser_a344adb02b8b7d9bb20fd37ece2edc031}{}\label{classConfigurationParser_a344adb02b8b7d9bb20fd37ece2edc031}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Configuration files parser. Produces vectors of Trigger\+Types and Log\+Types from specified file/stream. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/Configuration\+Parser.\+hpp\end{DoxyCompactItemize}

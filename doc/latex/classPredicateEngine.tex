@@ -1,0 +1,36 @@
+\hypertarget{classPredicateEngine}{}\section{Predicate\+Engine Class Reference}
+\label{classPredicateEngine}\index{Predicate\+Engine@{Predicate\+Engine}}
+
+
+Manages events from \hyperlink{classSamplingManager}{Sampling\+Manager} if some trigger is being fired.  
+
+
+
+
+{\ttfamily \#include $<$Predicate\+Engine.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classPredicateEngine_a93d9a2cb4563c844b8877973fd9ba7d2}{add\+Predicate} (std\+::shared\+\_\+ptr$<$ \hyperlink{classPredicate}{Predicate} $>$ predicate)\hypertarget{classPredicateEngine_a93d9a2cb4563c844b8877973fd9ba7d2}{}\label{classPredicateEngine_a93d9a2cb4563c844b8877973fd9ba7d2}
+
+\begin{DoxyCompactList}\small\item\em Add predicate to the engine. Engine D\+O\+ES N\+OT obtain ownership of the predicate (stores only weak\+\_\+ptr)! \end{DoxyCompactList}\item 
+void \hyperlink{classPredicateEngine_af2618d6900a69779eec1ea0d14544837}{add\+Predicate} (std\+::vector$<$ std\+::shared\+\_\+ptr$<$ \hyperlink{classPredicate}{Predicate} $>$$>$ new\+Predicates)\hypertarget{classPredicateEngine_af2618d6900a69779eec1ea0d14544837}{}\label{classPredicateEngine_af2618d6900a69779eec1ea0d14544837}
+
+\begin{DoxyCompactList}\small\item\em Add predicates to the engine. Engine D\+O\+ES N\+OT obtain ownership of the predicate (stores only weak\+\_\+ptr)! \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+class {\bfseries Sampling\+Manager}\hypertarget{classPredicateEngine_a6d16c0a872d35824571b872963e07b6e}{}\label{classPredicateEngine_a6d16c0a872d35824571b872963e07b6e}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Manages events from \hyperlink{classSamplingManager}{Sampling\+Manager} if some trigger is being fired. 
+
+Contain weak\+\_\+ptr$<$\+Predicate$>$ collection for each of \hyperlink{structTriggerType}{Trigger\+Type} used in any \hyperlink{classPredicate}{Predicate}. If \hyperlink{structTriggerType}{Trigger\+Type} is fired, every \hyperlink{classPredicate}{Predicate} which contains fired trigger will receive a \char`\"{}signal\char`\"{} (simple function call) of Predicate\+::activate(\+Trigger\+Type) or Predicate\+::deactivate(\+Trigger\+Type). If after activate() every operand of particular \hyperlink{classPredicate}{Predicate} is satisfied, the \hyperlink{classPredicate}{Predicate} fire its own callback function. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/Predicate\+Engine.\+hpp\end{DoxyCompactItemize}

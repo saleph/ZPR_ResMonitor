@@ -1,0 +1,77 @@
+\hypertarget{classSamplingManager}{}\section{Sampling\+Manager Class Reference}
+\label{classSamplingManager}\index{Sampling\+Manager@{Sampling\+Manager}}
+
+
+Sampler management class. Collects, stores and analize data from \hyperlink{classResUsageProvider}{Res\+Usage\+Provider}.  
+
+
+
+
+{\ttfamily \#include $<$Sampling\+Manager.\+hpp$>$}
+
+
+
+Inheritance diagram for Sampling\+Manager\+:
+% FIG 0
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classSamplingManager_a50a2f50d3c0f34a3881c896d5b5a0939}{Sampling\+Manager} (std\+::shared\+\_\+ptr$<$ \hyperlink{classResUsageProvider}{Res\+Usage\+Provider} $>$ \&res\+Usage\+Provider, const std\+::vector$<$ \hyperlink{structLogType}{Log\+Type} $>$ \&log\+Types, const std\+::vector$<$ \hyperlink{structTriggerType}{Trigger\+Type} $>$ \&trigger\+Types, std\+::function$<$ void(const \hyperlink{structTriggerType}{Trigger\+Type} \&)$>$ trigger\+Activate=\mbox{[}$\,$\mbox{]}(const \hyperlink{structTriggerType}{Trigger\+Type} \&)\{\}, std\+::function$<$ void(const \hyperlink{structTriggerType}{Trigger\+Type} \&)$>$ trigger\+Deactivate=\mbox{[}$\,$\mbox{]}(const \hyperlink{structTriggerType}{Trigger\+Type} \&)\{\})\hypertarget{classSamplingManager_a50a2f50d3c0f34a3881c896d5b5a0939}{}\label{classSamplingManager_a50a2f50d3c0f34a3881c896d5b5a0939}
+
+\begin{DoxyCompactList}\small\item\em Constructs new \hyperlink{classSamplingManager}{Sampling\+Manager} for particular \hyperlink{classResUsageProvider}{Res\+Usage\+Provider} and configuration. \end{DoxyCompactList}\item 
+const std\+::shared\+\_\+ptr$<$ const boost\+::circular\+\_\+buffer$<$ \hyperlink{classCpuState}{Cpu\+State} $>$ $>$ \hyperlink{classSamplingManager_a6d2b18b242fb3818c1eb16de17f39041}{get\+Cpu\+Log} (const \hyperlink{structLogType}{Log\+Type} \&log\+Type) const \hypertarget{classSamplingManager_a6d2b18b242fb3818c1eb16de17f39041}{}\label{classSamplingManager_a6d2b18b242fb3818c1eb16de17f39041}
+
+\begin{DoxyCompactList}\small\item\em Returns gathered C\+PU logs of type \textquotesingle{}log\+Type\textquotesingle{}. \end{DoxyCompactList}\item 
+const std\+::shared\+\_\+ptr$<$ const boost\+::circular\+\_\+buffer$<$ \hyperlink{classRamState}{Ram\+State} $>$ $>$ \hyperlink{classSamplingManager_aa7324c8b7b910924238d199e8cf0e01c}{get\+Ram\+Log} (const \hyperlink{structLogType}{Log\+Type} \&log\+Type) const \hypertarget{classSamplingManager_aa7324c8b7b910924238d199e8cf0e01c}{}\label{classSamplingManager_aa7324c8b7b910924238d199e8cf0e01c}
+
+\begin{DoxyCompactList}\small\item\em Returns gathered R\+AM logs of type \textquotesingle{}log\+Type\textquotesingle{}. \end{DoxyCompactList}\item 
+const std\+::shared\+\_\+ptr$<$ const boost\+::circular\+\_\+buffer$<$ \hyperlink{classHddState}{Hdd\+State} $>$ $>$ \hyperlink{classSamplingManager_a006f202c07785a574ecd104b8c180132}{get\+Hdd\+Log} (const \hyperlink{structLogType}{Log\+Type} \&log\+Type) const \hypertarget{classSamplingManager_a006f202c07785a574ecd104b8c180132}{}\label{classSamplingManager_a006f202c07785a574ecd104b8c180132}
+
+\begin{DoxyCompactList}\small\item\em Returns gathered H\+DD logs of type \textquotesingle{}log\+Type\textquotesingle{}. \end{DoxyCompactList}\item 
+void \hyperlink{classSamplingManager_a5b90987110e266b5c01c72f083b90cde}{start\+Sampling} ()\hypertarget{classSamplingManager_a5b90987110e266b5c01c72f083b90cde}{}\label{classSamplingManager_a5b90987110e266b5c01c72f083b90cde}
+
+\begin{DoxyCompactList}\small\item\em Starts sampling thread. \end{DoxyCompactList}\item 
+void \hyperlink{classSamplingManager_a59c818cff3d8eac0024e75b5a8628f1a}{stop\+Sampling} ()\hypertarget{classSamplingManager_a59c818cff3d8eac0024e75b5a8628f1a}{}\label{classSamplingManager_a59c818cff3d8eac0024e75b5a8628f1a}
+
+\begin{DoxyCompactList}\small\item\em Stops sampling thread. \end{DoxyCompactList}\item 
+void \hyperlink{classSamplingManager_ad522fa0406f0d6361d438ce0780f3647}{connect\+Predicate\+Engine} (const \hyperlink{classPredicateEngine}{Predicate\+Engine} \&predicate\+Engine)
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+size\+\_\+t {\bfseries S\+A\+M\+P\+L\+I\+N\+G\+\_\+\+T\+I\+M\+E\+\_\+\+I\+N\+T\+E\+R\+V\+A\+L\+\_\+\+MS} = 1000\hypertarget{classSamplingManager_ae8d9cfef7caf622c85a630332d7b2119}{}\label{classSamplingManager_ae8d9cfef7caf622c85a630332d7b2119}
+
+\item 
+std\+::thread {\bfseries poller\+Thread}\hypertarget{classSamplingManager_a7145b90de1b69981cff4e9f94e2e5df2}{}\label{classSamplingManager_a7145b90de1b69981cff4e9f94e2e5df2}
+
+\item 
+std\+::function$<$ void(long)$>$ {\bfseries after\+Poll\+Callback} = \mbox{[}$\,$\mbox{]}(long)\{\}\hypertarget{classSamplingManager_a0720092f8e98c9a543d4d1766f955459}{}\label{classSamplingManager_a0720092f8e98c9a543d4d1766f955459}
+
+\item 
+std\+::atomic\+\_\+bool {\bfseries is\+Sampling}\hypertarget{classSamplingManager_a10b44c6111987e15993fa386d0ab1367}{}\label{classSamplingManager_a10b44c6111987e15993fa386d0ab1367}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Sampler management class. Collects, stores and analize data from \hyperlink{classResUsageProvider}{Res\+Usage\+Provider}. 
+
+
+\begin{DoxyEnumerate}
+\item Constantly log state of the OS into desired buffers specified by \textquotesingle{}\hyperlink{structLogType}{Log\+Type}\textquotesingle{}s. 
+\end{DoxyEnumerate}
+
+\subsection{Member Function Documentation}
+\index{Sampling\+Manager@{Sampling\+Manager}!connect\+Predicate\+Engine@{connect\+Predicate\+Engine}}
+\index{connect\+Predicate\+Engine@{connect\+Predicate\+Engine}!Sampling\+Manager@{Sampling\+Manager}}
+\subsubsection[{\texorpdfstring{connect\+Predicate\+Engine(const Predicate\+Engine \&predicate\+Engine)}{connectPredicateEngine(const PredicateEngine &predicateEngine)}}]{\setlength{\rightskip}{0pt plus 5cm}void Sampling\+Manager\+::connect\+Predicate\+Engine (
+\begin{DoxyParamCaption}
+\item[{const {\bf Predicate\+Engine} \&}]{predicate\+Engine}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classSamplingManager_ad522fa0406f0d6361d438ce0780f3647}{}\label{classSamplingManager_ad522fa0406f0d6361d438ce0780f3647}
+Connects \hyperlink{classPredicateEngine}{Predicate\+Engine} to sampler. N\+O\+TE\+: it overwrites trigger\+Activate and trigger\+Deactivate callbacks! 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/Sampling\+Manager.\+hpp\item 
+src/library\+\_\+src/Sampling\+Manager.\+cpp\end{DoxyCompactItemize}
