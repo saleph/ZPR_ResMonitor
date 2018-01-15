@@ -1,0 +1,33 @@
+\hypertarget{classSimpleWeb_1_1ScopeRunner}{}\section{Simple\+Web\+:\+:Scope\+Runner Class Reference}
+\label{classSimpleWeb_1_1ScopeRunner}\index{Simple\+Web\+::\+Scope\+Runner@{Simple\+Web\+::\+Scope\+Runner}}
+
+
+Makes it possible to for instance cancel Asio handlers without stopping asio\+::io\+\_\+service.  
+
+
+
+
+{\ttfamily \#include $<$utility.\+hpp$>$}
+
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classSimpleWeb_1_1ScopeRunner_1_1SharedLock}{Shared\+Lock}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::unique\+\_\+ptr$<$ \hyperlink{classSimpleWeb_1_1ScopeRunner_1_1SharedLock}{Shared\+Lock} $>$ \hyperlink{classSimpleWeb_1_1ScopeRunner_abb6f22b69338f5a822949f12d249acaf}{continue\+\_\+lock} ()\hypertarget{classSimpleWeb_1_1ScopeRunner_abb6f22b69338f5a822949f12d249acaf}{}\label{classSimpleWeb_1_1ScopeRunner_abb6f22b69338f5a822949f12d249acaf}
+
+\begin{DoxyCompactList}\small\item\em Returns nullptr if scope should be exited, or a shared lock otherwise. \end{DoxyCompactList}\item 
+void \hyperlink{classSimpleWeb_1_1ScopeRunner_ae4e17e0e391776f720b3d22d90b78c02}{stop} ()\hypertarget{classSimpleWeb_1_1ScopeRunner_ae4e17e0e391776f720b3d22d90b78c02}{}\label{classSimpleWeb_1_1ScopeRunner_ae4e17e0e391776f720b3d22d90b78c02}
+
+\begin{DoxyCompactList}\small\item\em Blocks until all shared locks are released, then prevents future shared locks. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Makes it possible to for instance cancel Asio handlers without stopping asio\+::io\+\_\+service. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/utility.\+hpp\end{DoxyCompactItemize}

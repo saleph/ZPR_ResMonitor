@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.5)
 
 project(zpr_monitor)
 include(CTest)
@@ -18,7 +18,7 @@ set(BOOST_LIBRARYDIR "C:/Program Files/boost/boost_1_65_1/lib/stage")
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_MULTITHREADED ON)	
 
-find_package(Boost COMPONENTS unit_test_framework log system filesystem REQUIRED)
+find_package(Boost COMPONENTS log log_setup thread unit_test_framework log system filesystem REQUIRED)
 IF (Boost_FOUND)
     INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
     ADD_DEFINITIONS( "-DHAS_BOOST" )

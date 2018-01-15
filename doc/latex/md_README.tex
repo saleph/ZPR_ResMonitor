@@ -1,0 +1,19 @@
+\subsection*{Compilation}
+
+Requires {\ttfamily boost} library, {\ttfamily cmake} and {\ttfamily flex} (for optional lexer modification). Compiler have to implement C++14 standard (at least).
+
+
+\begin{DoxyCode}
+1 $ mkdir BUILD && cd BUILD
+2 $ cmake ..
+3 $ \{make, msbuild\} \{monitor, testsmonitor\}
+\end{DoxyCode}
+
+
+\subsection*{Used additional libraries}
+
+
+\begin{DoxyEnumerate}
+\item S\+M\+TP client (with slight modifications for wp\textquotesingle{}s S\+M\+TP sever)\+: \href{http://codingways.blogspot.com/2012/08/send-email-in-c-smtp-client-in-c.html}{\tt http\+://codingways.\+blogspot.\+com}
+\item H\+T\+TP server\+: \href{https://github.com/eidheim/Simple-Web-Server}{\tt Simple-\/\+Web-\/\+Server} 
+\end{DoxyEnumerate}

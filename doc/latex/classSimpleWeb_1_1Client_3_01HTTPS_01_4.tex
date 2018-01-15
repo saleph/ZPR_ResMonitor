@@ -1,0 +1,40 @@
+\hypertarget{classSimpleWeb_1_1Client_3_01HTTPS_01_4}{}\section{Simple\+Web\+:\+:Client$<$ H\+T\+T\+PS $>$ Class Template Reference}
+\label{classSimpleWeb_1_1Client_3_01HTTPS_01_4}\index{Simple\+Web\+::\+Client$<$ H\+T\+T\+P\+S $>$@{Simple\+Web\+::\+Client$<$ H\+T\+T\+P\+S $>$}}
+
+
+Inheritance diagram for Simple\+Web\+:\+:Client$<$ H\+T\+T\+PS $>$\+:
+% FIG 0
+
+
+Collaboration diagram for Simple\+Web\+:\+:Client$<$ H\+T\+T\+PS $>$\+:
+% FIG 1
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries Client} (const std\+::string \&server\+\_\+port\+\_\+path, bool verify\+\_\+certificate=true, const std\+::string \&cert\+\_\+file=std\+::string(), const std\+::string \&private\+\_\+key\+\_\+file=std\+::string(), const std\+::string \&verify\+\_\+file=std\+::string())\hypertarget{classSimpleWeb_1_1Client_3_01HTTPS_01_4_abd87d3dc08c9fed3a60f18c749b8bacd}{}\label{classSimpleWeb_1_1Client_3_01HTTPS_01_4_abd87d3dc08c9fed3a60f18c749b8bacd}
+
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::shared\+\_\+ptr$<$ Connection $>$ {\bfseries create\+\_\+connection} () override\hypertarget{classSimpleWeb_1_1Client_3_01HTTPS_01_4_ab2dad745b868b0aa7fafe51016b97863}{}\label{classSimpleWeb_1_1Client_3_01HTTPS_01_4_ab2dad745b868b0aa7fafe51016b97863}
+
+\item 
+void {\bfseries connect} (const std\+::shared\+\_\+ptr$<$ Session $>$ \&session) override\hypertarget{classSimpleWeb_1_1Client_3_01HTTPS_01_4_a6507c2e8b4a0d99889530a97c3642384}{}\label{classSimpleWeb_1_1Client_3_01HTTPS_01_4_a6507c2e8b4a0d99889530a97c3642384}
+
+\item 
+void {\bfseries handshake} (const std\+::shared\+\_\+ptr$<$ Session $>$ \&session)\hypertarget{classSimpleWeb_1_1Client_3_01HTTPS_01_4_a44991dc5c2497a15133fa1b35bf9901c}{}\label{classSimpleWeb_1_1Client_3_01HTTPS_01_4_a44991dc5c2497a15133fa1b35bf9901c}
+
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+asio\+::ssl\+::context {\bfseries context}\hypertarget{classSimpleWeb_1_1Client_3_01HTTPS_01_4_a7fd6d293b7c68dbfd785347b1cfe01fc}{}\label{classSimpleWeb_1_1Client_3_01HTTPS_01_4_a7fd6d293b7c68dbfd785347b1cfe01fc}
+
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/client\+\_\+https.\+hpp\end{DoxyCompactItemize}

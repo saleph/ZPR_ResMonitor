@@ -8,8 +8,8 @@ BOOST_AUTO_TEST_SUITE(configurationParser)
 BOOST_AUTO_TEST_CASE(first_test) {
 	ConfigurationParser parser ("../tests_src/conf_parser/example");
 	parser.run();
-	BOOST_TEST(parser.getTriggerTypes().size() == 10);
-	BOOST_TEST(parser.getLogTypes().size() == 26);
+	BOOST_TEST(parser.getTriggerTypes().size() == 14);
+	BOOST_TEST(parser.getLogTypes().size() == 28);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

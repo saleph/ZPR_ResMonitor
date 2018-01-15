@@ -1,0 +1,108 @@
+\hypertarget{classSimpleWeb_1_1ServerBase}{}\section{Simple\+Web\+:\+:Server\+Base$<$ socket\+\_\+type $>$ Class Template Reference}
+\label{classSimpleWeb_1_1ServerBase}\index{Simple\+Web\+::\+Server\+Base$<$ socket\+\_\+type $>$@{Simple\+Web\+::\+Server\+Base$<$ socket\+\_\+type $>$}}
+
+
+Inheritance diagram for Simple\+Web\+:\+:Server\+Base$<$ socket\+\_\+type $>$\+:
+% FIG 0
+
+
+Collaboration diagram for Simple\+Web\+:\+:Server\+Base$<$ socket\+\_\+type $>$\+:
+% FIG 1
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classSimpleWeb_1_1ServerBase_1_1Config}{Config}
+\item 
+class \hyperlink{classSimpleWeb_1_1ServerBase_1_1Connection}{Connection}
+\item 
+class \hyperlink{classSimpleWeb_1_1ServerBase_1_1Content}{Content}
+\item 
+class \hyperlink{classSimpleWeb_1_1ServerBase_1_1Request}{Request}
+\item 
+class \hyperlink{classSimpleWeb_1_1ServerBase_1_1Response}{Response}
+\item 
+class \hyperlink{classSimpleWeb_1_1ServerBase_1_1Session}{Session}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void {\bfseries start} ()\hypertarget{classSimpleWeb_1_1ServerBase_a759d6dae5fa77c47a36f7355fd33f8f7}{}\label{classSimpleWeb_1_1ServerBase_a759d6dae5fa77c47a36f7355fd33f8f7}
+
+\item 
+void \hyperlink{classSimpleWeb_1_1ServerBase_a0667e44595f6c23016bee67c646ccc85}{stop} ()\hypertarget{classSimpleWeb_1_1ServerBase_a0667e44595f6c23016bee67c646ccc85}{}\label{classSimpleWeb_1_1ServerBase_a0667e44595f6c23016bee67c646ccc85}
+
+\begin{DoxyCompactList}\small\item\em Stop accepting new requests, and close current connections. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classSimpleWeb_1_1ServerBase_1_1Config}{Config} \hyperlink{classSimpleWeb_1_1ServerBase_a3d4b2de8f6c2d79229c97a67acf67ad6}{config}\hypertarget{classSimpleWeb_1_1ServerBase_a3d4b2de8f6c2d79229c97a67acf67ad6}{}\label{classSimpleWeb_1_1ServerBase_a3d4b2de8f6c2d79229c97a67acf67ad6}
+
+\begin{DoxyCompactList}\small\item\em Set before calling start(). \end{DoxyCompactList}\item 
+std\+::map$<$ regex\+\_\+orderable, std\+::map$<$ std\+::string, std\+::function$<$ void(std\+::shared\+\_\+ptr$<$ typename \hyperlink{classSimpleWeb_1_1ServerBase}{Server\+Base}$<$ socket\+\_\+type $>$\+::\hyperlink{classSimpleWeb_1_1ServerBase_1_1Response}{Response} $>$, std\+::shared\+\_\+ptr$<$ typename \hyperlink{classSimpleWeb_1_1ServerBase}{Server\+Base}$<$ socket\+\_\+type $>$\+::\hyperlink{classSimpleWeb_1_1ServerBase_1_1Request}{Request} $>$)$>$ $>$ $>$ \hyperlink{classSimpleWeb_1_1ServerBase_a9cbd951ffa528ddab83352c6654695e3}{resource}\hypertarget{classSimpleWeb_1_1ServerBase_a9cbd951ffa528ddab83352c6654695e3}{}\label{classSimpleWeb_1_1ServerBase_a9cbd951ffa528ddab83352c6654695e3}
+
+\begin{DoxyCompactList}\small\item\em Warning\+: do not add or remove resources after start() is called. \end{DoxyCompactList}\item 
+std\+::map$<$ std\+::string, std\+::function$<$ void(std\+::shared\+\_\+ptr$<$ typename \hyperlink{classSimpleWeb_1_1ServerBase}{Server\+Base}$<$ socket\+\_\+type $>$\+::\hyperlink{classSimpleWeb_1_1ServerBase_1_1Response}{Response} $>$, std\+::shared\+\_\+ptr$<$ typename \hyperlink{classSimpleWeb_1_1ServerBase}{Server\+Base}$<$ socket\+\_\+type $>$\+::\hyperlink{classSimpleWeb_1_1ServerBase_1_1Request}{Request} $>$)$>$ $>$ {\bfseries default\+\_\+resource}\hypertarget{classSimpleWeb_1_1ServerBase_aba7325dbe6c66f5f715e1a279031aec1}{}\label{classSimpleWeb_1_1ServerBase_aba7325dbe6c66f5f715e1a279031aec1}
+
+\item 
+std\+::function$<$ void(std\+::shared\+\_\+ptr$<$ typename \hyperlink{classSimpleWeb_1_1ServerBase}{Server\+Base}$<$ socket\+\_\+type $>$\+::\hyperlink{classSimpleWeb_1_1ServerBase_1_1Request}{Request} $>$, const error\+\_\+code \&)$>$ {\bfseries on\+\_\+error}\hypertarget{classSimpleWeb_1_1ServerBase_a7a2719f083383c32dee1f031358ca0f8}{}\label{classSimpleWeb_1_1ServerBase_a7a2719f083383c32dee1f031358ca0f8}
+
+\item 
+std\+::function$<$ void(std\+::unique\+\_\+ptr$<$ socket\+\_\+type $>$ \&, std\+::shared\+\_\+ptr$<$ typename \hyperlink{classSimpleWeb_1_1ServerBase}{Server\+Base}$<$ socket\+\_\+type $>$\+::\hyperlink{classSimpleWeb_1_1ServerBase_1_1Request}{Request} $>$)$>$ {\bfseries on\+\_\+upgrade}\hypertarget{classSimpleWeb_1_1ServerBase_a6a969c7fb80a9ac1975991c760792516}{}\label{classSimpleWeb_1_1ServerBase_a6a969c7fb80a9ac1975991c760792516}
+
+\item 
+std\+::shared\+\_\+ptr$<$ asio\+::io\+\_\+service $>$ \hyperlink{classSimpleWeb_1_1ServerBase_a215ecd56e2772085a1447337293abc48}{io\+\_\+service}\hypertarget{classSimpleWeb_1_1ServerBase_a215ecd56e2772085a1447337293abc48}{}\label{classSimpleWeb_1_1ServerBase_a215ecd56e2772085a1447337293abc48}
+
+\begin{DoxyCompactList}\small\item\em If you have your own asio\+::io\+\_\+service, store its pointer here before running start(). \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries Server\+Base} (unsigned short port)\hypertarget{classSimpleWeb_1_1ServerBase_a0921fc51a3c799f477facb41620cc86d}{}\label{classSimpleWeb_1_1ServerBase_a0921fc51a3c799f477facb41620cc86d}
+
+\item 
+virtual void {\bfseries accept} ()=0\hypertarget{classSimpleWeb_1_1ServerBase_a55c6ad458eee385419d4e25351c985b7}{}\label{classSimpleWeb_1_1ServerBase_a55c6ad458eee385419d4e25351c985b7}
+
+\item 
+{\footnotesize template$<$typename... Args$>$ }\\std\+::shared\+\_\+ptr$<$ \hyperlink{classSimpleWeb_1_1ServerBase_1_1Connection}{Connection} $>$ {\bfseries create\+\_\+connection} (Args \&\&...args)\hypertarget{classSimpleWeb_1_1ServerBase_a0dc0b1b4fa722955f6f1b7a7abdd8bd0}{}\label{classSimpleWeb_1_1ServerBase_a0dc0b1b4fa722955f6f1b7a7abdd8bd0}
+
+\item 
+void {\bfseries read} (const std\+::shared\+\_\+ptr$<$ \hyperlink{classSimpleWeb_1_1ServerBase_1_1Session}{Session} $>$ \&session)\hypertarget{classSimpleWeb_1_1ServerBase_a8ec3e4aa2495e439a3d08d210d20626e}{}\label{classSimpleWeb_1_1ServerBase_a8ec3e4aa2495e439a3d08d210d20626e}
+
+\item 
+void {\bfseries read\+\_\+chunked\+\_\+transfer\+\_\+encoded} (const std\+::shared\+\_\+ptr$<$ \hyperlink{classSimpleWeb_1_1ServerBase_1_1Session}{Session} $>$ \&session, const std\+::shared\+\_\+ptr$<$ asio\+::streambuf $>$ \&chunks\+\_\+streambuf)\hypertarget{classSimpleWeb_1_1ServerBase_a76062d608c2f62d4006dfb0c1b4d2315}{}\label{classSimpleWeb_1_1ServerBase_a76062d608c2f62d4006dfb0c1b4d2315}
+
+\item 
+void {\bfseries read\+\_\+chunked\+\_\+transfer\+\_\+encoded\+\_\+chunk} (const std\+::shared\+\_\+ptr$<$ \hyperlink{classSimpleWeb_1_1ServerBase_1_1Session}{Session} $>$ \&session, const std\+::shared\+\_\+ptr$<$ asio\+::streambuf $>$ \&chunks\+\_\+streambuf, unsigned long length)\hypertarget{classSimpleWeb_1_1ServerBase_a52e523f74e7cd30bf6e47807d1106798}{}\label{classSimpleWeb_1_1ServerBase_a52e523f74e7cd30bf6e47807d1106798}
+
+\item 
+void {\bfseries find\+\_\+resource} (const std\+::shared\+\_\+ptr$<$ \hyperlink{classSimpleWeb_1_1ServerBase_1_1Session}{Session} $>$ \&session)\hypertarget{classSimpleWeb_1_1ServerBase_a502677b3bfac7ca06f476134213181c7}{}\label{classSimpleWeb_1_1ServerBase_a502677b3bfac7ca06f476134213181c7}
+
+\item 
+void {\bfseries write} (const std\+::shared\+\_\+ptr$<$ \hyperlink{classSimpleWeb_1_1ServerBase_1_1Session}{Session} $>$ \&session, std\+::function$<$ void(std\+::shared\+\_\+ptr$<$ typename \hyperlink{classSimpleWeb_1_1ServerBase}{Server\+Base}$<$ socket\+\_\+type $>$\+::\hyperlink{classSimpleWeb_1_1ServerBase_1_1Response}{Response} $>$, std\+::shared\+\_\+ptr$<$ typename \hyperlink{classSimpleWeb_1_1ServerBase}{Server\+Base}$<$ socket\+\_\+type $>$\+::\hyperlink{classSimpleWeb_1_1ServerBase_1_1Request}{Request} $>$)$>$ \&resource\+\_\+function)\hypertarget{classSimpleWeb_1_1ServerBase_a5486c77ddab988a23d594e9c5df1ae21}{}\label{classSimpleWeb_1_1ServerBase_a5486c77ddab988a23d594e9c5df1ae21}
+
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+bool {\bfseries internal\+\_\+io\+\_\+service} = false\hypertarget{classSimpleWeb_1_1ServerBase_a2423e3d4efc52a13c478f50fe4e1e290}{}\label{classSimpleWeb_1_1ServerBase_a2423e3d4efc52a13c478f50fe4e1e290}
+
+\item 
+std\+::unique\+\_\+ptr$<$ asio\+::ip\+::tcp\+::acceptor $>$ {\bfseries acceptor}\hypertarget{classSimpleWeb_1_1ServerBase_a79b53186c927fe62a5e65207c291d5e8}{}\label{classSimpleWeb_1_1ServerBase_a79b53186c927fe62a5e65207c291d5e8}
+
+\item 
+std\+::vector$<$ std\+::thread $>$ {\bfseries threads}\hypertarget{classSimpleWeb_1_1ServerBase_aa23ee1c2fa4809d032be37ae7e605249}{}\label{classSimpleWeb_1_1ServerBase_aa23ee1c2fa4809d032be37ae7e605249}
+
+\item 
+std\+::shared\+\_\+ptr$<$ std\+::unordered\+\_\+set$<$ \hyperlink{classSimpleWeb_1_1ServerBase_1_1Connection}{Connection} $\ast$ $>$ $>$ {\bfseries connections}\hypertarget{classSimpleWeb_1_1ServerBase_a3427aaedec5c00eb0334254b00318898}{}\label{classSimpleWeb_1_1ServerBase_a3427aaedec5c00eb0334254b00318898}
+
+\item 
+std\+::shared\+\_\+ptr$<$ std\+::mutex $>$ {\bfseries connections\+\_\+mutex}\hypertarget{classSimpleWeb_1_1ServerBase_a699f0cd0b7a7e0da651cb7882230a3ba}{}\label{classSimpleWeb_1_1ServerBase_a699f0cd0b7a7e0da651cb7882230a3ba}
+
+\item 
+std\+::shared\+\_\+ptr$<$ \hyperlink{classSimpleWeb_1_1ScopeRunner}{Scope\+Runner} $>$ {\bfseries handler\+\_\+runner}\hypertarget{classSimpleWeb_1_1ServerBase_a9a5c8ad99096f71cea19196f52cfbd00}{}\label{classSimpleWeb_1_1ServerBase_a9a5c8ad99096f71cea19196f52cfbd00}
+
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/server\+\_\+http.\+hpp\end{DoxyCompactItemize}

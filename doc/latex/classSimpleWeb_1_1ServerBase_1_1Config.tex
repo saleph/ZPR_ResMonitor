@@ -1,0 +1,46 @@
+\hypertarget{classSimpleWeb_1_1ServerBase_1_1Config}{}\section{Simple\+Web\+:\+:Server\+Base$<$ socket\+\_\+type $>$\+:\+:Config Class Reference}
+\label{classSimpleWeb_1_1ServerBase_1_1Config}\index{Simple\+Web\+::\+Server\+Base$<$ socket\+\_\+type $>$\+::\+Config@{Simple\+Web\+::\+Server\+Base$<$ socket\+\_\+type $>$\+::\+Config}}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+unsigned short \hyperlink{classSimpleWeb_1_1ServerBase_1_1Config_aa80030952ff056db08f736d5537bd2c9}{port}\hypertarget{classSimpleWeb_1_1ServerBase_1_1Config_aa80030952ff056db08f736d5537bd2c9}{}\label{classSimpleWeb_1_1ServerBase_1_1Config_aa80030952ff056db08f736d5537bd2c9}
+
+\begin{DoxyCompactList}\small\item\em Port number to use. Defaults to 80 for H\+T\+TP and 443 for H\+T\+T\+PS. \end{DoxyCompactList}\item 
+std\+::size\+\_\+t \hyperlink{classSimpleWeb_1_1ServerBase_1_1Config_a31ed6db903e42d6e2748d195de7b956b}{thread\+\_\+pool\+\_\+size} = 1
+\item 
+long \hyperlink{classSimpleWeb_1_1ServerBase_1_1Config_a2fac6158227cb95a3322c0c5d04b3648}{timeout\+\_\+request} = 5\hypertarget{classSimpleWeb_1_1ServerBase_1_1Config_a2fac6158227cb95a3322c0c5d04b3648}{}\label{classSimpleWeb_1_1ServerBase_1_1Config_a2fac6158227cb95a3322c0c5d04b3648}
+
+\begin{DoxyCompactList}\small\item\em Timeout on request handling. Defaults to 5 seconds. \end{DoxyCompactList}\item 
+long \hyperlink{classSimpleWeb_1_1ServerBase_1_1Config_a821a5c9c69f9d04b829b9392a3e89f11}{timeout\+\_\+content} = 300\hypertarget{classSimpleWeb_1_1ServerBase_1_1Config_a821a5c9c69f9d04b829b9392a3e89f11}{}\label{classSimpleWeb_1_1ServerBase_1_1Config_a821a5c9c69f9d04b829b9392a3e89f11}
+
+\begin{DoxyCompactList}\small\item\em Timeout on content handling. Defaults to 300 seconds. \end{DoxyCompactList}\item 
+std\+::size\+\_\+t \hyperlink{classSimpleWeb_1_1ServerBase_1_1Config_a81bd9a4816000009f3f6abee3400fb7a}{max\+\_\+request\+\_\+streambuf\+\_\+size} = std\+::numeric\+\_\+limits$<$std\+::size\+\_\+t$>$\+::max()
+\item 
+std\+::string \hyperlink{classSimpleWeb_1_1ServerBase_1_1Config_add7a705aca3533bf0371708b19bb691c}{address}
+\item 
+bool \hyperlink{classSimpleWeb_1_1ServerBase_1_1Config_aab9c347da5390b176d37dac2dfbd9fae}{reuse\+\_\+address} = true\hypertarget{classSimpleWeb_1_1ServerBase_1_1Config_aab9c347da5390b176d37dac2dfbd9fae}{}\label{classSimpleWeb_1_1ServerBase_1_1Config_aab9c347da5390b176d37dac2dfbd9fae}
+
+\begin{DoxyCompactList}\small\item\em Set to false to avoid binding the socket to an address that is already in use. Defaults to true. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+class {\bfseries Server\+Base$<$ socket\+\_\+type $>$}\hypertarget{classSimpleWeb_1_1ServerBase_1_1Config_a01d54a7e16ca437c98ec571deca98dfc}{}\label{classSimpleWeb_1_1ServerBase_1_1Config_a01d54a7e16ca437c98ec571deca98dfc}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Data Documentation}
+\index{Simple\+Web\+::\+Server\+Base\+::\+Config@{Simple\+Web\+::\+Server\+Base\+::\+Config}!address@{address}}
+\index{address@{address}!Simple\+Web\+::\+Server\+Base\+::\+Config@{Simple\+Web\+::\+Server\+Base\+::\+Config}}
+\subsubsection[{\texorpdfstring{address}{address}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class socket\+\_\+type$>$ std\+::string {\bf Simple\+Web\+::\+Server\+Base}$<$ socket\+\_\+type $>$\+::Config\+::address}\hypertarget{classSimpleWeb_1_1ServerBase_1_1Config_add7a705aca3533bf0371708b19bb691c}{}\label{classSimpleWeb_1_1ServerBase_1_1Config_add7a705aca3533bf0371708b19bb691c}
+I\+Pv4 address in dotted decimal form or I\+Pv6 address in hexadecimal notation. If empty, the address will be any address. \index{Simple\+Web\+::\+Server\+Base\+::\+Config@{Simple\+Web\+::\+Server\+Base\+::\+Config}!max\+\_\+request\+\_\+streambuf\+\_\+size@{max\+\_\+request\+\_\+streambuf\+\_\+size}}
+\index{max\+\_\+request\+\_\+streambuf\+\_\+size@{max\+\_\+request\+\_\+streambuf\+\_\+size}!Simple\+Web\+::\+Server\+Base\+::\+Config@{Simple\+Web\+::\+Server\+Base\+::\+Config}}
+\subsubsection[{\texorpdfstring{max\+\_\+request\+\_\+streambuf\+\_\+size}{max_request_streambuf_size}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class socket\+\_\+type$>$ std\+::size\+\_\+t {\bf Simple\+Web\+::\+Server\+Base}$<$ socket\+\_\+type $>$\+::Config\+::max\+\_\+request\+\_\+streambuf\+\_\+size = std\+::numeric\+\_\+limits$<$std\+::size\+\_\+t$>$\+::max()}\hypertarget{classSimpleWeb_1_1ServerBase_1_1Config_a81bd9a4816000009f3f6abee3400fb7a}{}\label{classSimpleWeb_1_1ServerBase_1_1Config_a81bd9a4816000009f3f6abee3400fb7a}
+Maximum size of request stream buffer. Defaults to architecture maximum. Reaching this limit will result in a message\+\_\+size error code. \index{Simple\+Web\+::\+Server\+Base\+::\+Config@{Simple\+Web\+::\+Server\+Base\+::\+Config}!thread\+\_\+pool\+\_\+size@{thread\+\_\+pool\+\_\+size}}
+\index{thread\+\_\+pool\+\_\+size@{thread\+\_\+pool\+\_\+size}!Simple\+Web\+::\+Server\+Base\+::\+Config@{Simple\+Web\+::\+Server\+Base\+::\+Config}}
+\subsubsection[{\texorpdfstring{thread\+\_\+pool\+\_\+size}{thread_pool_size}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class socket\+\_\+type$>$ std\+::size\+\_\+t {\bf Simple\+Web\+::\+Server\+Base}$<$ socket\+\_\+type $>$\+::Config\+::thread\+\_\+pool\+\_\+size = 1}\hypertarget{classSimpleWeb_1_1ServerBase_1_1Config_a31ed6db903e42d6e2748d195de7b956b}{}\label{classSimpleWeb_1_1ServerBase_1_1Config_a31ed6db903e42d6e2748d195de7b956b}
+If io\+\_\+service is not set, number of threads that the server will use when start() is called. Defaults to 1 thread. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/server\+\_\+http.\+hpp\end{DoxyCompactItemize}
