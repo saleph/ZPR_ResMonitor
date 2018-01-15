@@ -3,31 +3,64 @@
         <title>Simple-Web-Server html-file</title>
     </head>
     <body>
-        This is the content of test.html
-         <button type="button">Click Me!</button>
-           <select id = "CarsList">
-			  <option value="volvo">Volvo</option>
-			  <option value="saab">Saab</option>
-			  <option value="mercedes">Mercedes</option>
-			  <option value="audi">Audi</option>
-			</select> 
+    	Choose your trigger type and subscribe for e-mail!
+      	</br>
+      	</br>
+      	<form action = "/set_email" method = "get">
+		   Email: <input type = "text" name = "email"> 
+		   User name: <input type = "text" name = "name" />
+		   <input type = "submit" value = "Apply" />
+		</form>
+		
+	    <form method="GET" action="/trigger_choose">
+		  <select name="trigger0" required>
+		    <option value="0">trigger ....</option>	
+		    <option value="1">trigger ....</option>	
+		    <option value="2">trigger ....</option>		
+		  </select>
+		  OR
+		  <select name="trigger1" required>
+		    <option value="4">trigger ....</option>	
+		    <option value="5">trigger ....</option>	
+		    <option value="6">trigger ....</option>		
+		  </select>
+		  AND
+		  <select name="trigger2" required>
+		    <option value="4">trigger ....</option>	
+		    <option value="5">trigger ....</option>	
+		    <option value="6">trigger ....</option>		
+		  </select>
+		  <input type="submit" value="Submit">
+		</form>
+		<form method="GET" action="/trigger_choose">
+		  <select name="trigger0" required>
+		    <option value="0">trigger ....</option>	
+		    <option value="1">trigger ....</option>	
+		    <option value="2">trigger ....</option>		
+		  </select>
+		  AND
+		  <select name="trigger1" required>
+		    <option value="4">trigger ....</option>	
+		    <option value="5">trigger ....</option>	
+		    <option value="6">trigger ....</option>		
+		  </select>
+		  <input type="submit" value="Submit">
+		</form>
+		<form method="GET" action="/trigger_choose">
+		  <select name="trigger0" required>
+		    <option value="0">trigger ....</option>	
+		    <option value="1">trigger ....</option>	
+		    <option value="2">trigger ....</option>		
+		  </select>
+		  <input type="submit" value="Submit">
+		</form>
+		
+		<form action = "/gettriggers" method = "get">
+		   First Name: <input type = "text" name = "first_name">  <br />
+		 
+		   Last Name: <input type = "text" name = "last_name" />
+		   <input type = "submit" value = "Submit" />
+		</form>
+		  
     </body>
-    
-    <form action = "/gettriggers" method = "get">
-   		First Name: <input type = "text" name = "first_name">  <br />
-   		Last Name: <input type = "text" name = "last_name" />
-   		<input type = "submit" value = "Submit" />
-	</form>
-	
-	<input type="button" id = "Add" value = "Add" onclick = "Add()" />
-    <script type="text/javascript">
-        function Add() {
-            var carsList = document.getElementById("CarsList");
-            var option = document.createElement("OPTION");
-            option.innerHTML = "siema";
-            option.value = "3";
-            carsList.options.add(option);
-        }
-    </script>
-    
 </html>

@@ -20,6 +20,7 @@
 #include "SamplingManager.hpp"
 #include "LinuxResProvider.hpp"
 #include "configrawdata.hpp"
+#include "PredicateTypes.hpp"
 
 
 using namespace std;
@@ -29,12 +30,52 @@ using namespace boost::property_tree;
 using HttpServer = SimpleWeb::Server<SimpleWeb::HTTP>;
 using HttpClient = SimpleWeb::Client<SimpleWeb::HTTP>;
 
-void exampleHttpsServerExecution(std::shared_ptr<ConfigurationParser> confParser) {
+void writeHtmlToString(std::shared_ptr<ConfigurationParser> confParser, std::string & resp){
+	std::stringstream html, selections;
+	int i = 0;
+	for(auto && triggType : confParser->getTriggerTypes())
+	{
+		selections << "<option value=\"" << std::to_string(i++) << "\">" << triggType << "</option>\n";
+	}
+
+	html << "<html>\n<head>\n<title>Simple-Web-Server html-file</title>\n</head>\n<body>"
+	"Choose your trigger type and subscribe for e-mail!\n"
+	"</br>\n</br>\n<form action = \"/set_email\" method = \"get\">\n"
+	   "Email: <input type = \"text\" name = \"email\">\n"
+	   "User name: <input type = \"text\" name = \"name\" />\n"
+	   "<input type = \"submit\" value = \"Apply\" />\n"
+	"</form>\n<form method=\"GET\" action=\"/trigger_choose\">\n"
+	"<select name=\"trigger0\" required>";
+	html << selections.str();
+	html << " </select>OR<select name=\"trigger1\" required>\n";
+	html << selections.str();
+	html << " </select>AND<select name=\"trigger2\" required>\n";
+	html << selections.str();;
+	html << "</select>\n<input type=\"submit\" value=\"Submit\">\n"
+		"</form>\n<form method=\"GET\" action=\"/trigger_choose\">\n"
+	  "<select name=\"trigger0\" required>";
+	html << selections.str();;
+	html << " </select>AND<select name=\"trigger1\" required>\n";
+	html << selections.str();;
+	html << "</select>\n<input type=\"submit\" value=\"Submit\">\n"
+				"</form>\n<form method=\"GET\" action=\"/trigger_choose\">\n"
+			  "<select name=\"trigger0\" required>";
+	html << selections.str();;
+	html << "</select>\n<input type=\"submit\" value=\"Submit\">\n"
+						"</form>\n</body>\n</html>";
+	resp = html.str();
+}
+
+void exampleHttpsServerExecution(std::shared_ptr<ConfigurationParser> confParser,
+		std::shared_ptr<PredicateEngine> predEngine) {
 	// HTTP-server at port 8080 using 1 thread
 	  // Unless you do more heavy non-threaded processing in the resources,
 	  // 1 thread is usually faster than several threads
 	  HttpServer server;
 	  server.config.port = 8080;
+
+	  std::string userName;
+	  std::string userEmail;
 
 	  // Add resources using path-regex and method-string, and an anonymous function
 	  // POST-example for the path /string, responds the posted string
@@ -54,22 +95,87 @@ void exampleHttpsServerExecution(std::shared_ptr<ConfigurationParser> confParser
 	    // response->write(content);
 	  };
 
-	  server.resource["^/gettriggers$"]["POST"] = [&confParser](shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request) {
-		// Retrieve string:
-		auto content = request->content.string();
+	  server.resource["^/gettriggers$"]["GET"] = [&confParser](shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request) {
+		  std::string resp;
+		  writeHtmlToString(confParser, resp);
+		  *response << "HTTP/1.1 200 OK\r\nContent-Length: " << resp.length() << "\r\n\r\n"
+				  << resp;
+	  };
 
-		std::stringstream ss;
-		for(auto && triggType : confParser->getTriggerTypes())
+	  server.resource["^/trigger_choose$"]["GET"] = [&confParser, &predEngine](shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request) {
+		std::string resp("Your subscription has been saved!");
+	    stringstream stream;
+	    auto query_fields = request->parse_query_string();
+	    for(auto &field : query_fields)
+	      stream << field.first << ": " << field.second << ":";
+		std::string segment;
+		std::vector<std::string> seglist;
+		while(std::getline(stream, segment, ':'))
 		{
-			 ss << triggType.resource << "\n";
+		   seglist.push_back(segment);
 		}
-		std::string resp = ss.str();
+
+		std::function<void()> pf = [&](){
+			SMTPClient mailc("smtp.wp.pl", 25, "piterek93p@wp.pl",
+					"zprresmonitor!1");
+			mailc.sendEmail("zpr_resmonitor@wp.pl", { "zpr_resmonitor@wp.pl"}, "tescikkk",
+					"Hello from C++ SMTP Client!");
+		};
+	    std::shared_ptr<Predicate> pred;
+	    if(query_fields.size() == 3){
+	    	pred = std::make_shared<Predicate_1or2and3>(pf,
+	    			confParser->getTriggerTypes().at(std::stoi(seglist.at(5))),
+					confParser->getTriggerTypes().at(std::stoi(seglist.at(3))),
+					confParser->getTriggerTypes().at(std::stoi(seglist.at(1))));
+	    	predEngine->addPredicate(pred);
+	    }
+	    else if(query_fields.size() == 2){
+	    	pred = std::make_shared<Predicate_1and2>(pf,
+	    			confParser->getTriggerTypes().at(std::stoi(seglist.at(3))),
+					confParser->getTriggerTypes().at(std::stoi(seglist.at(1))));
+	    	predEngine->addPredicate(pred);
+	    }
+	    else if(query_fields.size() == 1){
+	    	pred = std::make_shared<Predicate_1element>(pf,
+					confParser->getTriggerTypes().at(std::stoi(seglist.at(1))));
+	    	predEngine->addPredicate(pred);
+	    }
+	    else
+	    	resp = "Wrong data!";
+
+		std::cout<< "Request: \n"<<stream.str()<<std::endl;
 		*response << "HTTP/1.1 200 OK\r\nContent-Length: " << resp.length() << "\r\n\r\n"
 				  << resp;
+	  };
 
 
-		// Alternatively, use one of the convenience functions, for instance:
-		// response->write(content);
+	  server.resource["^/set_email"]["GET"] = [&](shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request) {
+		std::string resp;
+		stringstream stream;
+		auto query_fields = request->parse_query_string();
+		if(query_fields.size() != 2)
+		{
+			resp = "Wrong name or email!";
+			*response << "HTTP/1.1 200 OK\r\nContent-Length: " << resp.length() << "\r\n\r\n"
+							  << resp;
+			return;
+		}
+		for(auto &field : query_fields)
+		  stream << field.first << ": " << field.second << ":";
+		std::string segment;
+		std::vector<std::string> seglist;
+		while(std::getline(stream, segment, ':'))
+		{
+		   seglist.push_back(segment);
+		}
+		userName = seglist.at(1);
+		userEmail = seglist.at(3);
+		resp = userName + " - " + userEmail;
+
+		std::cout<< "Name ("<<userName<<") and email: ("<<userEmail<<") has been set"<<std::endl;
+		writeHtmlToString(confParser, resp);
+		*response << "HTTP/1.1 200 OK\r\nContent-Length: " << resp.length() << "\r\n\r\n"
+				  << resp;
 	  };
 
 	  // POST-example for the path /json, responds firstName+" "+lastName from the posted json
@@ -154,80 +260,11 @@ void exampleHttpsServerExecution(std::shared_ptr<ConfigurationParser> confParser
 	  // Will respond with content in the web/-directory, and its subdirectories.
 	  // Default file: index.html
 	  // Can for instance be used to retrieve an HTML 5 client that uses REST-resources on this server
-	  server.default_resource["GET"] = [](shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request) {
-	    try {
-	      auto web_root_path = boost::filesystem::canonical("web");
-	      auto path = boost::filesystem::canonical(web_root_path / request->path);
-	      // Check if path is within web_root_path
-	      if(distance(web_root_path.begin(), web_root_path.end()) > distance(path.begin(), path.end()) ||
-	         !equal(web_root_path.begin(), web_root_path.end(), path.begin()))
-	        throw invalid_argument("path must be within root path");
-	      if(boost::filesystem::is_directory(path))
-	        path /= "test.html";
-
-	      SimpleWeb::CaseInsensitiveMultimap header;
-
-	      // Uncomment the following line to enable Cache-Control
-	      // header.emplace("Cache-Control", "max-age=86400");
-
-	#ifdef HAVE_OPENSSL
-	//    Uncomment the following lines to enable ETag
-	//    {
-	//      ifstream ifs(path.string(), ifstream::in | ios::binary);
-	//      if(ifs) {
-	//        auto hash = SimpleWeb::Crypto::to_hex_string(SimpleWeb::Crypto::md5(ifs));
-	//        header.emplace("ETag", "\"" + hash + "\"");
-	//        auto it = request->header.find("If-None-Match");
-	//        if(it != request->header.end()) {
-	//          if(!it->second.empty() && it->second.compare(1, hash.size(), hash) == 0) {
-	//            response->write(SimpleWeb::StatusCode::redirection_not_modified, header);
-	//            return;
-	//          }
-	//        }
-	//      }
-	//      else
-	//        throw invalid_argument("could not read file");
-	//    }
-	#endif
-
-	      auto ifs = make_shared<ifstream>();
-	      ifs->open(path.string(), ifstream::in | ios::binary | ios::ate);
-
-	      if(*ifs) {
-	        auto length = ifs->tellg();
-	        ifs->seekg(0, ios::beg);
-
-	        header.emplace("Content-Length", to_string(length));
-	        response->write(header);
-
-	        // Trick to define a recursive function within this scope (for example purposes)
-	        class FileServer {
-	        public:
-	          static void read_and_send(const shared_ptr<HttpServer::Response> &response, const shared_ptr<ifstream> &ifs) {
-	            // Read and send 128 KB at a time
-	            static vector<char> buffer(131072); // Safe when server is running on one thread
-	            streamsize read_length;
-	            if((read_length = ifs->read(&buffer[0], static_cast<streamsize>(buffer.size())).gcount()) > 0) {
-	              response->write(&buffer[0], read_length);
-	              if(read_length == static_cast<streamsize>(buffer.size())) {
-	                response->send([response, ifs](const SimpleWeb::error_code &ec) {
-	                  if(!ec)
-	                    read_and_send(response, ifs);
-	                  else
-	                    cerr << "Connection interrupted" << endl;
-	                });
-	              }
-	            }
-	          }
-	        };
-	        FileServer::read_and_send(response, ifs);
-	      }
-	      else
-	        throw invalid_argument("could not read file");
-	    }
-	    catch(const exception &e) {
-	      response->write(SimpleWeb::StatusCode::client_error_bad_request, "Could not open path " + request->path + ": " + e.what());
-	    }
+	  server.default_resource["GET"] = [&confParser](shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request) {
+		  std::string resp;
+		  writeHtmlToString(confParser, resp);
+		  *response << "HTTP/1.1 200 OK\r\nContent-Length: " << resp.length() << "\r\n\r\n"
+				  << resp;
 	  };
 
 	  server.on_error = [](shared_ptr<HttpServer::Request> /*request*/, const SimpleWeb::error_code & /*ec*/) {
@@ -275,32 +312,31 @@ int main() {
 //	mailc.sendEmail("zpr_resmonitor@wp.pl", { "zpr_resmonitor@wp.pl"}, "tescikkk",
 //			"Hello from C++ SMTP Client!");
 
-	std::string conf = "\n"
-			"    trigger cpu over {70%, 80%, 90%} last for {8s, 1m}\n"
-			"    trigger memory over 200MB last for 6s\n"
-			"    trigger memory over 75% last for 10s\n"
-			"    trigger disk over 9mb/s last for 1m2s\n"
-			"    trigger disk under 10MB/s last for 2s\n"
-			"\n"
-			"    log cpu for {3h} resolution {7s}\n"
-			"    log memory for {12h} resolution {1h}\n"
-			"    log disk for 3h resolution 4s\n";
-	std::stringstream stream(conf);
-	std::shared_ptr<ConfigurationParser> parser = std::make_shared<ConfigurationParser>(stream);
-	parser->run();
+	std::ifstream configFile( "tests_src/conf_parser/example" );
+	if ( configFile )
+	{
+		std::stringstream stream;
+		stream << configFile.rdbuf();
+		configFile.close();
+
+		std::shared_ptr<ConfigurationParser> parser = std::make_shared<ConfigurationParser>(stream);
+		parser->run();
 
 
-	std::shared_ptr<ResUsageProvider> provider = std::make_shared<LinuxResProvider>();
+		std::shared_ptr<ResUsageProvider> provider = std::make_shared<LinuxResProvider>();
 
-	// samplerManagerMock is set to take only 10 samples
-	// (as 10 samples in 10 second, but without any delay between them)
-	std::unique_ptr<SamplingManager> samplingManager =
-			std::make_unique<SamplingManager>(
-					provider, parser->getLogTypes(), parser->getTriggerTypes(),
-					[](const TriggerType & t){std::cout<<"Callback triggered\n"<<std::endl;}//<<t.resource<<", "<<t.fluctuationType<<", "<<t.triggerValue
-			);
-	//samplingManager->startSampling();
+		std::shared_ptr<PredicateEngine> engine = std::make_shared<PredicateEngine>();
 
+		// samplerManagerMock is set to take only 10 samples
+		// (as 10 samples in 10 second, but without any delay between them)
+		std::unique_ptr<SamplingManager> samplingManager =
+				std::make_unique<SamplingManager>(
+						provider, parser->getLogTypes(), parser->getTriggerTypes(),
+						[](const TriggerType & t){std::cout<<"Callback triggered\n"<<std::endl;}//<<t.resource<<", "<<t.fluctuationType<<", "<<t.triggerValue
+				);
+		samplingManager->startSampling();
+		samplingManager->connectPredicateEngine(*engine);
 
-    exampleHttpsServerExecution(parser);
+		exampleHttpsServerExecution(parser, engine);
+	}
 }

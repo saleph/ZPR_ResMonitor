@@ -1,5 +1,6 @@
 
     trigger cpu over {70%, 80%, 90%} last for {20s, 1m}
+    trigger cpu under {1%, 5%} last for {2s, 20s}
     trigger memory over 200MB last for 1s
     trigger memory over 75% last for 10s
     trigger disk over 9mb/s last for 1m2s
