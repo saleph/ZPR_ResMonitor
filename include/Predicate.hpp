@@ -5,7 +5,7 @@
 #include <functional>
 #include <unordered_map>
 #include "configrawdata.hpp"
-
+#include <iostream>
 
 /**
  * @brief Abstract interface for Predicate computations.

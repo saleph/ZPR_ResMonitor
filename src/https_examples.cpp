@@ -102,7 +102,7 @@ void exampleHttpsServerExecution(std::shared_ptr<ConfigurationParser> confParser
 				  << resp;
 	  };
 
-	  server.resource["^/trigger_choose$"]["GET"] = [&confParser, &predEngine](shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request) {
+	  server.resource["^/trigger_choose$"]["GET"] = [&](shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request) {
 		std::string resp("Your subscription has been saved!");
 	    stringstream stream;
 	    auto query_fields = request->parse_query_string();
@@ -116,10 +116,13 @@ void exampleHttpsServerExecution(std::shared_ptr<ConfigurationParser> confParser
 		}
 
 		std::function<void()> pf = [&](){
-			SMTPClient mailc("smtp.wp.pl", 25, "piterek93p@wp.pl",
+			cout<<"User name: "<<userName<<endl;
+			cout<<"User email: "<<userEmail<<endl;
+			cout<<"_____________________________________________________"<<endl;
+			SMTPClient mailc("smtp.wp.pl", 25, "zpr_resmonitor@wp.pl",
 					"zprresmonitor!1");
-			mailc.sendEmail("zpr_resmonitor@wp.pl", { "zpr_resmonitor@wp.pl"}, "tescikkk",
-					"Hello from C++ SMTP Client!");
+			mailc.sendEmail("zpr_resmonitor@wp.pl", {userEmail}, "tescikkk",
+					"Hello" + userName + "from C++ SMTP Client!");
 		};
 	    std::shared_ptr<Predicate> pred;
 	    if(query_fields.size() == 3){
@@ -309,7 +312,7 @@ void exampleHttpsServerExecution(std::shared_ptr<ConfigurationParser> confParser
 int main() {
 //	SMTPClient mailc("smtp.wp.pl", 25, "zpr_resmonitor@wp.pl",
 //			"zprresmonitor!1");
-//	mailc.sendEmail("zpr_resmonitor@wp.pl", { "zpr_resmonitor@wp.pl"}, "tescikkk",
+//	mailc.sendEmail("zpr_resmonitor@wp.pl", { "piterek93p@wp.pl"}, "tescikkk",
 //			"Hello from C++ SMTP Client!");
 
 	std::ifstream configFile( "tests_src/conf_parser/example" );
