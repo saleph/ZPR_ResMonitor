@@ -72,19 +72,24 @@ typedef int yy_state_type;
  */
 class FlexLexer {
 public:
-	virtual ~FlexLexer()	{ }
+	virtual ~FlexLexer() {
+	}
 
-	const char* YYText() const	{ return yytext; }
-	int YYLeng()	const	{ return yyleng; }
+	const char* YYText() const {
+		return yytext;
+	}
+	int YYLeng() const {
+		return yyleng;
+	}
 
 	virtual void
-		yy_switch_to_buffer( struct yy_buffer_state* new_buffer ) = 0;
+	yy_switch_to_buffer(struct yy_buffer_state* new_buffer) = 0;
 	virtual struct yy_buffer_state*
-		yy_create_buffer( FLEX_STD istream* s, int size ) = 0;
+	yy_create_buffer( FLEX_STD istream* s, int size ) = 0;
 	virtual struct yy_buffer_state*
-		yy_create_buffer( FLEX_STD istream& s, int size ) = 0;
+	yy_create_buffer( FLEX_STD istream& s, int size ) = 0;
 	virtual void yy_delete_buffer( struct yy_buffer_state* b ) = 0;
-	virtual void yyrestart( FLEX_STD istream* s ) = 0;	
+	virtual void yyrestart( FLEX_STD istream* s ) = 0;
 	virtual void yyrestart( FLEX_STD istream& s ) = 0;
 
 	virtual int yylex() = 0;
@@ -95,7 +100,7 @@ public:
 		switch_streams( new_in, new_out );
 		return yylex();
 	}
-	
+
 	int yylex( FLEX_STD istream* new_in, FLEX_STD ostream* new_out = 0)
 	{
 		switch_streams( new_in, new_out );
@@ -105,20 +110,20 @@ public:
 	// Switch to new input/output streams.  A nil stream pointer
 	// indicates "keep the current one".
 	virtual void switch_streams( FLEX_STD istream* new_in,
-					FLEX_STD ostream* new_out ) = 0;
+	FLEX_STD ostream* new_out ) = 0;
 	virtual void switch_streams( FLEX_STD istream& new_in,
-					FLEX_STD ostream& new_out ) = 0;
+	FLEX_STD ostream& new_out ) = 0;
 
-	int lineno() const		{ return yylineno; }
+	int lineno() const {return yylineno;}
 
-	int debug() const		{ return yy_flex_debug; }
-	void set_debug( int flag )	{ yy_flex_debug = flag; }
+	int debug() const {return yy_flex_debug;}
+	void set_debug( int flag ) {yy_flex_debug = flag;}
 
 protected:
 	char* yytext;
 	int yyleng;
 	int yylineno;		// only maintained if you use %option yylineno
-	int yy_flex_debug;	// only has effect with -d or "%option debug"
+	int yy_flex_debug;// only has effect with -d or "%option debug"
 };
 
 }
@@ -142,7 +147,7 @@ public:
 	// arg_yyin and arg_yyout default to the cin and cout, but we
 	// only make that assignment when initializing in yylex().
 	yyFlexLexer( FLEX_STD istream& arg_yyin, FLEX_STD ostream& arg_yyout );
-	yyFlexLexer( FLEX_STD istream* arg_yyin = 0, FLEX_STD ostream* arg_yyout = 0 );
+	yyFlexLexer( FLEX_STD istream* arg_yyin = 0, FLEX_STD ostream* arg_yyout = 0);
 private:
 	void ctor_common();
 

@@ -33,7 +33,7 @@ double RamState::currMonitorMBUsed(void)
 	return monitorRamInUseMB;
 }
 
-double RamState::currMonitorPercentageUsed(void)
+double RamState::currMonitorPercentageUsed(void) const
 {
 	if(totalRamMB != 0.0)
 		return monitorRamInUseMB/totalRamMB*100.0;
@@ -80,4 +80,13 @@ bool RamState::operator>(const TriggerType &triggerType) const {
 	}
 
 	return out;
+}
+
+std::ostream & operator<<(std::ostream & stream, const RamState & ramState)
+{
+	stream << "RAM (system) [MB / %]: "
+			<< ramState.ramInUseMB << "/" << ramState.currPercentageUsed()
+			<<", RAM (monitor) [MB / %]: "
+			<< ramState.monitorRamInUseMB << "/" << ramState.currMonitorPercentageUsed();
+	return stream;
 }

@@ -25,13 +25,14 @@ public:
     /// Checks if the Predicate is met.
     virtual bool isPredicateSatisfied() const;
 
+    /// Print method for predicate printing
+    virtual std::ostream & print(std::ostream & stream) const;
 private:
     mutable bool lastSatisfied = false;
     TriggerType or1Operand;
     TriggerType or2Operand;
     TriggerType andOperand;
 };
-
 
 /**
  * @brief Predicate of type (trigger1 AND trigger2).
@@ -51,11 +52,12 @@ public:
     /// Checks if the Predicate is met.
     virtual bool isPredicateSatisfied() const;
 
+    /// Print method for predicate printing
+    virtual std::ostream & print(std::ostream & stream) const;
 private:
     TriggerType and1Operand;
     TriggerType and2Operand;
 };
-
 
 /**
  * @brief Predicate of type (trigger1).
@@ -75,6 +77,7 @@ public:
     /// Checks if the Predicate is met.
     virtual bool isPredicateSatisfied() const;
 
+    virtual std::ostream & print(std::ostream & stream) const;
 private:
     TriggerType operand;
 };

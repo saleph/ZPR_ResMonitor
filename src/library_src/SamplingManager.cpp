@@ -2,7 +2,6 @@
 
 #include <utility>
 
-
 SamplingManager::~SamplingManager() {
     stopSampling();
     BOOST_LOG_TRIVIAL(debug) << "joined";
@@ -165,6 +164,7 @@ void SamplingManager::processTriggers() {
         // if trigger duration exceedes, fire it
         if (triggerState.second == triggerState.first.duration) {
             fireTrigger(trigger);
+            triggerState.second = 0;
         }
     }
 }
@@ -182,7 +182,7 @@ void SamplingManager::processLogs() {
         if (++secondsSinceLastLog >= logType.resolution) {
             // time to compute mean of (logType.duration) samples
             auto &&cpuLogBuffer = cpu.second.first;
-            auto &&cpuStateMean = getCpuSamplesMean(logType.duration);
+            auto &&cpuStateMean = getCpuSamplesMean(logType.resolution);
             cpuLogBuffer->push_back(std::move(cpuStateMean));
             secondsSinceLastLog = 0;
         }
@@ -195,7 +195,7 @@ void SamplingManager::processLogs() {
         if (++secondsSinceLastLog >= logType.resolution) {
             // time to compute mean of (logType.duration) samples
             auto &&ramLogBuffer = ram.second.first;
-            auto &&ramStateMean = getRamSamplesMean(logType.duration);
+            auto &&ramStateMean = getRamSamplesMean(logType.resolution);
             ramLogBuffer->push_back(std::move(ramStateMean));
             secondsSinceLastLog = 0;
         }
@@ -208,7 +208,7 @@ void SamplingManager::processLogs() {
         if (++secondsSinceLastLog >= logType.resolution) {
             // time to compute mean of (logType.duration) samples
             auto &&hddLogBuffer = hdd.second.first;
-            auto &&hddStateMean = getHddSamplesMean(logType.duration);
+            auto &&hddStateMean = getHddSamplesMean(logType.resolution);
             hddLogBuffer->push_back(std::move(hddStateMean));
             secondsSinceLastLog = 0;
         }

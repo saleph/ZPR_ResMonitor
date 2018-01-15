@@ -12,6 +12,7 @@ WindowsResProvider::WindowsResProvider()
 	initSystemCpuUsage();
 	initSelfCpuUsage();
 	initHddUsage();
+	getCpuState();
 }
 
 /**

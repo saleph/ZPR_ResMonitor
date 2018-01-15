@@ -156,8 +156,8 @@ BOOST_AUTO_TEST_CASE(trigger_test)
     // ResUsageMock value: 500MB, so 1 triggers should occur in 10 samples
     BOOST_CHECK_EQUAL(ramTriggers, 1);
     // trigger disk under 10MB/s last for 2s
-    // ResUsageMock value: 0.1MB/s, so 1 triggers should occur in 10 samples (trigger fires only once!)
-    BOOST_CHECK_EQUAL(hddTriggers, 1);
+    // ResUsageMock value: 0.1MB/s, so 5 triggers should occur in 10 samples
+    BOOST_CHECK_EQUAL(hddTriggers, 5);
 }
 
 BOOST_AUTO_TEST_SUITE_END();

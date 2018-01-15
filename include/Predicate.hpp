@@ -5,7 +5,7 @@
 #include <functional>
 #include <unordered_map>
 #include "configrawdata.hpp"
-
+#include <iostream>
 
 /**
  * @brief Abstract interface for Predicate computations.
@@ -32,9 +32,16 @@ public:
     /// Sets trigger's value to false.
     void deactivate(const TriggerType &triggerType);
 
+    /// Sets callback function for this predicate.
+    void setCallback(std::function<void()> clbck);
+
+    /// Virtual print method for predicate print (operator<< helper method)
+    virtual std::ostream & print(std::ostream & stream) const { return stream;};
 protected:
     std::unordered_map<TriggerType, bool> triggerState;
     std::function<void()> callback;
 };
+
+std::ostream & operator<<(std::ostream & stream, const Predicate & pred);
 
 #endif //ZPR_PREDICATE_HPP
