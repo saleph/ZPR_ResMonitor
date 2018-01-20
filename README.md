@@ -1,12 +1,16 @@
 # ZPR_ResMonitor
+## Short description
 Windows and linux resource monitor with smart logging and notifying options. 
 
 Allows to define combination of admin's defined triggers (like RAM over 200MB last for 5s) in boolean predicates like `{(trig1 OR trig2) AND trig3}` or simpler. When some predicate is satisfied - an email is being sent to address specified by predicate creator (user).
+
+### Interface
 
 Application provides HTTP server as interface.
 
 ![](web/obraz.png)
 
+### Smart and natural configuration specification
 Only admin can specify type of triggers and logging types. It is being done in specification file:
 
 ```
@@ -33,6 +37,8 @@ $ mkdir BUILD && cd BUILD
 $ cmake ..
 $ {make, msbuild} {monitor, testsmonitor}
 ```
+
+After generation with `cmake` on windows a solution (`.sln`) for Visual Studio is also available.
 
 ## Used additional libraries
 
